@@ -1,4 +1,5 @@
 require "iev/version"
+require "iev/db"
 require "open-uri"
 require "nokogiri"
 
