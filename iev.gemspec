@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{IEV: Fetch and encode IEV term from Electropedia}
   spec.description   = %q{IEV: Fetch and encode IEV term from Electropedia}
   spec.homepage      = "https://github.com/riboseinc/iev"
-  spec.license       = "MIT"
+  spec.license       = "BSD-2-Clause"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
