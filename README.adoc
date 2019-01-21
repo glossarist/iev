@@ -1,7 +1,7 @@
 = Iev
 
 image:https://img.shields.io/gem/v/iev.svg["Gem Version", link="https://rubygems.org/gems/iev"]
-image:https://img.shields.io/travis/riboseinc/iev/master.svg["Build Status", link="https://travis-ci.com/riboseinc/iev"]
+image:https://img.shields.io/travis/riboseinc/iev/master.svg["Build Status", link="https://travis-ci.org/riboseinc/iev"]
 image:https://codeclimate.com/github/riboseinc/iev/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/riboseinc/iev"]
 
 Fetch and encode IEV term from Electropedia.
