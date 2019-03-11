@@ -1,4 +1,5 @@
-require 'pstore'
+# require 'pstore'
+require_relative "db_cache"
 
 module Iev
   # Cache class.
@@ -22,65 +23,58 @@ module Iev
     private
 
     def check_bibliocache(code, lang)
-      id = code + '/' + lang
+      id = code + "/" + lang
       return bib_retval(new_bib_entry(code, lang)) if @db.nil?
-      @db.transaction do
-        # @db.delete(id) unless valid_bib_entry?(@db[id])
-        @db[id] ||= new_bib_entry(code, lang)
-        if @local_db.nil? then bib_retval(@db[id])
-        else
-          @local_db.transaction do
-            @local_db[id] ||= @db[id]
-            bib_retval(@local_db[id])
-          end
-        end
+
+      # @db.delete(id) unless valid_bib_entry?(@db[id])
+      @db[id] ||= new_bib_entry(code, lang)
+      if @local_db.nil? then bib_retval(@db[id])
+      else
+        @local_db[id] ||= @db[id]
+        bib_retval(@local_db[id])
       end
     end
 
     def bib_retval(entry)
       # entry['term'] == 'not_found' ? '' : entry['term']
-      entry['term']
+      # entry["term"]
+      entry =~ /^not_found/ ? nil : entry
     end
 
     # @return [Hash]
     def new_bib_entry(code, lang)
-      term = Iev.get(code, lang)
-      # term = 'not_found' if term.nil? || term.empty?
-      { 'term' => term, 'definition' => nil }
+      Iev.get(code, lang)
     end
 
-    # @param filename [String] DB filename
+    # @param dir [String] DB dir
     # @param global [TrueClass, FalseClass]
-    # @return [PStore]
-    def open_cache_biblio(filename, global: true)
-      return nil if filename.nil?
-      db = PStore.new filename
-      if File.exist? filename
-        if global
-          unless check_cache_version(db)
-            File.delete filename
-            warn 'Global cache version is obsolete and cleared.'
-          end
-          save_cache_version db
-        elsif check_cache_version(db) then db
-        else
-          warn 'Local cache version is obsolete.'
-          nil
+    # @return [Iev::DbCache, nil]
+    def open_cache_biblio(dir, global: true)
+      return nil if dir.nil?
+
+      db = DbCache.new dir
+      if global
+        unless db.check_version?
+          FileUtils.rm_rf dir + "/."
+          warn "Global cache version is obsolete and cleared."
         end
+        db.set_version
+      elsif db.check_version? then db
       else
-        save_cache_version db
+        warn "Local cache version is obsolete."
+        nil
       end
     end
 
-    def check_cache_version(cache_db)
-      cache_db.transaction { cache_db[:version] == VERSION }
-    end
+    # def check_cache_version(cache_db)
+    #   cache_db.transaction { cache_db[:version] == VERSION }
+    # end
 
-    def save_cache_version(cache_db)
-      unless File.exist? cache_db.path
-        cache_db.transaction { cache_db[:version] = VERSION }
-      end
-      cache_db
-    end
+    # def save_cache_version(cache_db)
+    #   unless File.exist? cache_db.path
+    #     cache_db.transaction { cache_db[:version] = VERSION }
+    #   end
+    #   cache_db
+    # end
   end
 end
