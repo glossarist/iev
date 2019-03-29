@@ -55,7 +55,7 @@ module Iev
       db = DbCache.new dir
       if global
         unless db.check_version?
-          FileUtils.rm_rf dir + "/."
+          FileUtils.rm_rf(Dir.glob(File.join(dir, '*')), secure: true)
           warn "Global cache version is obsolete and cleared."
         end
         db.set_version
