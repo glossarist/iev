@@ -10,7 +10,8 @@ module Iev
       @dir = dir
       FileUtils::mkdir_p @dir
       file_version = "#{@dir}/version"
-      File.write file_version, VERSION, encoding: "utf-8" unless File.exist? file_version
+      File.exist? file_version or
+        File.write file_version, VERSION, encoding: "utf-8"
     end
 
     # Save item
@@ -67,14 +68,14 @@ module Iev
     # Check if version of the DB match to the gem version.
     # @return [TrueClass, FalseClass]
     def check_version?
-      v = File.read @dir + "/version", encoding: "utf-8"
+      v = File.read "#{@dir}/version", encoding: "utf-8"
       v == VERSION
     end
 
     # Set version of the DB to the gem version.
     # @return [Iev::DbCache]
     def set_version
-      File.write @dir + "/version", VERSION, encoding: "utf-8"
+      File.write "#{@dir}/version", VERSION, encoding: "utf-8"
       self
     end
 
@@ -110,7 +111,7 @@ module Iev
       # @registry.processors.detect do |_n, p|
       #   /^#{p.prefix}/.match(key) || processor.defaultprefix.match(key)
       # end[1].prefix.downcase
-      key.downcase.match(/^[^\(]+(?=\()/).to_s
+      key.downcase.match(/^[^(]+(?=\()/).to_s
     end
   end
 end

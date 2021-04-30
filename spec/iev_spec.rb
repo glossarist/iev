@@ -66,7 +66,8 @@ RSpec.describe Iev do
   end
 
   it "delete entry" do
-    testcache = @db.instance_variable_get :@db # save_entry "test key", "test value"
+    testcache = @db.instance_variable_get :@db
+    # save_entry "test key", "test value"
     testcache["test key"] = "test value"
     expect(testcache["test key"]).to eq "test value"
     expect(testcache["not existed key"]).to be_nil

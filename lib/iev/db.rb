@@ -23,7 +23,7 @@ module Iev
     private
 
     def check_bibliocache(code, lang)
-      id = code + "/" + lang
+      id = "#{code}/#{lang}"
       return bib_retval(new_bib_entry(code, lang)) if @db.nil?
 
       # @db.delete(id) unless valid_bib_entry?(@db[id])
@@ -38,7 +38,7 @@ module Iev
     def bib_retval(entry)
       # entry['term'] == 'not_found' ? '' : entry['term']
       # entry["term"]
-      entry =~ /^not_found/ ? nil : entry
+      /^not_found/.match?(entry) ? nil : entry
     end
 
     # @return [Hash]
@@ -55,7 +55,7 @@ module Iev
       db = DbCache.new dir
       if global
         unless db.check_version?
-          FileUtils.rm_rf(Dir.glob(File.join(dir, '*')), secure: true)
+          FileUtils.rm_rf(Dir.glob(File.join(dir, "*")), secure: true)
           warn "Global cache version is obsolete and cleared."
         end
         db.set_version
