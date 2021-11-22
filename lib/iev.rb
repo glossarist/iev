@@ -16,10 +16,13 @@ module Iev
   #
   def self.get(code, lang)
     url = "http://www.electropedia.org/iev/iev.nsf/"\
-      "display?openform&ievref=#{code}"
+          "display?openform&ievref=#{code}"
     doc = Nokogiri::HTML OpenURI.open_uri(url), nil, "UTF-8"
     xpath = "//table/tr/td/div/font[.=\"#{lang}\"]/../../"\
-      "following-sibling::td[2]"
-    doc.at(xpath)&.text&.strip
+            "following-sibling::td[2]"
+    a = doc&.at(xpath)&.children&.to_xml
+    a&.sub(%r{<br/>.*$}, "")
+      &.sub(%r{, &lt;.*$}, "")
+      &.gsub(%r{<[^>]*>}, "")&.strip
   end
 end
