@@ -22,6 +22,13 @@ RSpec.describe Iev do
     expect(File.exist?("testcache2")).to be_truthy
   end
 
+  # <td><b><i>p</i>-fractile</b>, &lt;of a probability distribution&gt;<br><b><i>p</i>-quantile</b>, &lt;of a probability distribution&gt;</td>
+  it "strips extraneous information from term" do
+    mock_open_uri("103-08-14")
+    term = @db.fetch "103-08-14", "en"
+    expect(term).to eq "p-fractile"
+  end
+
   it "return empty string if code not found" do
     mock_open_uri("111-11-11")
     term = @db.fetch "111-11-11", "en"
