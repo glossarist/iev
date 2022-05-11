@@ -27,5 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "simplecov"
 
-  spec.add_dependency "nokogiri", "~> 1.12"
+  spec.add_dependency "nokogiri", "~> 1"
 end
