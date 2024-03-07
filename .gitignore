@@ -2,6 +2,7 @@
 /.yardoc
 /_yardoc/
 /coverage/
+/db/
 /doc/
 /pkg/
 /spec/reports/
@@ -11,3 +12,6 @@
 
 # rspec failure tracking
 .rspec_status
+.vscode/
+
+concepts/

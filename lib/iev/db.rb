@@ -1,7 +1,7 @@
 # require 'pstore'
 require_relative "db_cache"
 
-module Iev
+module IEV
   # Cache class.
   class Db
     # @param global_cache [String] filename of global DB
@@ -43,12 +43,12 @@ module Iev
 
     # @return [Hash]
     def new_bib_entry(code, lang)
-      Iev.get(code, lang)
+      IEV.get(code, lang)
     end
 
     # @param dir [String] DB dir
     # @param global [TrueClass, FalseClass]
-    # @return [Iev::DbCache, nil]
+    # @return [IEV::DbCache, nil]
     def open_cache_biblio(dir, global: true)
       return nil if dir.nil?
 

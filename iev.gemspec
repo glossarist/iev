@@ -4,7 +4,7 @@ require "iev/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "iev"
-  spec.version       = Iev::VERSION
+  spec.version       = IEV::VERSION
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
 
@@ -27,5 +27,14 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "simplecov"
 
+  spec.add_dependency "creek", "~> 2.5"
+  spec.add_dependency "mathml2asciimath", "< 1"
+  spec.add_dependency "glossarist", "~> 2.0.6"
   spec.add_dependency "nokogiri", "~> 1"
+  spec.add_dependency "relaton", "~> 1.18"
+  spec.add_dependency "ruby-prof"
+  spec.add_dependency "sequel", "~> 5.40"
+  spec.add_dependency "sqlite3", "~> 1.4.2"
+  spec.add_dependency "thor", "~> 1.0"
+  spec.add_dependency "zeitwerk", "~> 2.4"
 end
