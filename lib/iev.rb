@@ -3,7 +3,27 @@ require "iev/db"
 require "open-uri"
 require "nokogiri"
 
-module Iev
+require "benchmark"
+require "creek"
+require "mathml2asciimath"
+require "glossarist"
+require "relaton"
+require "relaton_bib"
+require "ruby-prof"
+require "sequel"
+require "thor"
+require "yaml"
+require "zeitwerk"
+
+loader = Zeitwerk::Loader.for_gem
+loader.inflector.inflect(
+  "cli" => "CLI",
+  "iev" => "IEV",
+  "ui" => "UI",
+)
+loader.setup
+
+module IEV
   #
   # Scrape Electropedia for term.
   #
@@ -26,3 +46,5 @@ module Iev
       &.gsub(%r{<[^>]*>}, "")&.strip
   end
 end
+
+require "iev/cli"

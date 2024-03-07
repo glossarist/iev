@@ -1,0 +1,4075 @@
+---
+# Authoritative source: https://www.loc.gov/standards/iso639-2/php/code_list.php
+
+aar:
+  iso_639_1: aa
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Afar
+  fra: afar
+  deu: Danakil-Sprache
+
+abk:
+  iso_639_1: ab
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Abkhazian
+  fra: abkhaze
+  deu: Abchasisch
+
+ace:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Achinese
+  fra: aceh
+  deu: Aceh-Sprache
+
+ach:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Acoli
+  fra: acoli
+  deu: Acholi-Sprache
+
+ada:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Adangme
+  fra: adangme
+  deu: Adangme-Sprache
+
+ady:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Adyghe; Adygei
+  fra: adyghé
+  deu: Adygisch
+
+afa:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Afro-Asiatic languages
+  fra: afro-asiatiques, langues
+  deu: Hamitosemitische Sprachen (Andere)
+
+afh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Afrihili
+  fra: afrihili
+  deu: Afrihili
+
+afr:
+  iso_639_1: af
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Afrikaans
+  fra: afrikaans
+  deu: Afrikaans
+
+ain:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ainu
+  fra: aïnou
+  deu: Ainu-Sprache
+
+aka:
+  iso_639_1: ak
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Akan
+  fra: akan
+  deu: Akan-Sprache
+
+akk:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Akkadian
+  fra: akkadien
+  deu: Akkadisch
+
+alb :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Albanian
+  fra: albanais
+  deu: Albanisch
+
+sqi :
+  iso_639_1: sq
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Albanian
+  fra: albanais
+  deu: Albanisch
+
+ale:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Aleut
+  fra: aléoute
+  deu: Aleutisch
+
+alg:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Algonquian languages
+  fra: algonquines, langues
+  deu: Algonkin-Sprachen (Andere)
+
+alt:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Southern Altai
+  fra: altai du Sud
+  deu: Altaisch
+
+amh:
+  iso_639_1: am
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Amharic
+  fra: amharique
+  deu: Amharisch
+
+ang:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: English, Old (ca.450-1100)
+  fra: anglo-saxon (ca.450-1100)
+  deu: Altenglisch
+
+anp:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Angika
+  fra: angika
+  deu: Anga-Sprache
+
+apa:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Apache languages
+  fra: apaches, langues
+  deu: Apachen-Sprachen
+
+ara:
+  iso_639_1: ar
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Arabic
+  fra: arabe
+  deu: Arabisch
+
+arc:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)
+  fra: araméen d'empire (700-300 BCE)
+  deu: Aramäisch
+
+arg:
+  iso_639_1: an
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Aragonese
+  fra: aragonais
+  deu: Aragonesisch
+
+arm :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Armenian
+  fra: arménien
+  deu: Armenisch
+
+hye :
+  iso_639_1: hy
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Armenian
+  fra: arménien
+  deu: Armenisch
+
+arn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mapudungun; Mapuche
+  fra: mapudungun; mapuche; mapuce
+  deu: Arauka-Sprachen
+
+arp:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Arapaho
+  fra: arapaho
+  deu: Arapaho-Sprache
+
+art:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Artificial languages
+  fra: artificielles, langues
+  deu: Kunstsprachen (Andere)
+
+arw:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Arawak
+  fra: arawak
+  deu: Arawak-Sprachen
+
+asm:
+  iso_639_1: as
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Assamese
+  fra: assamais
+  deu: Assamesisch
+
+ast:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Asturian; Bable; Leonese; Asturleonese
+  fra: asturien; bable; léonais; asturoléonais
+  deu: Asturisch
+
+ath:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Athapascan languages
+  fra: athapascanes, langues
+  deu: Athapaskische Sprachen (Andere)
+
+aus:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Australian languages
+  fra: australiennes, langues
+  deu: Australische Sprachen
+
+ava:
+  iso_639_1: av
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Avaric
+  fra: avar
+  deu: Awarisch
+
+ave:
+  iso_639_1: ae
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Avestan
+  fra: avestique
+  deu: Avestisch
+
+awa:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Awadhi
+  fra: awadhi
+  deu: Awadhi
+
+aym:
+  iso_639_1: ay
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Aymara
+  fra: aymara
+  deu: Aymará-Sprache
+
+aze:
+  iso_639_1: az
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Azerbaijani
+  fra: azéri
+  deu: Aserbeidschanisch
+
+bad:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Banda languages
+  fra: banda, langues
+  deu: Banda-Sprachen (Ubangi-Sprachen)
+
+bai:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bamileke languages
+  fra: bamiléké, langues
+  deu: Bamileke-Sprachen
+
+bak:
+  iso_639_1: ba
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bashkir
+  fra: bachkir
+  deu: Baschkirisch
+
+bal:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Baluchi
+  fra: baloutchi
+  deu: Belutschisch
+
+bam:
+  iso_639_1: bm
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bambara
+  fra: bambara
+  deu: Bambara-Sprache
+
+ban:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Balinese
+  fra: balinais
+  deu: Balinesisch
+
+baq :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Basque
+  fra: basque
+  deu: Baskisch
+
+eus :
+  iso_639_1: eu
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Basque
+  fra: basque
+  deu: Baskisch
+
+bas:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Basa
+  fra: basa
+  deu: Basaa-Sprache
+
+bat:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Baltic languages
+  fra: baltes, langues
+  deu: Baltische Sprachen (Andere)
+
+bej:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Beja; Bedawiyet
+  fra: bedja
+  deu: Bedauye
+
+bel:
+  iso_639_1: be
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Belarusian
+  fra: biélorusse
+  deu: Weißrussisch
+
+bem:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bemba
+  fra: bemba
+  deu: Bemba-Sprache
+
+ben:
+  iso_639_1: bn
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bengali
+  fra: bengali
+  deu: Bengali
+
+ber:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Berber languages
+  fra: berbères, langues
+  deu: Berbersprachen (Andere)
+
+bho:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bhojpuri
+  fra: bhojpuri
+  deu: Bhojpuri
+
+bih:
+  iso_639_1: bh
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bihari languages
+  fra: langues biharis
+  deu: Bihari (Andere)
+
+bik:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bikol
+  fra: bikol
+  deu: Bikol-Sprache
+
+bin:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bini; Edo
+  fra: bini; edo
+  deu: Edo-Sprache
+
+bis:
+  iso_639_1: bi
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bislama
+  fra: bichlamar
+  deu: Beach-la-mar
+
+bla:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Siksika
+  fra: blackfoot
+  deu: Blackfoot-Sprache
+
+bnt:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bantu languages
+  fra: bantou, langues
+  deu: Bantusprachen (Andere)
+
+tib :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Tibetan
+  fra: tibétain
+  deu: Tibetisch
+
+bod :
+  iso_639_1: bo
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Tibetan
+  fra: tibétain
+  deu: Tibetisch
+
+bos:
+  iso_639_1: bs
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bosnian
+  fra: bosniaque
+  deu: Bosnisch
+
+bra:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Braj
+  fra: braj
+  deu: Braj-Bhakha
+
+bre:
+  iso_639_1: br
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Breton
+  fra: breton
+  deu: Bretonisch
+
+btk:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Batak languages
+  fra: batak, langues
+  deu: Batak-Sprache
+
+bua:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Buriat
+  fra: bouriate
+  deu: Burjatisch
+
+bug:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Buginese
+  fra: bugi
+  deu: Bugi-Sprache
+
+bul:
+  iso_639_1: bg
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bulgarian
+  fra: bulgare
+  deu: Bulgarisch
+
+bur :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Burmese
+  fra: birman
+  deu: Birmanisch
+
+mya :
+  iso_639_1: my
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Burmese
+  fra: birman
+  deu: Birmanisch
+
+byn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Blin; Bilin
+  fra: blin; bilen
+  deu: Bilin-Sprache
+
+cad:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Caddo
+  fra: caddo
+  deu: Caddo-Sprachen
+
+cai:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Central American Indian languages
+  fra: amérindiennes de l'Amérique centrale, langues
+  deu: Indianersprachen, Zentralamerika (Andere)
+
+car:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Galibi Carib
+  fra: karib; galibi; carib
+  deu: Karibische Sprachen
+
+cat:
+  iso_639_1: ca
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Catalan; Valencian
+  fra: catalan; valencien
+  deu: Katalanisch
+
+cau:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Caucasian languages
+  fra: caucasiennes, langues
+  deu: Kaukasische Sprachen (Andere)
+
+ceb:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Cebuano
+  fra: cebuano
+  deu: Cebuano
+
+cel:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Celtic languages
+  fra: celtiques, langues; celtes, langues
+  deu: Keltische Sprachen (Andere)
+
+cze :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Czech
+  fra: tchèque
+  deu: Tschechisch
+
+ces :
+  iso_639_1: cs
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Czech
+  fra: tchèque
+  deu: Tschechisch
+
+cha:
+  iso_639_1: ch
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chamorro
+  fra: chamorro
+  deu: Chamorro-Sprache
+
+chb:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chibcha
+  fra: chibcha
+  deu: Chibcha-Sprachen
+
+che:
+  iso_639_1: ce
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chechen
+  fra: tchétchène
+  deu: Tschetschenisch
+
+chg:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chagatai
+  fra: djaghataï
+  deu: Tschagataisch
+
+chi :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Chinese
+  fra: chinois
+  deu: Chinesisch
+
+zho :
+  iso_639_1: zh
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Chinese
+  fra: chinois
+  deu: Chinesisch
+
+chk:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chuukese
+  fra: chuuk
+  deu: Trukesisch
+
+chm:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mari
+  fra: mari
+  deu: Tscheremissisch
+
+chn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chinook jargon
+  fra: chinook, jargon
+  deu: Chinook-Jargon
+
+cho:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Choctaw
+  fra: choctaw
+  deu: Choctaw-Sprache
+
+chp:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chipewyan; Dene Suline
+  fra: chipewyan
+  deu: Chipewyan-Sprache
+
+chr:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Cherokee
+  fra: cherokee
+  deu: Cherokee-Sprache
+
+chu:
+  iso_639_1: cu
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic
+  fra: slavon d'église; vieux slave; slavon liturgique; vieux bulgare
+  deu: Kirchenslawisch
+
+chv:
+  iso_639_1: cv
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chuvash
+  fra: tchouvache
+  deu: Tschuwaschisch
+
+chy:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Cheyenne
+  fra: cheyenne
+  deu: Cheyenne-Sprache
+
+cmc:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chamic languages
+  fra: chames, langues
+  deu: Cham-Sprachen
+
+cnr:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Montenegrin
+  fra: monténégrin
+  deu: Montenegrinisch
+
+cop:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Coptic
+  fra: copte
+  deu: Koptisch
+
+cor:
+  iso_639_1: kw
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Cornish
+  fra: cornique
+  deu: Kornisch
+
+cos:
+  iso_639_1: co
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Corsican
+  fra: corse
+  deu: Korsisch
+
+cpe:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Creoles and pidgins, English based
+  fra: créoles et pidgins basés sur l'anglais
+  deu: Kreolisch-Englisch (Andere)
+
+cpf:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Creoles and pidgins, French-based
+  fra: créoles et pidgins basés sur le français
+  deu: Kreolisch-Französisch (Andere)
+
+cpp:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Creoles and pidgins, Portuguese-based
+  fra: créoles et pidgins basés sur le portugais
+  deu: Kreolisch-Portugiesisch (Andere)
+
+cre:
+  iso_639_1: cr
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Cree
+  fra: cree
+  deu: Cree-Sprache
+
+crh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Crimean Tatar; Crimean Turkish
+  fra: tatar de Crimé
+  deu: Krimtatarisch
+
+crp:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Creoles and pidgins
+  fra: créoles et pidgins
+  deu: Kreolische Sprachen; Pidginsprachen (Andere)
+
+csb:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kashubian
+  fra: kachoube
+  deu: Kaschubisch
+
+cus:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Cushitic languages
+  fra: couchitiques, langues
+  deu: Kuschitische Sprachen (Andere)
+
+wel :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Welsh
+  fra: gallois
+  deu: Kymrisch
+
+cym :
+  iso_639_1: cy
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Welsh
+  fra: gallois
+  deu: Kymrisch
+
+cze :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Czech
+  fra: tchèque
+  deu: Tschechisch
+
+ces :
+  iso_639_1: cs
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Czech
+  fra: tchèque
+  deu: Tschechisch
+
+dak:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Dakota
+  fra: dakota
+  deu: Dakota-Sprache
+
+dan:
+  iso_639_1: da
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Danish
+  fra: danois
+  deu: Dänisch
+
+dar:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Dargwa
+  fra: dargwa
+  deu: Darginisch
+
+day:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Land Dayak languages
+  fra: dayak, langues
+  deu: Dajakisch
+
+del:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Delaware
+  fra: delaware
+  deu: Delaware-Sprache
+
+den:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Slave (Athapascan)
+  fra: esclave (athapascan)
+  deu: Slave-Sprache
+
+ger :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: German
+  fra: allemand
+  deu: Deutsch
+
+deu :
+  iso_639_1: de
+  terminology: TRUE
+  bibliography: FALSE
+  eng: German
+  fra: allemand
+  deu: Deutsch
+
+dgr:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Dogrib
+  fra: dogrib
+  deu: Dogrib-Sprache
+
+din:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Dinka
+  fra: dinka
+  deu: Dinka-Sprache
+
+div:
+  iso_639_1: dv
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Divehi; Dhivehi; Maldivian
+  fra: maldivien
+  deu: Maledivisch
+
+doi:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Dogri
+  fra: dogri
+  deu: Dogri
+
+dra:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Dravidian languages
+  fra: dravidiennes, langues
+  deu: Drawidische Sprachen (Andere)
+
+dsb:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lower Sorbian
+  fra: bas-sorabe
+  deu: Niedersorbisch
+
+dua:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Duala
+  fra: douala
+  deu: Duala-Sprachen
+
+dum:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Dutch, Middle (ca.1050-1350)
+  fra: néerlandais moyen (ca. 1050-1350)
+  deu: Mittelniederländisch
+
+dut :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Dutch; Flemish
+  fra: néerlandais; flamand
+  deu: Niederländisch
+
+nld :
+  iso_639_1: nl
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Dutch; Flemish
+  fra: néerlandais; flamand
+  deu: Niederländisch
+
+dyu:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Dyula
+  fra: dioula
+  deu: Dyula-Sprache
+
+dzo:
+  iso_639_1: dz
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Dzongkha
+  fra: dzongkha
+  deu: Dzongkha
+
+efi:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Efik
+  fra: efik
+  deu: Efik
+
+egy:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Egyptian (Ancient)
+  fra: égyptien
+  deu: Ägyptisch
+
+eka:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ekajuk
+  fra: ekajuk
+  deu: Ekajuk
+
+gre :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Greek, Modern (1453-)
+  fra: grec moderne (après 1453)
+  deu: Neugriechisch
+
+ell :
+  iso_639_1: el
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Greek, Modern (1453-)
+  fra: grec moderne (après 1453)
+  deu: Neugriechisch
+
+elx:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Elamite
+  fra: élamite
+  deu: Elamisch
+
+eng:
+  iso_639_1: en
+  terminology: TRUE
+  bibliography: TRUE
+  eng: English
+  fra: anglais
+  deu: Englisch
+
+enm:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: English, Middle (1100-1500)
+  fra: anglais moyen (1100-1500)
+  deu: Mittelenglisch
+
+epo:
+  iso_639_1: eo
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Esperanto
+  fra: espéranto
+  deu: Esperanto
+
+est:
+  iso_639_1: et
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Estonian
+  fra: estonien
+  deu: Estnisch
+
+baq :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Basque
+  fra: basque
+  deu: Baskisch
+
+eus :
+  iso_639_1: eu
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Basque
+  fra: basque
+  deu: Baskisch
+
+ewe:
+  iso_639_1: ee
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ewe
+  fra: éwé
+  deu: Ewe-Sprache
+
+ewo:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ewondo
+  fra: éwondo
+  deu: Ewondo
+
+fan:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Fang
+  fra: fang
+  deu: Pangwe-Sprache
+
+fao:
+  iso_639_1: fo
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Faroese
+  fra: féroïen
+  deu: Färöisch
+
+per :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Persian
+  fra: persan
+  deu: Persisch
+
+fas :
+  iso_639_1: fa
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Persian
+  fra: persan
+  deu: Persisch
+
+fat:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Fanti
+  fra: fanti
+  deu: Fante-Sprache
+
+fij:
+  iso_639_1: fj
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Fijian
+  fra: fidjien
+  deu: Fidschi-Sprache
+
+fil:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Filipino; Pilipino
+  fra: filipino; pilipino
+  deu: Pilipino
+
+fin:
+  iso_639_1: fi
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Finnish
+  fra: finnois
+  deu: Finnisch
+
+fiu:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Finno-Ugrian languages
+  fra: finno-ougriennes, langues
+  deu: Finnougrische Sprachen (Andere)
+
+fon:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Fon
+  fra: fon
+  deu: Fon-Sprache
+
+fre :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: French
+  fra: français
+  deu: Französisch
+
+fra :
+  iso_639_1: fr
+  terminology: TRUE
+  bibliography: FALSE
+  eng: French
+  fra: français
+  deu: Französisch
+
+fre :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: French
+  fra: français
+  deu: Französisch
+
+fra :
+  iso_639_1: fr
+  terminology: TRUE
+  bibliography: FALSE
+  eng: French
+  fra: français
+  deu: Französisch
+
+frm:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: French, Middle (ca.1400-1600)
+  fra: français moyen (1400-1600)
+  deu: Mittelfranzösisch
+
+fro:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: French, Old (842-ca.1400)
+  fra: français ancien (842-ca.1400)
+  deu: Altfranzösisch
+
+frr:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Northern Frisian
+  fra: frison septentrional
+  deu: Nordfriesisch
+
+frs:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Eastern Frisian
+  fra: frison oriental
+  deu: Ostfriesisch
+
+fry:
+  iso_639_1: fy
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Western Frisian
+  fra: frison occidental
+  deu: Friesisch
+
+ful:
+  iso_639_1: ff
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Fulah
+  fra: peul
+  deu: Ful
+
+fur:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Friulian
+  fra: frioulan
+  deu: Friulisch
+
+gaa:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ga
+  fra: ga
+  deu: Ga-Sprache
+
+gay:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Gayo
+  fra: gayo
+  deu: Gayo-Sprache
+
+gba:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Gbaya
+  fra: gbaya
+  deu: Gbaya-Sprache
+
+gem:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Germanic languages
+  fra: germaniques, langues
+  deu: Germanische Sprachen (Andere)
+
+geo :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Georgian
+  fra: géorgien
+  deu: Georgisch
+
+kat :
+  iso_639_1: ka
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Georgian
+  fra: géorgien
+  deu: Georgisch
+
+ger :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: German
+  fra: allemand
+  deu: Deutsch
+
+deu :
+  iso_639_1: de
+  terminology: TRUE
+  bibliography: FALSE
+  eng: German
+  fra: allemand
+  deu: Deutsch
+
+gez:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Geez
+  fra: guèze
+  deu: Altäthiopisch
+
+gil:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Gilbertese
+  fra: kiribati
+  deu: Gilbertesisch
+
+gla:
+  iso_639_1: gd
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Gaelic; Scottish Gaelic
+  fra: gaélique; gaélique écossais
+  deu: Gälisch-Schottisch
+
+gle:
+  iso_639_1: ga
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Irish
+  fra: irlandais
+  deu: Irisch
+
+glg:
+  iso_639_1: gl
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Galician
+  fra: galicien
+  deu: Galicisch
+
+glv:
+  iso_639_1: gv
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Manx
+  fra: manx; mannois
+  deu: Manx
+
+gmh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: German, Middle High (ca.1050-1500)
+  fra: allemand, moyen haut (ca. 1050-1500)
+  deu: Mittelhochdeutsch
+
+goh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: German, Old High (ca.750-1050)
+  fra: allemand, vieux haut (ca. 750-1050)
+  deu: Althochdeutsch
+
+gon:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Gondi
+  fra: gond
+  deu: Gondi-Sprache
+
+gor:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Gorontalo
+  fra: gorontalo
+  deu: Gorontalesisch
+
+got:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Gothic
+  fra: gothique
+  deu: Gotisch
+
+grb:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Grebo
+  fra: grebo
+  deu: Grebo-Sprache
+
+grc:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Greek, Ancient (to 1453)
+  fra: grec ancien (jusqu'à 1453)
+  deu: Griechisch
+
+gre :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Greek, Modern (1453-)
+  fra: grec moderne (après 1453)
+  deu: Neugriechisch
+
+ell :
+  iso_639_1: el
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Greek, Modern (1453-)
+  fra: grec moderne (après 1453)
+  deu: Neugriechisch
+
+grn:
+  iso_639_1: gn
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Guarani
+  fra: guarani
+  deu: Guaraní-Sprache
+
+gsw:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Swiss German; Alemannic; Alsatian
+  fra: suisse alémanique; alémanique; alsacien
+  deu: Schweizerdeutsch
+
+guj:
+  iso_639_1: gu
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Gujarati
+  fra: goudjrati
+  deu: Gujarati-Sprache
+
+gwi:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Gwich'in
+  fra: gwich'in
+  deu: Kutchin-Sprache
+
+hai:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Haida
+  fra: haida
+  deu: Haida-Sprache
+
+hat:
+  iso_639_1: ht
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Haitian; Haitian Creole
+  fra: haïtien; créole haïtien
+  deu: Haïtien (Haiti-Kreolisch)
+
+hau:
+  iso_639_1: ha
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hausa
+  fra: haoussa
+  deu: Haussa-Sprache
+
+haw:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hawaiian
+  fra: hawaïen
+  deu: Hawaiisch
+
+heb:
+  iso_639_1: he
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hebrew
+  fra: hébreu
+  deu: Hebräisch
+
+her:
+  iso_639_1: hz
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Herero
+  fra: herero
+  deu: Herero-Sprache
+
+hil:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hiligaynon
+  fra: hiligaynon
+  deu: Hiligaynon-Sprache
+
+him:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Himachali languages; Western Pahari languages
+  fra: langues himachalis; langues paharis occidentales
+  deu: Himachali
+
+hin:
+  iso_639_1: hi
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hindi
+  fra: hindi
+  deu: Hindi
+
+hit:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hittite
+  fra: hittite
+  deu: Hethitisch
+
+hmn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hmong; Mong
+  fra: hmong
+  deu: Miao-Sprachen
+
+hmo:
+  iso_639_1: ho
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hiri Motu
+  fra: hiri motu
+  deu: Hiri-Motu
+
+hrv:
+  iso_639_1: hr
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Croatian
+  fra: croate
+  deu: Kroatisch
+
+hsb:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Upper Sorbian
+  fra: haut-sorabe
+  deu: Obersorbisch
+
+hun:
+  iso_639_1: hu
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hungarian
+  fra: hongrois
+  deu: Ungarisch
+
+hup:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Hupa
+  fra: hupa
+  deu: Hupa-Sprache
+
+arm :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Armenian
+  fra: arménien
+  deu: Armenisch
+
+hye :
+  iso_639_1: hy
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Armenian
+  fra: arménien
+  deu: Armenisch
+
+iba:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Iban
+  fra: iban
+  deu: Iban-Sprache
+
+ibo:
+  iso_639_1: ig
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Igbo
+  fra: igbo
+  deu: Ibo-Sprache
+
+ice :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Icelandic
+  fra: islandais
+  deu: Isländisch
+
+isl :
+  iso_639_1: is
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Icelandic
+  fra: islandais
+  deu: Isländisch
+
+ido:
+  iso_639_1: io
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ido
+  fra: ido
+  deu: Ido
+
+iii:
+  iso_639_1: ii
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sichuan Yi; Nuosu
+  fra: yi de Sichuan
+  deu: Lalo-Sprache
+
+ijo:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ijo languages
+  fra: ijo, langues
+  deu: Ijo-Sprache
+
+iku:
+  iso_639_1: iu
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Inuktitut
+  fra: inuktitut
+  deu: Inuktitut
+
+ile:
+  iso_639_1: ie
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Interlingue; Occidental
+  fra: interlingue
+  deu: Interlingue
+
+ilo:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Iloko
+  fra: ilocano
+  deu: Ilokano-Sprache
+
+ina:
+  iso_639_1: ia
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Interlingua (International Auxiliary Language Association)
+  fra: interlingua (langue auxiliaire internationale)
+  deu: Interlingua
+
+inc:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Indic languages
+  fra: indo-aryennes, langues
+  deu: Indoarische Sprachen (Andere)
+
+ind:
+  iso_639_1: id
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Indonesian
+  fra: indonésien
+  deu: Bahasa Indonesia
+
+ine:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Indo-European languages
+  fra: indo-européennes, langues
+  deu: Indogermanische Sprachen (Andere)
+
+inh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ingush
+  fra: ingouche
+  deu: Inguschisch
+
+ipk:
+  iso_639_1: ik
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Inupiaq
+  fra: inupiaq
+  deu: Inupik
+
+ira:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Iranian languages
+  fra: iraniennes, langues
+  deu: Iranische Sprachen (Andere)
+
+iro:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Iroquoian languages
+  fra: iroquoises, langues
+  deu: Irokesische Sprachen
+
+ice :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Icelandic
+  fra: islandais
+  deu: Isländisch
+
+isl :
+  iso_639_1: is
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Icelandic
+  fra: islandais
+  deu: Isländisch
+
+ita:
+  iso_639_1: it
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Italian
+  fra: italien
+  deu: Italienisch
+
+jav:
+  iso_639_1: jv
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Javanese
+  fra: javanais
+  deu: Javanisch
+
+jbo:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lojban
+  fra: lojban
+  deu: Lojban
+
+jpn:
+  iso_639_1: ja
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Japanese
+  fra: japonais
+  deu: Japanisch
+
+jpr:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Judeo-Persian
+  fra: judéo-persan
+  deu: Jüdisch-Persisch
+
+jrb:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Judeo-Arabic
+  fra: judéo-arabe
+  deu: Jüdisch-Arabisch
+
+kaa:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kara-Kalpak
+  fra: karakalpak
+  deu: Karakalpakisch
+
+kab:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kabyle
+  fra: kabyle
+  deu: Kabylisch
+
+kac:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kachin; Jingpho
+  fra: kachin; jingpho
+  deu: Kachin-Sprache
+
+kal:
+  iso_639_1: kl
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kalaallisut; Greenlandic
+  fra: groenlandais
+  deu: Grönländisch
+
+kam:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kamba
+  fra: kamba
+  deu: Kamba-Sprache
+
+kan:
+  iso_639_1: kn
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kannada
+  fra: kannada
+  deu: Kannada
+
+kar:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Karen languages
+  fra: karen, langues
+  deu: Karenisch
+
+kas:
+  iso_639_1: ks
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kashmiri
+  fra: kashmiri
+  deu: Kaschmiri
+
+geo :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Georgian
+  fra: géorgien
+  deu: Georgisch
+
+kat :
+  iso_639_1: ka
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Georgian
+  fra: géorgien
+  deu: Georgisch
+
+kau:
+  iso_639_1: kr
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kanuri
+  fra: kanouri
+  deu: Kanuri-Sprache
+
+kaw:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kawi
+  fra: kawi
+  deu: Kawi
+
+kaz:
+  iso_639_1: kk
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kazakh
+  fra: kazakh
+  deu: Kasachisch
+
+kbd:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kabardian
+  fra: kabardien
+  deu: Kabardinisch
+
+kha:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Khasi
+  fra: khasi
+  deu: Khasi-Sprache
+
+khi:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Khoisan languages
+  fra: khoïsan, langues
+  deu: Khoisan-Sprachen (Andere)
+
+khm:
+  iso_639_1: km
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Central Khmer
+  fra: khmer central
+  deu: Kambodschanisch
+
+kho:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Khotanese; Sakan
+  fra: khotanais; sakan
+  deu: Sakisch
+
+kik:
+  iso_639_1: ki
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kikuyu; Gikuyu
+  fra: kikuyu
+  deu: Kikuyu-Sprache
+
+kin:
+  iso_639_1: rw
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kinyarwanda
+  fra: rwanda
+  deu: Rwanda-Sprache
+
+kir:
+  iso_639_1: ky
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kirghiz; Kyrgyz
+  fra: kirghiz
+  deu: Kirgisisch
+
+kmb:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kimbundu
+  fra: kimbundu
+  deu: Kimbundu-Sprache
+
+kok:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Konkani
+  fra: konkani
+  deu: Konkani
+
+kom:
+  iso_639_1: kv
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Komi
+  fra: kom
+  deu: Komi-Sprache
+
+kon:
+  iso_639_1: kg
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kongo
+  fra: kongo
+  deu: Kongo-Sprache
+
+kor:
+  iso_639_1: ko
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Korean
+  fra: coréen
+  deu: Koreanisch
+
+kos:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kosraean
+  fra: kosrae
+  deu: Kosraeanisch
+
+kpe:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kpelle
+  fra: kpellé
+  deu: Kpelle-Sprache
+
+krc:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Karachay-Balkar
+  fra: karatchai balkar
+  deu: Karatschaiisch-Balkarisch
+
+krl:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Karelian
+  fra: carélien
+  deu: Karelisch
+
+kro:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kru languages
+  fra: krou, langues
+  deu: Kru-Sprachen (Andere)
+
+kru:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kurukh
+  fra: kurukh
+  deu: Oraon-Sprache
+
+kua:
+  iso_639_1: kj
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kuanyama; Kwanyama
+  fra: kuanyama; kwanyama
+  deu: Kwanyama-Sprache
+
+kum:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kumyk
+  fra: koumyk
+  deu: Kumükisch
+
+kur:
+  iso_639_1: ku
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kurdish
+  fra: kurde
+  deu: Kurdisch
+
+kut:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kutenai
+  fra: kutenai
+  deu: Kutenai-Sprache
+
+lad:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ladino
+  fra: judéo-espagnol
+  deu: Judenspanisch
+
+lah:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lahnda
+  fra: lahnda
+  deu: Lahnda
+
+lam:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lamba
+  fra: lamba
+  deu: Lamba-Sprache (Bantusprache)
+
+lao:
+  iso_639_1: lo
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lao
+  fra: lao
+  deu: Laotisch
+
+lat:
+  iso_639_1: la
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Latin
+  fra: latin
+  deu: Latein
+
+lav:
+  iso_639_1: lv
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Latvian
+  fra: letton
+  deu: Lettisch
+
+lez:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lezghian
+  fra: lezghien
+  deu: Lesgisch
+
+lim:
+  iso_639_1: li
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Limburgan; Limburger; Limburgish
+  fra: limbourgeois
+  deu: Limburgisch
+
+lin:
+  iso_639_1: ln
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lingala
+  fra: lingala
+  deu: Lingala
+
+lit:
+  iso_639_1: lt
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lithuanian
+  fra: lituanien
+  deu: Litauisch
+
+lol:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mongo
+  fra: mongo
+  deu: Mongo-Sprache
+
+loz:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lozi
+  fra: lozi
+  deu: Rotse-Sprache
+
+ltz:
+  iso_639_1: lb
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Luxembourgish; Letzeburgesch
+  fra: luxembourgeois
+  deu: Luxemburgisch
+
+lua:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Luba-Lulua
+  fra: luba-lulua
+  deu: Lulua-Sprache
+
+lub:
+  iso_639_1: lu
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Luba-Katanga
+  fra: luba-katanga
+  deu: Luba-Katanga-Sprache
+
+lug:
+  iso_639_1: lg
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ganda
+  fra: ganda
+  deu: Ganda-Sprache
+
+lui:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Luiseno
+  fra: luiseno
+  deu: Luiseño-Sprache
+
+lun:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lunda
+  fra: lunda
+  deu: Lunda-Sprache
+
+luo:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Luo (Kenya and Tanzania)
+  fra: luo (Kenya et Tanzanie)
+  deu: Luo-Sprache
+
+lus:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lushai
+  fra: lushai
+  deu: Lushai-Sprache
+
+mac :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Macedonian
+  fra: macédonien
+  deu: Makedonisch
+
+mkd :
+  iso_639_1: mk
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Macedonian
+  fra: macédonien
+  deu: Makedonisch
+
+mad:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Madurese
+  fra: madourais
+  deu: Maduresisch
+
+mag:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Magahi
+  fra: magahi
+  deu: Khotta
+
+mah:
+  iso_639_1: mh
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Marshallese
+  fra: marshall
+  deu: Marschallesisch
+
+mai:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Maithili
+  fra: maithili
+  deu: Maithili
+
+mak:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Makasar
+  fra: makassar
+  deu: Makassarisch
+
+mal:
+  iso_639_1: ml
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Malayalam
+  fra: malayalam
+  deu: Malayalam
+
+man:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mandingo
+  fra: mandingue
+  deu: Malinke-Sprache
+
+mao :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Maori
+  fra: maori
+  deu: Maori-Sprache
+
+mri :
+  iso_639_1: mi
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Maori
+  fra: maori
+  deu: Maori-Sprache
+
+map:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Austronesian languages
+  fra: austronésiennes, langues
+  deu: Austronesische Sprachen (Andere)
+
+mar:
+  iso_639_1: mr
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Marathi
+  fra: marathe
+  deu: Marathi
+
+mas:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Masai
+  fra: massaï
+  deu: Massai-Sprache
+
+may :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Malay
+  fra: malais
+  deu: Malaiisch
+
+msa :
+  iso_639_1: ms
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Malay
+  fra: malais
+  deu: Malaiisch
+
+mdf:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Moksha
+  fra: moksa
+  deu: Mokscha-Sprache
+
+mdr:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mandar
+  fra: mandar
+  deu: Mandaresisch
+
+men:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mende
+  fra: mendé
+  deu: Mende-Sprache
+
+mga:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Irish, Middle (900-1200)
+  fra: irlandais moyen (900-1200)
+  deu: Mittelirisch
+
+mic:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mi'kmaq; Micmac
+  fra: mi'kmaq; micmac
+  deu: Micmac-Sprache
+
+min:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Minangkabau
+  fra: minangkabau
+  deu: Minangkabau-Sprache
+
+mis:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Uncoded languages
+  fra: langues non codées
+  deu: Einzelne andere Sprachen
+
+mac :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Macedonian
+  fra: macédonien
+  deu: Makedonisch
+
+mkd :
+  iso_639_1: mk
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Macedonian
+  fra: macédonien
+  deu: Makedonisch
+
+mkh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mon-Khmer languages
+  fra: môn-khmer, langues
+  deu: Mon-Khmer-Sprachen (Andere)
+
+mlg:
+  iso_639_1: mg
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Malagasy
+  fra: malgache
+  deu: Malagassi-Sprache
+
+mlt:
+  iso_639_1: mt
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Maltese
+  fra: maltais
+  deu: Maltesisch
+
+mnc:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Manchu
+  fra: mandchou
+  deu: Mandschurisch
+
+mni:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Manipuri
+  fra: manipuri
+  deu: Meithei-Sprache
+
+mno:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Manobo languages
+  fra: manobo, langues
+  deu: Manobo-Sprachen
+
+moh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mohawk
+  fra: mohawk
+  deu: Mohawk-Sprache
+
+mon:
+  iso_639_1: mn
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mongolian
+  fra: mongol
+  deu: Mongolisch
+
+mos:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mossi
+  fra: moré
+  deu: Mossi-Sprache
+
+mao :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Maori
+  fra: maori
+  deu: Maori-Sprache
+
+mri :
+  iso_639_1: mi
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Maori
+  fra: maori
+  deu: Maori-Sprache
+
+may :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Malay
+  fra: malais
+  deu: Malaiisch
+
+msa :
+  iso_639_1: ms
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Malay
+  fra: malais
+  deu: Malaiisch
+
+mul:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Multiple languages
+  fra: multilingue
+  deu: Mehrere Sprachen
+
+mun:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Munda languages
+  fra: mounda, langues
+  deu: Mundasprachen (Andere)
+
+mus:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Creek
+  fra: muskogee
+  deu: Muskogisch
+
+mwl:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mirandese
+  fra: mirandais
+  deu: Mirandesisch
+
+mwr:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Marwari
+  fra: marvari
+  deu: Marwari
+
+bur :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Burmese
+  fra: birman
+  deu: Birmanisch
+
+mya :
+  iso_639_1: my
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Burmese
+  fra: birman
+  deu: Birmanisch
+
+myn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Mayan languages
+  fra: maya, langues
+  deu: Maya-Sprachen
+
+myv:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Erzya
+  fra: erza
+  deu: Erza-Mordwinisch
+
+nah:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nahuatl languages
+  fra: nahuatl, langues
+  deu: Nahuatl
+
+nai:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: North American Indian languages
+  fra: nord-amérindiennes, langues
+  deu: Indianersprachen, Nordamerika (Andere)
+
+nap:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Neapolitan
+  fra: napolitain
+  deu: Neapel / Mundart
+
+nau:
+  iso_639_1: na
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nauru
+  fra: nauruan
+  deu: Nauruanisch
+
+nav:
+  iso_639_1: nv
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Navajo; Navaho
+  fra: navaho
+  deu: Navajo-Sprache
+
+nbl:
+  iso_639_1: nr
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ndebele, South; South Ndebele
+  fra: ndébélé du Sud
+  deu: Ndebele-Sprache (Transvaal)
+
+nde:
+  iso_639_1: nd
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ndebele, North; North Ndebele
+  fra: ndébélé du Nord
+  deu: Ndebele-Sprache (Simbabwe)
+
+ndo:
+  iso_639_1: ng
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ndonga
+  fra: ndonga
+  deu: Ndonga
+
+nds:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Low German; Low Saxon; German, Low; Saxon, Low
+  fra: bas allemand; bas saxon; allemand, bas; saxon, bas
+  deu: Niederdeutsch
+
+nep:
+  iso_639_1: ne
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nepali
+  fra: népalais
+  deu: Nepali
+
+new:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nepal Bhasa; Newari
+  fra: nepal bhasa; newari
+  deu: Newari
+
+nia:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nias
+  fra: nias
+  deu: Nias-Sprache
+
+nic:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Niger-Kordofanian languages
+  fra: nigéro-kordofaniennes, langues
+  deu: Nigerkordofanische Sprachen (Andere)
+
+niu:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Niuean
+  fra: niué
+  deu: Niue-Sprache
+
+dut :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Dutch; Flemish
+  fra: néerlandais; flamand
+  deu: Niederländisch
+
+nld :
+  iso_639_1: nl
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Dutch; Flemish
+  fra: néerlandais; flamand
+  deu: Niederländisch
+
+nno:
+  iso_639_1: nn
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Norwegian Nynorsk; Nynorsk, Norwegian
+  fra: norvégien nynorsk; nynorsk, norvégien
+  deu: Nynorsk
+
+nob:
+  iso_639_1: nb
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Bokmål, Norwegian; Norwegian Bokmål
+  fra: norvégien bokmål
+  deu: Bokmål
+
+nog:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nogai
+  fra: nogaï; nogay
+  deu: Nogaisch
+
+non:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Norse, Old
+  fra: norrois, vieux
+  deu: Altnorwegisch
+
+nor:
+  iso_639_1: no
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Norwegian
+  fra: norvégien
+  deu: Norwegisch
+
+nqo:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: N'Ko
+  fra: n'ko
+  deu: N'Ko
+
+nso:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Pedi; Sepedi; Northern Sotho
+  fra: pedi; sepedi; sotho du Nord
+  deu: Pedi-Sprache
+
+nub:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nubian languages
+  fra: nubiennes, langues
+  deu: Nubische Sprachen
+
+nwc:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Classical Newari; Old Newari; Classical Nepal Bhasa
+  fra: newari classique
+  deu: Alt-Newari
+
+nya:
+  iso_639_1: ny
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Chichewa; Chewa; Nyanja
+  fra: chichewa; chewa; nyanja
+  deu: Nyanja-Sprache
+
+nym:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nyamwezi
+  fra: nyamwezi
+  deu: Nyamwezi-Sprache
+
+nyn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nyankole
+  fra: nyankolé
+  deu: Nkole-Sprache
+
+nyo:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nyoro
+  fra: nyoro
+  deu: Nyoro-Sprache
+
+nzi:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nzima
+  fra: nzema
+  deu: Nzima-Sprache
+
+oci:
+  iso_639_1: oc
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Occitan (post 1500)
+  fra: occitan (après 1500)
+  deu: Okzitanisch
+
+oji:
+  iso_639_1: oj
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ojibwa
+  fra: ojibwa
+  deu: Ojibwa-Sprache
+
+ori:
+  iso_639_1: or
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Oriya
+  fra: oriya
+  deu: Oriya-Sprache
+
+orm:
+  iso_639_1: om
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Oromo
+  fra: galla
+  deu: Galla-Sprache
+
+osa:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Osage
+  fra: osage
+  deu: Osage-Sprache
+
+oss:
+  iso_639_1: os
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ossetian; Ossetic
+  fra: ossète
+  deu: Ossetisch
+
+ota:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Turkish, Ottoman (1500-1928)
+  fra: turc ottoman (1500-1928)
+  deu: Osmanisch
+
+oto:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Otomian languages
+  fra: otomi, langues
+  deu: Otomangue-Sprachen
+
+paa:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Papuan languages
+  fra: papoues, langues
+  deu: Papuasprachen (Andere)
+
+pag:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Pangasinan
+  fra: pangasinan
+  deu: Pangasinan-Sprache
+
+pal:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Pahlavi
+  fra: pahlavi
+  deu: Mittelpersisch
+
+pam:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Pampanga; Kapampangan
+  fra: pampangan
+  deu: Pampanggan-Sprache
+
+pan:
+  iso_639_1: pa
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Panjabi; Punjabi
+  fra: pendjabi
+  deu: Pandschabi-Sprache
+
+pap:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Papiamento
+  fra: papiamento
+  deu: Papiamento
+
+pau:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Palauan
+  fra: palau
+  deu: Palau-Sprache
+
+peo:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Persian, Old (ca.600-400 B.C.)
+  fra: perse, vieux (ca. 600-400 av. J.-C.)
+  deu: Altpersisch
+
+per :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Persian
+  fra: persan
+  deu: Persisch
+
+fas :
+  iso_639_1: fa
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Persian
+  fra: persan
+  deu: Persisch
+
+phi:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Philippine languages
+  fra: philippines, langues
+  deu: Philippinisch-Austronesisch (Andere)
+
+phn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Phoenician
+  fra: phénicien
+  deu: Phönikisch
+
+pli:
+  iso_639_1: pi
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Pali
+  fra: pali
+  deu: Pali
+
+pol:
+  iso_639_1: pl
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Polish
+  fra: polonais
+  deu: Polnisch
+
+pon:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Pohnpeian
+  fra: pohnpei
+  deu: Ponapeanisch
+
+por:
+  iso_639_1: pt
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Portuguese
+  fra: portugais
+  deu: Portugiesisch
+
+pra:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Prakrit languages
+  fra: prâkrit, langues
+  deu: Prakrit
+
+pro:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Provençal, Old (to 1500);Occitan, Old (to 1500)
+  fra: provençal ancien (jusqu'à 1500); occitan ancien (jusqu'à 1500)
+  deu: Altokzitanisch
+
+pus:
+  iso_639_1: ps
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Pushto; Pashto
+  fra: pachto
+  deu: Paschtu
+
+qaa-qtz:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Reserved for local use
+  fra: réservée à l'usage local
+  deu: Reserviert für lokale Verwendung
+
+que:
+  iso_639_1: qu
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Quechua
+  fra: quechua
+  deu: Quechua-Sprache
+
+raj:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Rajasthani
+  fra: rajasthani
+  deu: Rajasthani
+
+rap:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Rapanui
+  fra: rapanui
+  deu: Osterinsel-Sprache
+
+rar:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Rarotongan; Cook Islands Maori
+  fra: rarotonga; maori des îles Cook
+  deu: Rarotonganisch
+
+roa:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Romance languages
+  fra: romanes, langues
+  deu: Romanische Sprachen (Andere)
+
+roh:
+  iso_639_1: rm
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Romansh
+  fra: romanche
+  deu: Rätoromanisch
+
+rom:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Romany
+  fra: tsigane
+  deu: Romani (Sprache)
+
+rum :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Romanian; Moldavian; Moldovan
+  fra: roumain; moldave
+  deu: Rumänisch
+
+ron :
+  iso_639_1: ro
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Romanian; Moldavian; Moldovan
+  fra: roumain; moldave
+  deu: Rumänisch
+
+rum :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Romanian; Moldavian; Moldovan
+  fra: roumain; moldave
+  deu: Rumänisch
+
+ron :
+  iso_639_1: ro
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Romanian; Moldavian; Moldovan
+  fra: roumain; moldave
+  deu: Rumänisch
+
+run:
+  iso_639_1: rn
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Rundi
+  fra: rundi
+  deu: Rundi-Sprache
+
+rup:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Aromanian; Arumanian; Macedo-Romanian
+  fra: aroumain; macédo-roumain
+  deu: Aromunisch
+
+rus:
+  iso_639_1: ru
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Russian
+  fra: russe
+  deu: Russisch
+
+sad:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sandawe
+  fra: sandawe
+  deu: Sandawe-Sprache
+
+sag:
+  iso_639_1: sg
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sango
+  fra: sango
+  deu: Sango-Sprache
+
+sah:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Yakut
+  fra: iakoute
+  deu: Jakutisch
+
+sai:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: South American Indian languages
+  fra: sud-amérindiennes, langues
+  deu: Indianersprachen, Südamerika (Andere)
+
+sal:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Salishan languages
+  fra: salishennes, langues
+  deu: Salish-Sprache
+
+sam:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Samaritan Aramaic
+  fra: samaritain
+  deu: Samaritanisch
+
+san:
+  iso_639_1: sa
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sanskrit
+  fra: sanskrit
+  deu: Sanskrit
+
+sas:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sasak
+  fra: sasak
+  deu: Sasak
+
+sat:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Santali
+  fra: santal
+  deu: Santali
+
+scn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sicilian
+  fra: sicilien
+  deu: Sizilianisch
+
+sco:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Scots
+  fra: écossais
+  deu: Schottisch
+
+sel:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Selkup
+  fra: selkoupe
+  deu: Selkupisch
+
+sem:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Semitic languages
+  fra: sémitiques, langues
+  deu: Semitische Sprachen (Andere)
+
+sga:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Irish, Old (to 900)
+  fra: irlandais ancien (jusqu'à 900)
+  deu: Altirisch
+
+sgn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sign Languages
+  fra: langues des signes
+  deu: Zeichensprachen
+
+shn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Shan
+  fra: chan
+  deu: Schan-Sprache
+
+sid:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sidamo
+  fra: sidamo
+  deu: Sidamo-Sprache
+
+sin:
+  iso_639_1: si
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sinhala; Sinhalese
+  fra: singhalais
+  deu: Singhalesisch
+
+sio:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Siouan languages
+  fra: sioux, langues
+  deu: Sioux-Sprachen (Andere)
+
+sit:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sino-Tibetan languages
+  fra: sino-tibétaines, langues
+  deu: Sinotibetische Sprachen (Andere)
+
+sla:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Slavic languages
+  fra: slaves, langues
+  deu: Slawische Sprachen (Andere)
+
+slo :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Slovak
+  fra: slovaque
+  deu: Slowakisch
+
+slk :
+  iso_639_1: sk
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Slovak
+  fra: slovaque
+  deu: Slowakisch
+
+slo :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Slovak
+  fra: slovaque
+  deu: Slowakisch
+
+slk :
+  iso_639_1: sk
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Slovak
+  fra: slovaque
+  deu: Slowakisch
+
+slv:
+  iso_639_1: sl
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Slovenian
+  fra: slovène
+  deu: Slowenisch
+
+sma:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Southern Sami
+  fra: sami du Sud
+  deu: Südsaamisch
+
+sme:
+  iso_639_1: se
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Northern Sami
+  fra: sami du Nord
+  deu: Nordsaamisch
+
+smi:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sami languages
+  fra: sames, langues
+  deu: Saamisch
+
+smj:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Lule Sami
+  fra: sami de Lule
+  deu: Lulesaamisch
+
+smn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Inari Sami
+  fra: sami d'Inari
+  deu: Inarisaamisch
+
+smo:
+  iso_639_1: sm
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Samoan
+  fra: samoan
+  deu: Samoanisch
+
+sms:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Skolt Sami
+  fra: sami skolt
+  deu: Skoltsaamisch
+
+sna:
+  iso_639_1: sn
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Shona
+  fra: shona
+  deu: Schona-Sprache
+
+snd:
+  iso_639_1: sd
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sindhi
+  fra: sindhi
+  deu: Sindhi-Sprache
+
+snk:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Soninke
+  fra: soninké
+  deu: Soninke-Sprache
+
+sog:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sogdian
+  fra: sogdien
+  deu: Sogdisch
+
+som:
+  iso_639_1: so
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Somali
+  fra: somali
+  deu: Somali
+
+son:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Songhai languages
+  fra: songhai, langues
+  deu: Songhai-Sprache
+
+sot:
+  iso_639_1: st
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sotho, Southern
+  fra: sotho du Sud
+  deu: Süd-Sotho-Sprache
+
+spa:
+  iso_639_1: es
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Spanish; Castilian
+  fra: espagnol; castillan
+  deu: Spanisch
+
+alb :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Albanian
+  fra: albanais
+  deu: Albanisch
+
+sqi :
+  iso_639_1: sq
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Albanian
+  fra: albanais
+  deu: Albanisch
+
+srd:
+  iso_639_1: sc
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sardinian
+  fra: sarde
+  deu: Sardisch
+
+srn:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sranan Tongo
+  fra: sranan tongo
+  deu: Sranantongo
+
+srp:
+  iso_639_1: sr
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Serbian
+  fra: serbe
+  deu: Serbisch
+
+srr:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Serer
+  fra: sérère
+  deu: Serer-Sprache
+
+ssa:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Nilo-Saharan languages
+  fra: nilo-sahariennes, langues
+  deu: Nilosaharanische Sprachen (Andere)
+
+ssw:
+  iso_639_1: ss
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Swati
+  fra: swati
+  deu: Swasi-Sprache
+
+suk:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sukuma
+  fra: sukuma
+  deu: Sukuma-Sprache
+
+sun:
+  iso_639_1: su
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sundanese
+  fra: soundanais
+  deu: Sundanesisch
+
+sus:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Susu
+  fra: soussou
+  deu: Susu
+
+sux:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sumerian
+  fra: sumérien
+  deu: Sumerisch
+
+swa:
+  iso_639_1: sw
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Swahili
+  fra: swahili
+  deu: Swahili
+
+swe:
+  iso_639_1: sv
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Swedish
+  fra: suédois
+  deu: Schwedisch
+
+syc:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Classical Syriac
+  fra: syriaque classique
+  deu: Syrisch
+
+syr:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Syriac
+  fra: syriaque
+  deu: Neuostaramäisch
+
+tah:
+  iso_639_1: ty
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tahitian
+  fra: tahitien
+  deu: Tahitisch
+
+tai:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tai languages
+  fra: tai, langues
+  deu: Thaisprachen (Andere)
+
+tam:
+  iso_639_1: ta
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tamil
+  fra: tamoul
+  deu: Tamil
+
+tat:
+  iso_639_1: tt
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tatar
+  fra: tatar
+  deu: Tatarisch
+
+tel:
+  iso_639_1: te
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Telugu
+  fra: télougou
+  deu: Telugu-Sprache
+
+tem:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Timne
+  fra: temne
+  deu: Temne-Sprache
+
+ter:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tereno
+  fra: tereno
+  deu: Tereno-Sprache
+
+tet:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tetum
+  fra: tetum
+  deu: Tetum-Sprache
+
+tgk:
+  iso_639_1: tg
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tajik
+  fra: tadjik
+  deu: Tadschikisch
+
+tgl:
+  iso_639_1: tl
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tagalog
+  fra: tagalog
+  deu: Tagalog
+
+tha:
+  iso_639_1: th
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Thai
+  fra: thaï
+  deu: Thailändisch
+
+tib :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Tibetan
+  fra: tibétain
+  deu: Tibetisch
+
+bod :
+  iso_639_1: bo
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Tibetan
+  fra: tibétain
+  deu: Tibetisch
+
+tig:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tigre
+  fra: tigré
+  deu: Tigre-Sprache
+
+tir:
+  iso_639_1: ti
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tigrinya
+  fra: tigrigna
+  deu: Tigrinja-Sprache
+
+tiv:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tiv
+  fra: tiv
+  deu: Tiv-Sprache
+
+tkl:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tokelau
+  fra: tokelau
+  deu: Tokelauanisch
+
+tlh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Klingon; tlhIngan-Hol
+  fra: klingon
+  deu: Klingonisch
+
+tli:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tlingit
+  fra: tlingit
+  deu: Tlingit-Sprache
+
+tmh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tamashek
+  fra: tamacheq
+  deu: Tamašeq
+
+tog:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tonga (Nyasa)
+  fra: tonga (Nyasa)
+  deu: Tonga (Bantusprache, Sambia)
+
+ton:
+  iso_639_1: to
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tonga (Tonga Islands)
+  fra: tongan (Îles Tonga)
+  deu: Tongaisch
+
+tpi:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tok Pisin
+  fra: tok pisin
+  deu: Neumelanesisch
+
+tsi:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tsimshian
+  fra: tsimshian
+  deu: Tsimshian-Sprache
+
+tsn:
+  iso_639_1: tn
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tswana
+  fra: tswana
+  deu: Tswana-Sprache
+
+tso:
+  iso_639_1: ts
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tsonga
+  fra: tsonga
+  deu: Tsonga-Sprache
+
+tuk:
+  iso_639_1: tk
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Turkmen
+  fra: turkmène
+  deu: Turkmenisch
+
+tum:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tumbuka
+  fra: tumbuka
+  deu: Tumbuka-Sprache
+
+tup:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tupi languages
+  fra: tupi, langues
+  deu: Tupi-Sprache
+
+tur:
+  iso_639_1: tr
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Turkish
+  fra: turc
+  deu: Türkisch
+
+tut:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Altaic languages
+  fra: altaïques, langues
+  deu: Altaische Sprachen (Andere)
+
+tvl:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tuvalu
+  fra: tuvalu
+  deu: Elliceanisch
+
+twi:
+  iso_639_1: tw
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Twi
+  fra: twi
+  deu: Twi-Sprache
+
+tyv:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Tuvinian
+  fra: touva
+  deu: Tuwinisch
+
+udm:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Udmurt
+  fra: oudmourte
+  deu: Udmurtisch
+
+uga:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ugaritic
+  fra: ougaritique
+  deu: Ugaritisch
+
+uig:
+  iso_639_1: ug
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Uighur; Uyghur
+  fra: ouïgour
+  deu: Uigurisch
+
+ukr:
+  iso_639_1: uk
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Ukrainian
+  fra: ukrainien
+  deu: Ukrainisch
+
+umb:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Umbundu
+  fra: umbundu
+  deu: Mbundu-Sprache
+
+und:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Undetermined
+  fra: indéterminée
+  deu: Nicht zu entscheiden
+
+urd:
+  iso_639_1: ur
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Urdu
+  fra: ourdou
+  deu: Urdu
+
+uzb:
+  iso_639_1: uz
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Uzbek
+  fra: ouszbek
+  deu: Usbekisch
+
+vai:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Vai
+  fra: vaï
+  deu: Vai-Sprache
+
+ven:
+  iso_639_1: ve
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Venda
+  fra: venda
+  deu: Venda-Sprache
+
+vie:
+  iso_639_1: vi
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Vietnamese
+  fra: vietnamien
+  deu: Vietnamesisch
+
+vol:
+  iso_639_1: vo
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Volapük
+  fra: volapük
+  deu: Volapük
+
+vot:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Votic
+  fra: vote
+  deu: Wotisch
+
+wak:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Wakashan languages
+  fra: wakashanes, langues
+  deu: Wakash-Sprachen
+
+wal:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Wolaitta; Wolaytta
+  fra: wolaitta; wolaytta
+  deu: Walamo-Sprache
+
+war:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Waray
+  fra: waray
+  deu: Waray
+
+was:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Washo
+  fra: washo
+  deu: Washo-Sprache
+
+wel :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Welsh
+  fra: gallois
+  deu: Kymrisch
+
+cym :
+  iso_639_1: cy
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Welsh
+  fra: gallois
+  deu: Kymrisch
+
+wen:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Sorbian languages
+  fra: sorabes, langues
+  deu: Sorbisch (Andere)
+
+wln:
+  iso_639_1: wa
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Walloon
+  fra: wallon
+  deu: Wallonisch
+
+wol:
+  iso_639_1: wo
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Wolof
+  fra: wolof
+  deu: Wolof-Sprache
+
+xal:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Kalmyk; Oirat
+  fra: kalmouk; oïrat
+  deu: Kalmückisch
+
+xho:
+  iso_639_1: xh
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Xhosa
+  fra: xhosa
+  deu: Xhosa-Sprache
+
+yao:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Yao
+  fra: yao
+  deu: Yao-Sprache (Bantusprache)
+
+yap:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Yapese
+  fra: yapois
+  deu: Yapesisch
+
+yid:
+  iso_639_1: yi
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Yiddish
+  fra: yiddish
+  deu: Jiddisch
+
+yor:
+  iso_639_1: yo
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Yoruba
+  fra: yoruba
+  deu: Yoruba-Sprache
+
+ypk:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Yupik languages
+  fra: yupik, langues
+  deu: Ypik-Sprachen
+
+zap:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Zapotec
+  fra: zapotèque
+  deu: Zapotekisch
+
+zbl:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Blissymbols; Blissymbolics; Bliss
+  fra: symboles Bliss; Bliss
+  deu: Bliss-Symbol
+
+zen:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Zenaga
+  fra: zenaga
+  deu: Zenaga
+
+zgh:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Standard Moroccan Tamazight
+  fra: amazighe standard marocain
+  deu:
+
+zha:
+  iso_639_1: za
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Zhuang; Chuang
+  fra: zhuang; chuang
+  deu: Zhuang
+
+chi :
+  iso_639_1:
+  terminology: FALSE
+  bibliography: TRUE
+  eng: Chinese
+  fra: chinois
+  deu: Chinesisch
+
+zho :
+  iso_639_1: zh
+  terminology: TRUE
+  bibliography: FALSE
+  eng: Chinese
+  fra: chinois
+  deu: Chinesisch
+
+znd:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Zande languages
+  fra: zandé, langues
+  deu: Zande-Sprachen
+
+zul:
+  iso_639_1: zu
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Zulu
+  fra: zoulou
+  deu: Zulu-Sprache
+
+zun:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Zuni
+  fra: zuni
+  deu: Zuñi-Sprache
+
+zxx:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: No linguistic content; Not applicable
+  fra: pas de contenu linguistique; non applicable
+  deu: Kein linguistischer Inhalt
+
+zza:
+  terminology: TRUE
+  bibliography: TRUE
+  eng: Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki
+  fra: zaza; dimili; dimli; kirdki; kirmanjki; zazaki
+  deu: Zazaki

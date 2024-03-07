@@ -1,6 +1,6 @@
 require "fileutils"
 
-module Iev
+module IEV
   class DbCache
     # @return [String]
     attr_reader :dir
@@ -73,7 +73,7 @@ module Iev
     end
 
     # Set version of the DB to the gem version.
-    # @return [Iev::DbCache]
+    # @return [IEV::DbCache]
     def set_version
       File.write "#{@dir}/version", VERSION, encoding: "utf-8"
       self
