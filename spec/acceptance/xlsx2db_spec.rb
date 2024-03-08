@@ -5,36 +5,39 @@ require "spec_helper"
 
 RSpec.describe "IEV" do
   let(:sample_xlsx_file) { fixture_path("sample-file.xlsx") }
+  let(:tmp_db_dir) { "tmp-db-dir" }
 
   describe "xlsx2db" do
     it "imports XLSX document to database" do
-      Dir.mktmpdir("iev-test") do |dir|
-        dbfile = "#{dir}/test.sqlite3"
-        command = %W(xlsx2db #{sample_xlsx_file} -o #{dbfile})
-        silence_output_streams { IEV::CLI.start(command) }
+      FileUtils.rm_rf(tmp_db_dir) if Dir.exist?(tmp_db_dir)
 
-        expect(dbfile).to satisfy { |p| File.file? p }
+      Dir.mkdir tmp_db_dir
 
-        db = SQLite3::Database.new(dbfile)
+      dbfile = File.join(tmp_db_dir, "test.sqlite3")
+      command = %W(xlsx2db #{sample_xlsx_file} -o #{dbfile})
+      silence_output_streams { IEV::CLI.start(command) }
 
-        sql = <<~SQL
-          select count(*)
-          from concepts
-          where language = 'en'
-        SQL
+      expect(dbfile).to satisfy { |p| File.file? p }
 
-        expect(db.execute(sql).first.first).to eq(2)
+      db = SQLite3::Database.new(dbfile)
 
-        sql = <<~SQL
-          select term
-          from concepts
-          where language = 'en' and ievref = '103-01-01'
-        SQL
+      sql = <<~SQL
+        select count(*)
+        from concepts
+        where language = 'en'
+      SQL
 
-        expect(db.execute(sql).first.first).to eq("function")
+      expect(db.execute(sql).first.first).to eq(2)
 
-        FileUtils.rm_rf Dir.glob(File.join(dir, "*"))
-      end
+      sql = <<~SQL
+        select term
+        from concepts
+        where language = 'en' and ievref = '103-01-01'
+      SQL
+
+      expect(db.execute(sql).first.first).to eq("function")
+
+      FileUtils.rm_rf(tmp_db_dir)
     end
   end
 end
