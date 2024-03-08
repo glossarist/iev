@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "relaton", "~> 1.18"
   spec.add_dependency "ruby-prof"
   spec.add_dependency "sequel", "~> 5.40"
-  spec.add_dependency "sqlite3", "~> 1.4.2"
+  spec.add_dependency "sqlite3", "~> 1.5"
   spec.add_dependency "thor", "~> 1.0"
   spec.add_dependency "zeitwerk", "~> 2.4"
 end
