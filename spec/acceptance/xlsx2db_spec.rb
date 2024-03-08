@@ -33,7 +33,7 @@ RSpec.describe "IEV" do
 
         expect(db.execute(sql).first.first).to eq("function")
 
-        FileUtils.rm_rf(dbfile)
+        FileUtils.rm_rf Dir.glob(File.join(dir, "*"))
       end
     end
   end
