@@ -46,11 +46,14 @@ module IEV
 
       split_definition
 
-      Glossarist::LocalizedConcept.new(
-        id: term_id,
-        entry_status: extract_entry_status,
-        classification: extract_classification,
-        dates: [
+      Glossarist::LocalizedConcept.new(term_hash)
+    end
+
+    def term_hash
+      dates = nil
+
+      if flesh_date(find_value_for("PUBLICATIONDATE"))
+        dates = [
           {
             type: :accepted,
             date: flesh_date(find_value_for("PUBLICATIONDATE")),
@@ -59,7 +62,14 @@ module IEV
             type: :amended,
             date: flesh_date(find_value_for("PUBLICATIONDATE")),
           },
-        ],
+        ]
+      end
+
+      {
+        id: term_id,
+        entry_status: extract_entry_status,
+        classification: extract_classification,
+        dates: dates,
         review_date: flesh_date(find_value_for("PUBLICATIONDATE")),
         review_decision_date: flesh_date(find_value_for("PUBLICATIONDATE")),
         review_decision_event: "published",
@@ -70,7 +80,7 @@ module IEV
         sources: extract_authoritative_source,
         language_code: term_language,
         related: extract_superseded_concepts,
-      )
+      }.compact
     end
 
     def term_id
