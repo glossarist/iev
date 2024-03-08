@@ -32,6 +32,8 @@ RSpec.describe "IEV" do
         SQL
 
         expect(db.execute(sql).first.first).to eq("function")
+
+        FileUtils.rm_rf(dbfile)
       end
     end
   end

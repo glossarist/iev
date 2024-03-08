@@ -132,6 +132,8 @@ RSpec.describe "IEV" do
 
         expect(concept2).to eq(expected_concept2)
         expect(localized_concept2).to eq(expected_localized_concept2)
+
+        FileUtils.rm_rf(concepts_dir)
       end
     end
   end
