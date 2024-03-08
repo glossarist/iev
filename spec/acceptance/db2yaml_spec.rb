@@ -14,14 +14,14 @@ RSpec.describe "IEV" do
           "identifier" => "103-01-01",
           "localized_concepts" => {
             "ara" => "0144dead-8444-5d99-947b-4b9433bdcbb2",
-            "deu" => "e6d25854-cc79-5b08-8b57-af532d748429",
+            "deu" => "64541958-58d4-5e9d-95bf-643cc0fb3e9c",
             "eng" => "2de73b1c-05e7-56c1-bdf2-d13cd06f7a96",
-            "fra" => "072db199-e9a6-5d46-b733-6665aef5c621",
-            "jpn" => "961a5a96-1eb9-5752-b00d-2712ed1212d4",
-            "kor" => "25cf1117-3a19-5af2-99ef-0a8d0b31a02c",
-            "pol" => "725a5c0e-2ff9-547d-a13e-74e22c507357",
-            "por" => "c12e8aee-ad0c-5934-96fd-cea825844803",
-            "zho" => "ef77689c-66bc-58d2-8189-c0953f7ad430",
+            "fra" => "517f9c27-2b32-555b-813b-ee271fc1e293",
+            "jpn" => "4fa3997e-5c0d-5ec3-996b-6df06ba53446",
+            "kor" => "66ef2513-c970-57e9-9429-21bc8e8a2d69",
+            "pol" => "c37a8546-4175-51f8-b051-9dd8ef3fc2f7",
+            "por" => "8e3daaee-b1c6-53ec-81d1-e70f0b4e24bb",
+            "zho" => "f1981caa-f191-52a4-a012-be6883f17508",
           },
         },
       }
@@ -83,9 +83,9 @@ RSpec.describe "IEV" do
             "ara" => "ab3f3785-fbed-5173-b6af-ca6eb0dcb3e1",
             "deu" => "d9c63649-bec9-554f-b012-06e174acecdb",
             "eng" => "ce70adb6-2252-5016-a843-2a42ce3327c7",
-            "fra" => "35951b6a-e6db-5529-af7b-7d384ff52f9a",
+            "fra" => "0ad9df6f-77a1-576f-9b46-2d0322bab4c7",
             "jpn" => "c3d3dc36-68cf-5ba3-8483-3d94ebb7d26a",
-            "kor" => "8e78b4af-d426-5220-8261-1b2dd3d7fb23",
+            "kor" => "88c5626d-0cd9-5616-8d04-e1a379eddda6",
           },
         },
       }
@@ -94,10 +94,7 @@ RSpec.describe "IEV" do
     let(:expected_localized_concept2) do
       {
         "data" => {
-          "dates" => [
-            { "type" => "accepted" },
-            { "type" => "amended" },
-          ],
+          "dates" => [],
           "definition" => [{}],
           "examples" => [],
           "id" => "103-01-02",
