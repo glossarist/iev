@@ -43,7 +43,7 @@ module IEV
     a = doc&.at(xpath)&.children&.to_xml
     a&.sub(%r{<br/>.*$}, "")
       &.sub(%r{, &lt;.*$}, "")
-      &.gsub(%r{<[^>]*>}, "")&.strip
+      &.gsub(%r{<[^<>]*>}, "")&.strip
   end
 end
 

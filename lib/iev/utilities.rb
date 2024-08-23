@@ -27,7 +27,7 @@ module IEV
           /<a href="?(IEV)?\s*(\d\d\d-\d\d-\d\d\d?)"?>(.*?)$/,
           '{{\3, IEV:\2}}',
         ).gsub(
-          /<a href="?(.*?)"?>(.*?)<\/a>/,
+          /<a href="?([^<>]*?)"?>(.*?)<\/a>/,
           '\1[\2]',
         ).gsub(
           Regexp.new([SIMG_PATH_REGEX, "\\s*", FIGURE_TWO_REGEX].join),
@@ -36,7 +36,7 @@ module IEV
           Regexp.new([SIMG_PATH_REGEX, "\\s*", FIGURE_ONE_REGEX].join),
           "#{IMAGE_PATH_PREFIX}/#{term_domain}/\\1[Figure \\2 - \\3]",
         ).gsub(
-          /<img\s+(.+?)\s*>/,
+          /<img\s+([^<>]+?)\s*>/,
           "#{IMAGE_PATH_PREFIX}/#{term_domain}/\\1[]",
         ).gsub(
           /<br>/,
