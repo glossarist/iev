@@ -6,5 +6,3 @@ inherit_from:
 # local repo-specific modifications
 # ...
 
-AllCops:
-  TargetRubyVersion: 2.5

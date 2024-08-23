@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "debug"
@@ -28,9 +28,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov"
 
   spec.add_dependency "creek", "~> 2.5"
-  spec.add_dependency "mathml2asciimath", "< 1"
   spec.add_dependency "glossarist", "~> 2.0.6"
-  spec.add_dependency "nokogiri", "~> 1"
+  spec.add_dependency "mathml2asciimath", "< 1"
+  spec.add_dependency "nokogiri", ">= 1.16.5"
   spec.add_dependency "relaton", "~> 1.18"
   spec.add_dependency "ruby-prof"
   spec.add_dependency "sequel", "~> 5.40"
