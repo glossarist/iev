@@ -33,7 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "plurimath"
   spec.add_dependency "nokogiri", ">= 1.16.5"
   spec.add_dependency "relaton", "~> 1.18"
-  spec.add_dependency "ruby-prof"
   spec.add_dependency "sequel", "~> 5.40"
   spec.add_dependency "sqlite3", "~> 1.7.0"
   spec.add_dependency "thor", "~> 1.0"
