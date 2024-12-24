@@ -75,18 +75,7 @@ RSpec.describe "IEV" do
 
     let(:expected_concept2) do
       {
-        "data" => {
-          "identifier" => "103-01-02",
-          "localized_concepts" =>
-          {
-            "ara" => "ab3f3785-fbed-5173-b6af-ca6eb0dcb3e1",
-            "deu" => "d9c63649-bec9-554f-b012-06e174acecdb",
-            "eng" => "ce70adb6-2252-5016-a843-2a42ce3327c7",
-            "fra" => "0ad9df6f-77a1-576f-9b46-2d0322bab4c7",
-            "jpn" => "c3d3dc36-68cf-5ba3-8483-3d94ebb7d26a",
-            "kor" => "88c5626d-0cd9-5616-8d04-e1a379eddda6",
-          },
-        },
+        "data" =>{"identifier" => "103-01-02", "localized_concepts" => {"ara" => "ab3f3785-fbed-5173-b6af-ca6eb0dcb3e1", "deu" => "d9c63649-bec9-554f-b012-06e174acecdb", "eng" => "4843a9ad-4204-54db-804d-278538631d97", "fra" => "36ae6c8f-6b5a-57d3-9f9b-712b1a37359b", "jpn" => "c3d3dc36-68cf-5ba3-8483-3d94ebb7d26a", "kor" => "88c5626d-0cd9-5616-8d04-e1a379eddda6"}}
       }
     end
 

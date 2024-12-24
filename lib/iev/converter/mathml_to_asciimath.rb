@@ -31,9 +31,9 @@ module IEV
         # to_asciimath.remove_namespaces!
 
         to_asciimath.css("math").each do |math_element|
-          asciimath = MathML2AsciiMath.m2a(
-            text_to_asciimath(math_element.to_xml),
-          ).strip
+          asciimath = Plurimath::Math.parse(
+            text_to_asciimath(math_element.to_xml), :mathml
+          ).to_asciimath.strip
           # puts"ASCIIMATH!!  #{asciimath}"
 
           if asciimath.empty?
