@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov"
 
   spec.add_dependency "creek", "~> 2.5"
-  spec.add_dependency "glossarist", "~> 2.0.6"
+  spec.add_dependency "glossarist", ">= 2.3.0"
   spec.add_dependency "unitsml"
   spec.add_dependency "plurimath"
   spec.add_dependency "nokogiri", ">= 1.16.5"
