@@ -1,31 +1,73 @@
-= Iev
+= IEV: Utilities for the International Electrotechnical Vocabulary (IEC Electropedia)
 
 image:https://img.shields.io/gem/v/iev.svg["Gem Version", link="https://rubygems.org/gems/iev"]
-image:https://github.com/metanorma/iev/workflows/rake/badge.svg["Build Status", link="https://github.com/metanorma/iev/actions?query=workflow%3Arake"]
-image:https://codeclimate.com/github/metanorma/iev/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/iev"]
-image:https://img.shields.io/github/issues-pr-raw/metanorma/iev.svg["Pull Requests", link="https://github.com/metanorma/iev/pulls"]
-image:https://img.shields.io/github/commits-since/metanorma/iev/latest.svg["Commits since latest",link="https://github.com/metanorma/iev/releases"]
+image:https://github.com/glossarist/iev/workflows/rake/badge.svg["Build Status", link="https://github.com/glossarist/iev/actions?query=workflow%3Arake"]
+image:https://codeclimate.com/github/glossarist/iev/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/glossarist/iev"]
+image:https://img.shields.io/github/issues-pr-raw/glossarist/iev.svg["Pull Requests", link="https://github.com/glossarist/iev/pulls"]
+image:https://img.shields.io/github/commits-since/glossarist/iev/latest.svg["Commits since latest",link="https://github.com/glossarist/iev/releases"]
 
-Fetch and encode Iev term from Electropedia.
 
-== Installation
+== Purpose
 
-Add this line to your application's Gemfile:
+This library allows accessing data of the International Electrotechnical
+Vocabulary (IEV):
 
-[source, ruby]
+* Access IEV terms remotely, via the Electropedia website (www.electropedia.org)
+
+* Read IEV terms from an offline IEV termbase in Glossarist format
+
+* Parse an IEV exported Excel file and convert its contents into a Glossarist
+termbase
+
+WARNING: The last feature is only meant for IEC-internal use. The IEV export
+files can only be obtained from the IEC IT department.
+
+NOTE: The https://github.com/glossarist/iev-data[`iev-data` gem] is obsolete by
+this library and its functionality has been fully incorporated into this
+library.
+
+== Install
+
+Add this line to your Gemfile:
+
+[source,ruby]
 ----
 gem 'iev'
 ----
 
 And then execute:
 
-    $ bundle
+[source,sh]
+----
+$ bundle
+----
 
 Or install it yourself as:
 
-    $ gem install iev
+[source,sh]
+----
+$ gem install iev
+----
+
 
 == Usage
+
+The gem comes with the `iev` executable, which provides the following commands:
+
+`iev xlsx2yaml FILE`::
+Converts Excel IEV exports to YAMLs.
+
+`iev xlsx2db FILE`::
+Imports Excel to SQLite database.
+
+`iev db2yaml DB_FILE`:::
+Exports SQLite to IEV YAMLs.
+
+WARNING: The IEV XLSX export files can only be obtained from the IEC
+Electropedia administrator.
+
+
+=== Fetching IEV terms from Electropedia
 
 [source, ruby]
 ----
@@ -43,16 +85,229 @@ Iev.get("103-01-02", "eee")
 => nil
 ----
 
-== Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+=== Converting IEV Excel exports to a Glossarist dataset
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Run the following command:
 
-== Contributing
+[source,sh]
+----
+$ iev xlsx2yaml [termbase.xlsx]
+----
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/iev.
+Where,
 
-== License
+* the Glossarist termbase YAML files will be created at `[termbase.yaml]` at
+  the current working directory;
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+* ConceptYAML files for each concept (each concept identified by a unique "`Term-ID`")
+  are created under the `concepts/` directory (based on the current working directory).
+  i.e. `concepts/concept-338.yaml`.
+
+
+== Structure of the IEV Excel export
+
+The columns are:
+
+`IEVREF`:: concept ID of this term
+`LANGUAGE`:: ISO 639-1 code (2 character)
+`TERM`:: the designation of this concept in language of `LANGUAGE`
+`TERMATTRIBUTE`:: a field of multiple uses, an array (separated by `;`). More details below.
+`SYNONYM1`:: a synonym of this term
+`SYNONYM1ATTRIBUTE`:: the `TERMATTRIBUTE` that applies to `SYNONYM1`
+`SYNONYM1STATUS`:: One of `Preferred`, `Deprecated`, nil.
+`SYNONYM2`:: second synonym of this term
+`SYNONYM2ATTRIBUTE`:: the `TERMATTRIBUTE` that applies to `SYNONYM2`
+`SYNONYM2STATUS`:: One of `Preferred`, `Deprecated`, nil.
+`SYNONYM3`:: 3rd synonym of this term
+`SYNONYM3ATTRIBUTE`:: the `TERMATTRIBUTE` that applies to `SYNONYM3`
+`SYNONYM3STATUS`:: One of `Preferred`, `Deprecated`, nil.
+`SYMBOLE`:: Math symbol
+`DEFINITION`:: definition text that includes `<note>` and `<example>`
+`SOURCE`:: which document was this term was taken from
+`PUBLICATIONDATE`:: `YYYY-MM` date of publication
+`STATUS`:: Only `Standard` for now
+`REPLACES`:: `IEVREF` for the deprecated term
+
+
+=== Term field
+
+* Usually the text
+* If it is `.....` (5 dots), it means that the translation is not available.
+* If it is `foobar (acronym)` or `foobar (akronim)`, it is an acronym. `term.acronym` => `true`.
+
+=== Term attribute field
+
+There are these data types inside the term attribute field. Make sure you split at `;` for multiple entries.
+
+`f` or `m` or `n`:: this means `term.grammar-gender` is one of them, `term.plurality` => `singular`
+`n pl`:: `term.grammar-gender` => `n`, `term.plurality` => `plural`
+`m pl`:: `term.grammar-gender` => `m`, `term.plurality` => `plural`
+`f pl`:: `term.grammar-gender` => `f`, `term.plurality` => `plural`
+`pl`:: `term.plurality` => `plural` (else, `singular`)
+
+`(in Zusammensetzungen) f`:: `term.compound-prefix` => true,  `term.grammar-gender` => `f`
+`(in Zusammensetzungen) m`:: `term.compound-prefix` => true,  `term.grammar-gender` => `m`
+
+`m, (abgelehnt)`:: `term.rejected` => true, `term.grammar-gender` => `m`
+`f, (abgelehnt)`:: `term.rejected` => true, `term.grammar-gender` => `f`
+
+`（略語）`:: `term.abbreviation` => true
+
+`&lt;...&gt;`:: this means the text (`...`) inside is the `domain` of this term (which field this term applies in)
+
+`&lt;相关条目：[SOMEIEVREF]&gt;`:: `SOMEIEVREF` here represents the "related to" term. Add a relationship of this term to `SOMEIEVREF`.
+
+`Adjektiv`, `adj`, `形容詞`, `형용사`:: sets `term.grammar-particle` to `adj`
+`Präfix`, `(prefix)`, `(préfixe)`, `接尾語`, `접두사`, `（词头）`:: sets `term.affix` to `prefix`
+
+
+`CA`:: `term.geographical_area` => `CA`
+`US`:: `term.geographical_area` => `US`
+
+`noun`, `名詞`:: `term.grammar-particle` => `noun` (all terms default to `noun`)
+`verb`, `動詞`:: `term.grammar-particle` => `verb`
+
+`(sigle international), m` => `term.acronym = true`, `term.international = true`, `term.gender = 'm'`
+
+
+=== Term definition field
+
+We need to parse out all NOTEs and EXAMPLEs and normalize them.
+
+For all `This links to <a href=IEV112-01-01>quantity</a>`, we parse them and replace with:
+`This links to {{quantity, IEV:112-01-01}}`.
+
+e.g.
+
+1. Every `<NOTE {N} -` goes into a separate entry under `notes:`:
+
+[source]
+----
+quotient of two quantities of different dimensions, used as a multiplier to express the proportionality equation between them
+<NOTE 1 – A coefficient is a quantity having a dimension other than one. Examples: Hall coefficient, damping coefficient, temperature coefficient, gyromagnetic coefficient.
+<NOTE 2 – The term "modulus" is sometimes used instead of coefficient. Example: modulus of elasticity.
+----
+
+[source,yaml]
+----
+definition: quotient of two quantities of different dimensions, used as a multiplier to express the proportionality equation between them
+notes:
+  - A coefficient is a quantity having a dimension other than one. Examples: Hall coefficient, damping coefficient, temperature coefficient, gyromagnetic coefficient.
+  - The term "modulus" is sometimes used instead of coefficient. Example: modulus of elasticity.
+----
+
+
+2. A `<NOTE -` goes into `notes:`:
+
+[source]
+----
+quantity of dimension one defined by a combination of quantities
+<NOTE – Characteristic numbers occur in particular in the theory of similarity. They carry the word "number" in their names. Examples: Reynolds number, Prandtl number.
+----
+
+[source,yaml]
+----
+definition:
+notes:
+  - Characteristic numbers occur in particular in the theory of similarity. They carry the word "number" in their names. Examples: Reynolds number, Prandtl number.
+----
+
+
+3. Sometimes there are many `Note {N} to entry: `, they are identical to `NOTE -`.
+
+[source]
+----
+set of interrelated items that collectively fulfil a requirement
+<p>Note 1 to entry: A system is considered to have a defined real or abstract boundary.
+<p>Note 2 to entry: External resources (from outside the system boundary) may be required for the system to operate.
+<p>Note 3 to entry: A system structure may be hierarchical, e.g. system, subsystem, component, etc.
+<p>Note 4 to entry: Conditions of use and maintenance should be expressed or implied within the requirement.
+----
+
+[source,yaml]
+----
+definition: set of interrelated items that collectively fulfil a requirement
+notes:
+  - A system is considered to have a defined real or abstract boundary.
+  - External resources (from outside the system boundary) may be required for the system to operate.
+  - A system structure may be hierarchical, e.g. system, subsystem, component, etc.
+  - Conditions of use and maintenance should be expressed or implied within the requirement.
+----
+
+
+4. Parse `EXAMPLE`:
+
+[source]
+----
+<a href=IEV112-01-01>quantity</a> which keeps the same value under particular circumstances, or which results from theoretical considerations
+<p>EXAMPLE <a href=IEV103-05-26>time constant</a>, equilibrium constant for a chemical reaction, <a href=IEV112-03-09>fundamental physical constant</a>.
+----
+
+=>
+
+[source,yaml]
+----
+definition: {{quantity, IEV:112-01-01}} which keeps the same value under particular circumstances, or which results from theoretical considerations
+examples:
+  - {{time constant, IEV:103-05-26}}, equilibrium constant for a chemical reaction, {{fundamental physical constant, IEV:112-03-09}}.
+----
+
+
+5. Remember to parse both `EXAMPLE` and `Note {N} to entry:`.
+
+[source]
+----
+level of sub-division within a system hierarchy
+<p>EXAMPLE System, subsystem, assembly, and component. <p>Note 1 to entry: From the maintenance perspective, the indenture level depends upon various factors, including the complexity of the item's construction, the accessibility of sub items, skill level of maintenance personnel, test equipment facilities, and safety considerations.
+----
+
+[source,yaml]
+----
+definition: level of sub-division within a system hierarchy
+examples:
+  - System, subsystem, assembly, and component.
+notes:
+  - From the maintenance perspective, the indenture level depends upon various factors, including the complexity of the item's construction, the accessibility of sub items, skill level of maintenance personnel, test equipment facilities, and safety considerations.
+----
+
+
+6. Remember to parse both `EXEMPLE` and `Note {N} à l’article:` in French
+
+[source]
+----
+niveau de subdivision à l’intérieur de la hiérarchie d’un système
+<p>EXEMPLE Système, sous-système, assemblage et composant. <p>Note 1 à l’article: Du point de vue de la maintenance, le niveau dans l’arborescence dépend de divers facteurs dont la complexité de la structure de l’entité, l’accessibilité aux sous-entités, le niveau de compétence du personnel de maintenance, les moyens de mesure et d’essai, et des considérations de sécurité.
+----
+
+[source,yaml]
+----
+definition: niveau de subdivision à l’intérieur de la hiérarchie d’un système
+examples:
+  - Système, sous-système, assemblage et composant.
+notes:
+  - Du point de vue de la maintenance, le niveau dans l’arborescence dépend de divers facteurs dont la complexité de la structure de l’entité, l’accessibilité aux sous-entités, le niveau de compétence du personnel de maintenance, les moyens de mesure et d’essai, et des considérations de sécurité.
+----
+
+
+=== Source field
+
+Original:
+
+[source]
+----
+IEC 60050-311:2001, 311-01-04
+----
+
+After parsing:
+
+[source,yaml]
+----
+authoritative_source:
+  ref: IEC 60050-311:2001, 311-01-04
+----
+
+
+== Copyright and license
+
+Data copyright IEC. All others copyright Ribose.
