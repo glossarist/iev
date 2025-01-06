@@ -3,6 +3,7 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
+require "English"
 module Iev
   # Parses information from the spreadsheet's TERMATTRIBUTE column and alike.
   #
@@ -15,10 +16,8 @@ module Iev
     include Cli::Ui
     using DataConversions
 
-    attr_reader :raw_str, :src_str
-
-    attr_reader :gender, :geographical_area, :part_of_speech, :plurality,
-      :prefix, :usage_info
+    attr_reader :raw_str, :src_str, :gender, :geographical_area,
+                :part_of_speech, :plurality, :prefix, :usage_info
 
     PARTS_OF_SPEECH = {
       "adj" => "adj",
@@ -57,12 +56,12 @@ module Iev
       extract_usage_info(curr_str)
       extract_prefix(curr_str)
 
-      if /\p{Word}/ =~ curr_str
-        debug(
-          :term_attributes,
-          "Term attributes could not be parsed completely: '#{src_str}'",
-        )
-      end
+      return unless /\p{Word}/.match?(curr_str)
+
+      debug(
+        :term_attributes,
+        "Term attributes could not be parsed completely: '#{src_str}'",
+      )
     end
 
     def extract_gender(str)
@@ -78,12 +77,12 @@ module Iev
       if remove_from_string(str, plural_rx)
         @plurality = "plural"
       elsif !gender.nil?
-        # TODO Really needed?
+        # TODO: Really needed?
         @plurality = "singular"
       end
     end
 
-    # TODO this is likely buggy
+    # TODO: this is likely buggy
     def extract_geographical_area(str)
       ga_rx = /\b[A-Z]{2}$/
 
@@ -91,25 +90,25 @@ module Iev
     end
 
     def extract_part_of_speech(str)
-      pos_rx = %r{
+      pos_rx = /
         \b
         #{Regexp.union(PARTS_OF_SPEECH.keys)}
         \b
-      }x.freeze
+      /x
 
       removed = remove_from_string(str, pos_rx)
       @part_of_speech = PARTS_OF_SPEECH[removed] || removed
     end
 
     def extract_usage_info(str)
-      info_rx = %r{
+      info_rx = /
         # regular ASCII less and greater than signs
         < (?<inner>.*?) >
         |
         # ＜ and ＞, i.e. full-width less and greater than signs
         # which are used instead of ASCII signs in some CJK terms
         \uFF1C (?<inner>.*?) \uFF1E
-      }x.freeze
+      /x
 
       remove_from_string(str, info_rx) do |md|
         @usage_info = md[:inner].strip
@@ -117,11 +116,11 @@ module Iev
     end
 
     def extract_prefix(str)
-      prefix_rx = %r{
+      prefix_rx = /
         \b
         #{Regexp.union(PREFIX_KEYWORDS)}
         \b
-      }x.freeze
+      /x
 
       @prefix = true if remove_from_string(str, prefix_rx)
     end
@@ -133,10 +132,10 @@ module Iev
     def remove_from_string(string, regexp)
       string.sub!(regexp, "")
 
-      if $~ && block_given?
-        yield $~
+      if $LAST_MATCH_INFO && block_given?
+        yield $LAST_MATCH_INFO
       else
-        $& # removed substring or nil
+        ::Regexp.last_match(0) # removed substring or nil
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # (c) Copyright 2020 Ribose Inc.
 #
 
@@ -14,10 +16,10 @@ RSpec.describe "Iev" do
       Dir.mkdir tmp_db_dir
 
       dbfile = File.join(tmp_db_dir, "test.sqlite3")
-      command = %W(xlsx2db #{sample_xlsx_file} -o #{dbfile})
+      command = %W[xlsx2db #{sample_xlsx_file} -o #{dbfile}]
       silence_output_streams { Iev::Cli.start(command) }
 
-      expect(dbfile).to satisfy { |p| File.file? p }
+      expect(dbfile).to(satisfy { |p| File.file? p })
 
       db = SQLite3::Database.new(dbfile)
 

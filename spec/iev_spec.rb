@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 RSpec.describe Iev do
   before :each do
-    FileUtils.rm_rf %w(testcache testcache2)
+    FileUtils.rm_rf %w[testcache testcache2]
     @db = Iev::Db.new "testcache", "testcache2"
   end
 

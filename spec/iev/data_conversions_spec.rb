@@ -14,7 +14,7 @@ RSpec.describe "string conversion refinements" do
 
     it "returns decoded string but leaves self unchanged" do
       str = "&lt;&gt;"
-      expect { str.decode_html }.not_to change { str }
+      expect { str.decode_html }.not_to(change { str })
       expect(str.decode_html).not_to eq(str)
     end
   end
@@ -49,7 +49,7 @@ RSpec.describe "string conversion refinements" do
 
     it "returns sanitized string but leaves self unchanged" do
       str = "  what\uFEFFever\t"
-      expect { str.sanitize }.not_to change { str }
+      expect { str.sanitize }.not_to(change { str })
       expect(str.sanitize).not_to eq(str)
     end
   end

@@ -27,6 +27,7 @@ module Iev
         loop do
           row = row_enumerator.next
           next if row.empty?
+
           data = prepare_data(row, symbolized_title_row)
           display_progress(data)
           insert_data(data)

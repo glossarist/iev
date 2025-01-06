@@ -11,12 +11,12 @@ module Iev
 
     def initialize(two_char_code)
       @code = case two_char_code.length
-      when 2
-        two_char_code
-      else
-        # This is to handle code "nl BE" in the Iev sheet
-        two_char_code.split(" ").first
-      end
+        when 2
+          two_char_code
+        else
+          # This is to handle code "nl BE" in the Iev sheet
+          two_char_code.split(" ").first
+        end
     end
 
     def find(code_type)
@@ -24,9 +24,7 @@ module Iev
         key if value["iso_639_1"] == @code.to_s && value[code_type]
       end
 
-      if code.nil?
-        raise StandardError.new("Iso639Code not found for '#{@code}'!")
-      end
+      raise StandardError, "Iso639Code not found for '#{@code}'!" if code.nil?
 
       code
     end
@@ -41,7 +39,5 @@ module Iev
     def country_codes
       COUNTRY_CODES
     end
-
   end
 end
-

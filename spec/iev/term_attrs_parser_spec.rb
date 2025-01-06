@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # (c) Copyright 2020 Ribose Inc.
 #
 
@@ -35,7 +37,7 @@ RSpec.describe Iev::TermAttrsParser do
     end
 
     it "is not fooled with longer sentences (begin/end of word)",
-      string: "noun" do
+       string: "noun" do
       expect(subject.gender).to be(nil)
     end
 
@@ -62,7 +64,7 @@ RSpec.describe Iev::TermAttrsParser do
     end
 
     it "works for strings which do not specify plurality",
-      string: "a whatever" do
+       string: "a whatever" do
       expect(subject.plurality).to be(nil)
     end
 
@@ -71,7 +73,7 @@ RSpec.describe Iev::TermAttrsParser do
     end
 
     it "is not fooled with longer sentences (begin/end of word)",
-      string: "what a plapl" do
+       string: "what a plapl" do
       expect(subject.plurality).to be(nil)
     end
 
@@ -136,7 +138,7 @@ RSpec.describe Iev::TermAttrsParser do
     end
 
     it "is not fooled with longer sentences (begin/end of word)",
-      string: "adjunction radj" do
+       string: "adjunction radj" do
       expect(subject.part_of_speech).to be(nil)
     end
   end
@@ -159,7 +161,7 @@ RSpec.describe Iev::TermAttrsParser do
     end
 
     it "works for strings which do not specify usage info",
-      string: "a whatever" do
+       string: "a whatever" do
       expect(subject.usage_info).to be(nil)
     end
 
@@ -168,7 +170,7 @@ RSpec.describe Iev::TermAttrsParser do
     end
 
     it "disallows mixing regular and full-width signs",
-      string: "a string \uFF1Cinfo>" do
+       string: "a string \uFF1Cinfo>" do
       expect(subject.usage_info).to be(nil)
     end
   end
@@ -191,12 +193,12 @@ RSpec.describe Iev::TermAttrsParser do
     end
 
     it "works for strings which do not specify area",
-      string: "a whatever" do
+       string: "a whatever" do
       expect(subject.geographical_area).to be(nil)
     end
 
     it "is not fooled with longer words",
-      string: "THUS" do
+       string: "THUS" do
       expect(subject.geographical_area).to be(nil)
     end
   end
@@ -239,12 +241,12 @@ RSpec.describe Iev::TermAttrsParser do
     end
 
     it "works for strings which do not specify prefix",
-      string: "a whatever" do
+       string: "a whatever" do
       expect(subject.prefix).to be(nil)
     end
 
     it "is not fooled with longer words",
-      string: "prefixed" do
+       string: "prefixed" do
       expect(subject.prefix).to be(nil)
     end
   end

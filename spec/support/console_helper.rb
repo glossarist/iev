@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # (c) Copyright 2020 Ribose Inc.
 #
 
@@ -27,10 +29,10 @@ module Iev
     # block is suppressed.
     #
     # @return Object - block's return value
-    def silence_output_streams(&block)
-      error = capture_output_streams(&block)[2]
+    def silence_output_streams(&)
+      error = capture_output_streams(&)[2]
 
-      raise ::StandardError.new(error) if error
+      raise ::StandardError, error if error
     end
   end
 end

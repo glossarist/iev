@@ -7,8 +7,8 @@ module Iev
   class Profiler
     attr_reader :bench, :dir, :prefix, :profile
 
-    def self.measure(prefix = nil, &block)
-      new(prefix).run(&block)
+    def self.measure(prefix = nil, &)
+      new(prefix).run(&)
     end
 
     def initialize(prefix, dir: "profile")
@@ -16,15 +16,15 @@ module Iev
       @dir = dir
     end
 
-    def run(&block)
-      profiler_enabled? ? run!(&block) : block.call
+    def run(&)
+      profiler_enabled? ? run!(&) : yield
     end
 
-    def run!(&block)
+    def run!
       retval = nil
       @profile = RubyProf.profile allow_exceptions: true do
         @bench = Benchmark.measure do
-          retval = block.call
+          retval = yield
         end
       end
       retval
