@@ -19,7 +19,7 @@ module Iev
         end
       end
 
-      # Note: Implementation examples here:
+      # NOTE: Implementation examples here:
       # https://www.rubydoc.info/github/luislavena/sqlite3-ruby/SQLite3/Backup
       def save_db_to_file(src_db, dbfile)
         info "Saving database to a file..."
@@ -46,21 +46,23 @@ module Iev
         $IEV_PROFILE = options[:profile]
         $IEV_PROGRESS = options.fetch(:progress, !ENV["CI"])
 
-        $IEV_DEBUG = options.to_h.
-          select { |k, _| k.to_s.start_with? "debug_" }.
-          transform_keys { |k| k.to_s.sub("debug_", "").to_sym }
+        $IEV_DEBUG = options.to_h
+          .select { |k, _| k.to_s.start_with? "debug_" }
+          .transform_keys do |k|
+          k.to_s.sub("debug_",
+                     "").to_sym
+        end
       end
 
       def filter_dataset(db, options)
         query = db[:concepts]
 
         if options[:only_concepts]
-          query = query.where(Sequel.ilike(:ievref, options[:only_concepts]))
+          query = query.where(Sequel.ilike(:ievref,
+                                           options[:only_concepts]))
         end
 
-        if options[:only_languages]
-          query = query.where(language: options[:only_languages].split(","))
-        end
+        query = query.where(language: options[:only_languages].split(",")) if options[:only_languages]
 
         query
       end

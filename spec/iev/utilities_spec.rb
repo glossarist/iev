@@ -12,7 +12,7 @@ RSpec.describe Iev::Utilities do
   describe "#parse_anchor_tag" do
     context "when end tag is present" do
       it "converts the a tag with quotes to asciidoc format" do
-        text = "See <a href=\"IEV121-02-02\">121-02-02</a>"
+        text = 'See <a href="IEV121-02-02">121-02-02</a>'
 
         expect(subject.parse_anchor_tag(text, "IEV"))
           .to eq("See {{121-02-02, IEV:121-02-02}}")
@@ -28,7 +28,7 @@ RSpec.describe Iev::Utilities do
 
     context "when end tag is not present" do
       it "converts the a tag with quotes to asciidoc format" do
-        text = "See <a href=\"IEV121-02-02\">No end tag"
+        text = 'See <a href="IEV121-02-02">No end tag'
 
         expect(subject.parse_anchor_tag(text, "IEV"))
           .to eq("See {{No end tag, IEV:121-02-02}}")
@@ -54,13 +54,13 @@ RSpec.describe Iev::Utilities do
         .to eq("Hello\n\nworld")
     end
 
-    it "should replace \\n tag with newlines" do
-      expect(subject.replace_newlines("Hello\\nworld"))
+    it 'should replace \\n tag with newlines' do
+      expect(subject.replace_newlines('Hello\\nworld'))
         .to eq("Hello\n\nworld")
     end
 
-    it "should replace multiple \\n tag with newlines" do
-      expect(subject.replace_newlines("Hello\\n\\n\\n\\n\\n\\nworld"))
+    it 'should replace multiple \\n tag with newlines' do
+      expect(subject.replace_newlines('Hello\\n\\n\\n\\n\\n\\nworld'))
         .to eq("Hello\n\nworld")
     end
   end

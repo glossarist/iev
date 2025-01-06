@@ -42,11 +42,11 @@ module Iev
         module_function
 
         def clear_progress
-          $IEV_PROGRESS ? "\r#{" " * 40}\r" : ""
+          $IEV_PROGRESS ? "\r#{' ' * 40}\r" : ""
         end
 
         def cli_out(level, *args)
-          topic = Symbol === args[0] ? args.shift : nil
+          topic = args[0].is_a?(Symbol) ? args.shift : nil
           message = args.map(&:to_s).join(" ").chomp
           ui_tag = Thread.current[:iev_ui_tag]
 

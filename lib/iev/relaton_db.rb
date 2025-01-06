@@ -33,15 +33,12 @@ module Iev
 
       begin
         yield
+      rescue StandardError
+        raise unless curr_attempt <= attempts
 
-      rescue
-        if curr_attempt <= attempts
-          sleep(2 ** curr_attempt * 0.1)
-          curr_attempt += 1
-          retry
-        else
-          raise
-        end
+        sleep(2**curr_attempt * 0.1)
+        curr_attempt += 1
+        retry
       end
     end
 
@@ -52,11 +49,10 @@ module Iev
 
       begin
         yield
-
       ensure
         $stdout = original_stdout
         $stderr = original_stderr
-        debug(:relaton, fake_out.string) if fake_out.pos > 0
+        debug(:relaton, fake_out.string) if fake_out.pos.positive?
       end
     end
   end

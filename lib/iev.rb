@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "iev/version"
 require "iev/db"
 require "open-uri"
@@ -37,8 +39,8 @@ module Iev
             "following-sibling::td[2]"
     a = doc&.at(xpath)&.children&.to_xml
     a&.sub(%r{<br/>.*$}, "")
-      &.sub(%r{, &lt;.*$}, "")
-      &.gsub(%r{<[^<>]*>}, "")&.strip
+      &.sub(/, &lt;.*$/, "")
+      &.gsub(/<[^<>]*>/, "")&.strip
   end
 end
 

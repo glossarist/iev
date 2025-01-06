@@ -5,6 +5,7 @@
 
 # rubocop:todo Style/RedundantRegexpEscape
 
+require "English"
 module Iev
   # Parses information from the spreadsheet's SOURCE column.
   #
@@ -32,7 +33,7 @@ module Iev
     end
 
     def split_source_field(source)
-      # TODO Calling String#gsub with a single hash argument would be probably
+      # TODO: Calling String#gsub with a single hash argument would be probably
       # better than calling that method multiple times.  But change is
       # not necessarily that easy to do.
 
@@ -63,7 +64,9 @@ module Iev
       source = source.gsub(/,\s+ITU/, ";; ITU")
 
       # 705-02-01, 702-02-07
-      source = source.gsub(/(\d{2,3}-\d{2,3}-\d{2,3}),\s*(\d{2,3}-\d{2,3}-\d{2,3})/, '\1;; \2') # rubocop:todo Layout/LineLength
+      source = source.gsub(
+        /(\d{2,3}-\d{2,3}-\d{2,3}),\s*(\d{2,3}-\d{2,3}-\d{2,3})/, '\1;; \2'
+      )
 
       source.split(";;").map(&:strip)
     end
@@ -88,8 +91,6 @@ module Iev
     end
 
     def normalize_ref_string(str)
-      # rubocop:todo Layout/LineLength
-
       # définition 3.60 de la 62127-1
       # definition 3.60 of 62127-1
       # définition 3.60 de la 62127-1
@@ -103,7 +104,7 @@ module Iev
       str
         .gsub(/CEI/, "IEC")
         .gsub(/Guide IEC/, "IEC Guide")
-        .gsub(/Guide ISO\/IEC/, "ISO/IEC Guide")
+        .gsub(%r{Guide ISO/IEC}, "ISO/IEC Guide")
         .gsub(/VEI/, "IEV")
         .gsub(/UIT/, "ITU")
         .gsub(/IUT-R/, "ITU-R")
@@ -120,8 +121,6 @@ module Iev
         .sub(/(\d{3})\ (\d{2})\ (\d{2})/, '\1-\2-\3') # for 221 04 03
 
       # .sub(/\A(from|d'après|voir la|see|See|voir|Voir)\s+/, "")
-
-      # rubocop:enable Layout/LineLength
     end
 
     def extract_source_ref(str)
@@ -142,66 +141,69 @@ module Iev
         "JCGM VIM"
       # IEC 60050-121, 151-12-05
       when /IEC 60050-(\d+), (\d{2,3}-\d{2,3}-\d{2,3})/
-        "IEC 60050-#{$1}"
+        "IEC 60050-#{::Regexp.last_match(1)}"
       when /IEC 60050-(\d+):(\d+), (\d{2,3}-\d{2,3}-\d{2,3})/
-        "IEC 60050-#{$1}:#{$2}"
+        "IEC 60050-#{::Regexp.last_match(1)}:#{::Regexp.last_match(2)}"
       when /(AIEA|IAEA) (\d+)/
-        "IAEA #{$2}"
+        "IAEA #{::Regexp.last_match(2)}"
       when /IEC\sIEEE ([\d\:\-]+)/
-        "IEC/IEEE #{$1}".sub(/:\Z/, "")
+        "IEC/IEEE #{::Regexp.last_match(1)}".sub(/:\Z/, "")
       when /CISPR ([\d\:\-]+)/
-        "IEC CISPR #{$1}"
+        "IEC CISPR #{::Regexp.last_match(1)}"
       when /RR (\d+)/
         "ITU-R RR"
       # IEC 50(845)
       when /IEC (\d+)\((\d+)\)/
-        "IEC 600#{$1}-#{$1}"
-      when /(ISO|IEC)[\/\ ](PAS|TR|TS) ([\d\:\-]+)/
-        "#{$1}/#{$2} #{$3}".sub(/:\Z/, "")
-      when /ISO\/IEC ([\d\:\-]+)/
-        "ISO/IEC #{$1}".sub(/:\Z/, "")
-      when /ISO\/IEC\/IEEE ([\d\:\-]+)/
-        "ISO/IEC/IEEE #{$1}".sub(/:\Z/, "")
+        "IEC 600#{::Regexp.last_match(1)}-#{::Regexp.last_match(1)}"
+      when %r{(ISO|IEC)[/\ ](PAS|TR|TS) ([\d\:\-]+)}
+        "#{::Regexp.last_match(1)}/#{::Regexp.last_match(2)} #{::Regexp.last_match(3)}".sub(
+          /:\Z/, ""
+        )
+      when %r{ISO/IEC ([\d\:\-]+)}
+        "ISO/IEC #{::Regexp.last_match(1)}".sub(/:\Z/, "")
+      when %r{ISO/IEC/IEEE ([\d\:\-]+)}
+        "ISO/IEC/IEEE #{::Regexp.last_match(1)}".sub(/:\Z/, "")
 
       # ISO 140/4
-      when /ISO (\d+)\/(\d+)/
-        "ISO #{$1}-#{$2}"
+      when %r{ISO (\d+)/(\d+)}
+        "ISO #{::Regexp.last_match(1)}-#{::Regexp.last_match(2)}"
       when /Norme ISO (\d+)-(\d+)/
-        "ISO #{$1}:#{$2}"
-      when /ISO\/IEC Guide ([\d\:\-]+)/i
-        "ISO/IEC Guide #{$1}".sub(/:\Z/, "")
+        "ISO #{::Regexp.last_match(1)}:#{::Regexp.last_match(2)}"
+      when %r{ISO/IEC Guide ([\d\:\-]+)}i
+        "ISO/IEC Guide #{::Regexp.last_match(1)}".sub(/:\Z/, "")
       when /(ISO|IEC) Guide ([\d\:\-]+)/i
-        "#{$1} Guide #{$2}".sub(/:\Z/, "")
+        "#{::Regexp.last_match(1)} Guide #{::Regexp.last_match(2)}".sub(/:\Z/,
+                                                                        "")
 
       # ITU-T Recommendation F.791 (11/2015)
-      when /ITU-T Recommendation (\w.\d+) \((\d+\/\d+)\)/i
-        "ITU-T Recommendation #{$1} (#{$2})"
+      when %r{ITU-T Recommendation (\w.\d+) \((\d+/\d+)\)}i
+        "ITU-T Recommendation #{::Regexp.last_match(1)} (#{::Regexp.last_match(2)})"
 
       # ITU-T Recommendation F.791:2015
       when /ITU-T Recommendation (\w.\d+):(\d+)/i
-        "ITU-T Recommendation #{$1} (#{$2})"
+        "ITU-T Recommendation #{::Regexp.last_match(1)} (#{::Regexp.last_match(2)})"
 
       when /ITU-T Recommendation (\w\.\d+)/i
-        "ITU-T Recommendation #{$1}"
+        "ITU-T Recommendation #{::Regexp.last_match(1)}"
 
       # ITU-R Recommendation 592 MOD
       when /ITU-R Recommendation (\d+)/i
-        "ITU-R Recommendation #{$1}"
+        "ITU-R Recommendation #{::Regexp.last_match(1)}"
       # ISO 669: 2000 3.1.16
       when /ISO ([\d\-]+:\s?\d{4})/
-        "ISO #{$1}".sub(/:\Z/, "")
+        "ISO #{::Regexp.last_match(1)}".sub(/:\Z/, "")
       when /ISO ([\d\:\-]+)/
-        "ISO #{$1}".sub(/:\Z/, "")
+        "ISO #{::Regexp.last_match(1)}".sub(/:\Z/, "")
       when /IEC ([\d\:\-]+)/
-        "IEC #{$1}".sub(/:\Z/, "")
+        "IEC #{::Regexp.last_match(1)}".sub(/:\Z/, "")
       when /definition (\d\.[\d\.]+) of ([\d\-]*)/,
         /définition (\d\.[\d\.]+) de la ([\d\-]*)/
-        "IEC #{$2}".sub(/:\Z/, "")
+        "IEC #{::Regexp.last_match(2)}".sub(/:\Z/, "")
 
       when /IEV (\d{2,3}-\d{2,3}-\d{2,3})/, /(\d{2,3}-\d{2,3}-\d{2,3})/
         "IEV"
       when /IEV part\s+(\d+)/, /partie\s+(\d+)\s+de l'IEV/
-        "IEC 60050-#{$1}"
+        "IEC 60050-#{::Regexp.last_match(1)}"
 
       when /International Telecommunication Union (ITU) Constitution/,
         /Constitution de l’Union internationale des télécommunications (UIT)/
@@ -213,8 +215,6 @@ module Iev
     end
 
     def extract_source_clause(str)
-      # rubocop:todo Layout/LineLength
-
       # Strip out the modifications
       str = str.sub(/[,\ ]*modif.+\s[-–].*\Z/, "")
 
@@ -278,8 +278,8 @@ module Iev
 
         # "ISO/IEC/IEEE 24765:2010,  <i>Systems and software engineering – Vocabulary</i>, 3.234 (2)
         [/, ([\d\.\w]+ \(\d+\))/, "1"],
-      ].map do |regex, rule|
-        # TODO Rubocop complains about unused rule -- need to make sure
+      ].map do |regex, _rule|
+        # TODO: Rubocop complains about unused rule -- need to make sure
         # that no one forgot about something.
         res = []
         # puts "str is '#{str}'"
@@ -287,7 +287,7 @@ module Iev
         str.scan(regex).each do |result|
           # puts "result is #{result.first}"
           res << {
-            index: $~.offset(0)[0],
+            index: $LAST_MATCH_INFO.offset(0)[0],
             clause: result.first.strip,
           }
         end
@@ -298,28 +298,26 @@ module Iev
       # pp results
 
       results.dig(0, :clause)
-
-      # rubocop:enable Layout/LineLength
     end
 
     def extract_source_relationship(str)
       type = case str
-      when /≠/
-        :not_equal
-      when /≈/
-        :similar
-      when /^([Ss]ee)|([Vv]oir)/
-        :related
-      when /MOD/, /ИЗМ/
-        :modified
-      when /modified/, /modifié/
-        :modified
-      when /^(from|d'après)/,
+             when /≠/
+               :not_equal
+             when /≈/
+               :similar
+             when /^([Ss]ee)|([Vv]oir)/
+               :related
+             when /MOD/, /ИЗМ/
+               :modified
+             when /modified/, /modifié/
+               :modified
+             when /^(from|d'après)/,
         /^(definition (.+) of)|(définition (.+) de la)/
-        :identical
-      else
-        :identical
-      end
+               :identical
+             else
+               :identical
+             end
 
       case str
       when /^MOD ([\d\-])/
@@ -330,7 +328,7 @@ module Iev
         {
           "type" => type.to_s,
           "modification" => Iev::Converter.mathml_to_asciimath(
-            parse_anchor_tag($2, @term_domain),
+            parse_anchor_tag(::Regexp.last_match(2), @term_domain),
           ).strip,
         }
       else

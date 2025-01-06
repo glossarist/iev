@@ -3,8 +3,6 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-require "pp"
-
 module Iev
   class TermBuilder
     include Cli::Ui
@@ -121,7 +119,7 @@ module Iev
             Note\s*\d+\sto\sthe\sentry: |
             Note\sto\sentry\s*\d+: |
             Note\s*\d+?\sà\sl['’]article: |
-            <NOTE\/?>?\s*\d?\s+.*?– |
+            <NOTE/?>?\s*\d?\s+.*?– |
             NOTE(?:\s+-)? |
             Note\s+\d+\s– |
             Note&nbsp;\d+\s
@@ -137,9 +135,9 @@ module Iev
       next_part_arr = definition_arr
       remaining_str = find_value_for("DEFINITION")
 
-      while md = remaining_str&.match(slicer_rx)
+      while (md = remaining_str&.match(slicer_rx))
         next_part = md.pre_match
-        next_part.sub!(/^\[:Ex(a|e)mple\]/, "Ex\\1mple")
+        next_part.sub!(/^\[:Ex(a|e)mple\]/, 'Ex\\1mple')
         next_part_arr.push(next_part)
         next_part_arr = md[:example] ? @examples : @notes
         # 112-03-17
@@ -157,10 +155,10 @@ module Iev
         # the `Example` with `[:Example]` and revert it in the next iteration
         # so it will not be caught by the regex.
         remaining_str = md.post_match
-        remaining_str.sub!(/^Ex(a|e)mple/, "[:Ex\\1mple]") if md[:note]
+        remaining_str.sub!(/^Ex(a|e)mple/, '[:Ex\\1mple]') if md[:note]
       end
 
-      remaining_str&.sub!(/^\[:Ex(a|e)mple\]/, "Ex\\1mple")
+      remaining_str&.sub!(/^\[:Ex(a|e)mple\]/, 'Ex\\1mple')
       next_part_arr.push(remaining_str)
       @definition = definition_arr.first
       @definition = nil if @definition&.empty?
@@ -208,11 +206,11 @@ module Iev
     end
 
     def extract_definition_value
-      if @definition
-        Iev::Converter.mathml_to_asciimath(
-          replace_newlines(parse_anchor_tag(@definition, term_domain)),
-        ).strip
-      end
+      return unless @definition
+
+      Iev::Converter.mathml_to_asciimath(
+        replace_newlines(parse_anchor_tag(@definition, term_domain)),
+      ).strip
     end
 
     def extract_examples
@@ -234,7 +232,6 @@ module Iev
     def extract_entry_status
       case find_value_for("STATUS").downcase
       when "standard" then "valid"
-      else nil
       end
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "fileutils"
 
 module Iev
@@ -8,7 +10,7 @@ module Iev
     # @param dir [String] DB directory
     def initialize(dir)
       @dir = dir
-      FileUtils::mkdir_p @dir
+      FileUtils.mkdir_p @dir
       file_version = "#{@dir}/version"
       File.exist? file_version or
         File.write file_version, VERSION, encoding: "utf-8"
@@ -21,7 +23,7 @@ module Iev
       return if value.nil?
 
       prefix_dir = "#{@dir}/#{prefix(key)}"
-      FileUtils::mkdir_p prefix_dir
+      FileUtils.mkdir_p prefix_dir
       File.write filename(key), value, encoding: "utf-8"
     end
 
@@ -100,7 +102,7 @@ module Iev
       # if prefcode
       #   "#{@dir}/#{prefcode[:prefix]}/#{prefcode[:code].gsub(/[-:\s\/]/, '_')}.xml"
       # else
-      "#{@dir}/#{key.gsub(/[-:\s\/]/, '_')}.xml"
+      "#{@dir}/#{key.gsub(%r{[-:\s/]}, '_')}.xml"
       # end
     end
 

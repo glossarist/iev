@@ -18,9 +18,9 @@ module Iev
       # Normalize various encoding anomalies like `\uFEFF` in strings
       def sanitize!
         unicode_normalize!
-        gsub!("\uFEFF", "")
-        gsub!("\u2011", "-")
-        gsub!("\u00a0", " ")
+        delete!("\uFEFF")
+        tr!("\u2011", "-")
+        tr!("\u00a0", " ")
         gsub!(/[\u2000-\u2006]/, " ")
         strip!
         nil

@@ -52,58 +52,58 @@ module Iev
       end
 
       shared_option :only_concepts,
-        desc: "Only process concepts with IEVREF matching this argument, " +
-          "'%' and '_' wildcards are supported and have meaning as in SQL " +
-          "LIKE operator",
-        methods: %i[xlsx2yaml db2yaml]
+                    desc: "Only process concepts with IEVREF matching this argument, " \
+                          "'%' and '_' wildcards are supported and have meaning as in SQL " \
+                          "LIKE operator",
+                    methods: %i[xlsx2yaml db2yaml]
 
       shared_option :only_languages,
-        desc: "Only export these languages, skip concepts which aren't " +
-          "translated to any of them (comma-separated list, language " +
-          "codes must be as in spreadsheet)",
-        methods: %i[xlsx2yaml db2yaml]
+                    desc: "Only export these languages, skip concepts which aren't " \
+                          "translated to any of them (comma-separated list, language " \
+                          "codes must be as in spreadsheet)",
+                    methods: %i[xlsx2yaml db2yaml]
 
       shared_option :output,
-        desc: "Output directory",
-        aliases: :o,
-        default: Dir.pwd,
-        methods: %i[xlsx2yaml db2yaml]
+                    desc: "Output directory",
+                    aliases: :o,
+                    default: Dir.pwd,
+                    methods: %i[xlsx2yaml db2yaml]
 
       shared_option :output,
-        desc: "Output file",
-        aliases: :o,
-        default: File.join(Dir.pwd, "concepts.sqlite3"),
-        methods: :xlsx2db
+                    desc: "Output file",
+                    aliases: :o,
+                    default: File.join(Dir.pwd, "concepts.sqlite3"),
+                    methods: :xlsx2db
 
       shared_option :progress,
-        type: :boolean,
-        desc: "Enables or disables progress indicator. By default disabled " +
-          "when 'CI' environment variable is set and enabled otherwise",
-        methods: %i[xlsx2yaml xlsx2db db2yaml]
+                    type: :boolean,
+                    desc: "Enables or disables progress indicator. By default disabled " \
+                          "when 'CI' environment variable is set and enabled otherwise",
+                    methods: %i[xlsx2yaml xlsx2db db2yaml]
 
       shared_option :debug_term_attributes,
-        desc: "Enables debug messages about term attributes recognition",
-        type: :boolean,
-        default: false,
-        methods: %i[xlsx2yaml db2yaml]
+                    desc: "Enables debug messages about term attributes recognition",
+                    type: :boolean,
+                    default: false,
+                    methods: %i[xlsx2yaml db2yaml]
 
       shared_option :debug_sources,
-        desc: "Enables debug messages about authoritative sources recognition",
-        type: :boolean,
-        default: false,
-        methods: %i[xlsx2yaml db2yaml]
+                    desc: "Enables debug messages about authoritative sources recognition",
+                    type: :boolean,
+                    default: false,
+                    methods: %i[xlsx2yaml db2yaml]
 
       shared_option :debug_relaton,
-        desc: "Enables debug messages about Relaton integration",
-        type: :boolean,
-        default: false,
-        methods: %i[xlsx2yaml db2yaml]
+                    desc: "Enables debug messages about Relaton integration",
+                    type: :boolean,
+                    default: false,
+                    methods: %i[xlsx2yaml db2yaml]
 
       shared_option :profile,
-        desc: "Generates profiler reports for this program, requires ruby-prof",
-        type: :boolean,
-        default: false,
-        methods: %i[xlsx2yaml xlsx2db db2yaml]
+                    desc: "Generates profiler reports for this program, requires ruby-prof",
+                    type: :boolean,
+                    default: false,
+                    methods: %i[xlsx2yaml xlsx2db db2yaml]
     end
   end
 end
