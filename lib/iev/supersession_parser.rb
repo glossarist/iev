@@ -3,13 +3,13 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
+module Iev
   # Parses information from the spreadsheet's REPLACES column.
   #
   # @example
   #   SupersessionParser.new(cell_data_string).supersessions
   class SupersessionParser
-    include CLI::UI
+    include Cli::Ui
     using DataConversions
 
     attr_reader :raw_str, :src_str

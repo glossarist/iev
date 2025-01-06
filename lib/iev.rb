@@ -16,14 +16,9 @@ require "yaml"
 require "zeitwerk"
 
 loader = Zeitwerk::Loader.for_gem
-loader.inflector.inflect(
-  "cli" => "CLI",
-  "iev" => "IEV",
-  "ui" => "UI",
-)
 loader.setup
 
-module IEV
+module Iev
   #
   # Scrape Electropedia for term.
   #

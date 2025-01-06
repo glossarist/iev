@@ -3,7 +3,7 @@
 
 require "spec_helper"
 
-RSpec.describe IEV::DbWriter do
+RSpec.describe Iev::DbWriter do
   let(:instance) { described_class.new(db) }
   let(:db) { Sequel.sqlite }
   let(:sample_file) { fixture_path("sample-file.xlsx") }

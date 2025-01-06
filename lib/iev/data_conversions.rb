@@ -3,7 +3,7 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
+module Iev
   module DataConversions
     refine String do
       def decode_html!
@@ -32,7 +32,7 @@ module IEV
       end
 
       def to_three_char_code
-        IEV::Iso639Code.three_char_code(self).first
+        Iev::Iso639Code.three_char_code(self).first
       end
     end
   end

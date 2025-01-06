@@ -5,13 +5,13 @@
 
 # rubocop:todo Style/RedundantRegexpEscape
 
-module IEV
+module Iev
   # Parses information from the spreadsheet's SOURCE column.
   #
   # @example
   #   SourceParser.new(cell_data_string).parsed_sources
   class SourceParser
-    include CLI::UI
+    include Cli::Ui
     include Utilities
     using DataConversions
 
@@ -79,7 +79,7 @@ module IEV
         "clause" => clause,
         "link" => obtain_source_link(source_ref),
         "relationship" => relation_type,
-        "original" => IEV::Converter.mathml_to_asciimath(
+        "original" => Iev::Converter.mathml_to_asciimath(
           parse_anchor_tag(raw_ref, @term_domain),
         ),
       }.compact
@@ -329,7 +329,7 @@ module IEV
       when /(modified|modifié|modifiée|modifiés|MOD)\s*[–-]?\s+(.+)\Z/
         {
           "type" => type.to_s,
-          "modification" => IEV::Converter.mathml_to_asciimath(
+          "modification" => Iev::Converter.mathml_to_asciimath(
             parse_anchor_tag($2, @term_domain),
           ).strip,
         }

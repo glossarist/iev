@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IEV
+module Iev
   module Utilities
     SIMG_PATH_REGEX = "<simg .*\\/\\$file\\/([\\d\\-\\w\.]+)>"
     FIGURE_ONE_REGEX =

@@ -3,9 +3,9 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
+module Iev
   class DbWriter
-    include CLI::UI
+    include Cli::Ui
     using DataConversions
 
     attr_reader :db

@@ -3,13 +3,13 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
-  module CLI
+module Iev
+  module Cli
     # @todo
     #   Make it thread-safe.  Currently, calling UI methods from different
     #   threads may result with mangled output.  At first glance it seems like
     #   something is wrong with carriage returns, but more research is needed.
-    module UI
+    module Ui
       module_function
 
       def debug(*args)

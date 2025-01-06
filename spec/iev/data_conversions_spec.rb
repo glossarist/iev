@@ -4,7 +4,7 @@
 require "spec_helper"
 
 RSpec.describe "string conversion refinements" do
-  using IEV::DataConversions
+  using Iev::DataConversions
 
   describe "#decode_html" do
     it "decodes HTML entities" do

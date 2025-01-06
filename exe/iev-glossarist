@@ -18,4 +18,4 @@ end
 require "iev"
 require "iev/cli"
 
-IEV::CLI.start(ARGV)
+Iev::Cli.start(ARGV)

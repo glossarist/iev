@@ -3,7 +3,7 @@
 
 require "spec_helper"
 
-RSpec.describe "IEV" do
+RSpec.describe "Iev" do
   let(:sample_xlsx_file) { fixture_path("sample-file.xlsx") }
   let(:tmp_db_dir) { "tmp-db-dir" }
 
@@ -15,7 +15,7 @@ RSpec.describe "IEV" do
 
       dbfile = File.join(tmp_db_dir, "test.sqlite3")
       command = %W(xlsx2db #{sample_xlsx_file} -o #{dbfile})
-      silence_output_streams { IEV::CLI.start(command) }
+      silence_output_streams { Iev::Cli.start(command) }
 
       expect(dbfile).to satisfy { |p| File.file? p }
 

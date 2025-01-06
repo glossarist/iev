@@ -3,10 +3,10 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
-  module CLI
+module Iev
+  module Cli
     module CommandHelper
-      include CLI::UI
+      include Cli::Ui
 
       protected
 

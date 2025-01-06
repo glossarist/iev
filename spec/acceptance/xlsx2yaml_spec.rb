@@ -3,7 +3,7 @@
 
 require "spec_helper"
 
-RSpec.describe "IEV" do
+RSpec.describe "Iev" do
   let(:sample_xlsx_file) { fixture_path("sample-file.xlsx") }
 
   describe "xlsx2yaml" do
@@ -98,7 +98,7 @@ RSpec.describe "IEV" do
     it "exports YAMLs from given XLSX document" do
       Dir.mktmpdir("iev-test") do |dir|
         command = %W(xlsx2yaml #{sample_xlsx_file} -o #{dir})
-        silence_output_streams { IEV::CLI.start(command) }
+        silence_output_streams { Iev::Cli.start(command) }
 
         concepts_dir = File.join(dir, "concepts")
         expect(concepts_dir).to satisfy { |p| File.directory? p }

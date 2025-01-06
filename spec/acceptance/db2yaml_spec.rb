@@ -4,7 +4,7 @@
 require "spec_helper"
 require "yaml"
 
-RSpec.describe "IEV" do
+RSpec.describe "Iev" do
   let(:sample_db) { fixture_path("sample-db.sqlite3") }
 
   describe "db2yaml" do
@@ -99,7 +99,7 @@ RSpec.describe "IEV" do
     it "exports YAMLs from given database" do
       Dir.mktmpdir("iev-test") do |dir|
         command = %W(db2yaml #{sample_db} -o #{dir})
-        silence_output_streams { IEV::CLI.start(command) }
+        silence_output_streams { Iev::Cli.start(command) }
 
         concepts_dir = File.join(dir, "concepts")
         expect(concepts_dir).to satisfy { |p| File.directory? p }

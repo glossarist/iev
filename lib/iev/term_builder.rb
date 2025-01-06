@@ -5,9 +5,9 @@
 
 require "pp"
 
-module IEV
+module Iev
   class TermBuilder
-    include CLI::UI
+    include Cli::Ui
     include Utilities
     using DataConversions
 
@@ -209,7 +209,7 @@ module IEV
 
     def extract_definition_value
       if @definition
-        IEV::Converter.mathml_to_asciimath(
+        Iev::Converter.mathml_to_asciimath(
           replace_newlines(parse_anchor_tag(@definition, term_domain)),
         ).strip
       end
@@ -217,7 +217,7 @@ module IEV
 
     def extract_examples
       @examples.map do |str|
-        IEV::Converter.mathml_to_asciimath(
+        Iev::Converter.mathml_to_asciimath(
           replace_newlines(parse_anchor_tag(str, term_domain)),
         ).strip
       end
@@ -225,7 +225,7 @@ module IEV
 
     def extract_notes
       @notes.map do |str|
-        IEV::Converter.mathml_to_asciimath(
+        Iev::Converter.mathml_to_asciimath(
           replace_newlines(parse_anchor_tag(str, term_domain)),
         ).strip
       end
@@ -275,7 +275,7 @@ module IEV
     private
 
     def build_expression_designation(raw_term, attribute_data:, status:)
-      term = IEV::Converter.mathml_to_asciimath(
+      term = Iev::Converter.mathml_to_asciimath(
         parse_anchor_tag(raw_term, term_domain),
       )
       term_attributes = TermAttrsParser.new(attribute_data.to_s)
@@ -299,7 +299,7 @@ module IEV
     end
 
     def build_symbol_designation(raw_term)
-      term = IEV::Converter.mathml_to_asciimath(
+      term = Iev::Converter.mathml_to_asciimath(
         parse_anchor_tag(raw_term, term_domain),
       )
 

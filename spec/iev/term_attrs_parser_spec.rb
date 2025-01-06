@@ -1,7 +1,7 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-RSpec.describe IEV::TermAttrsParser do
+RSpec.describe Iev::TermAttrsParser do
   # Parses :string metadata or example description.
   subject do
     example = RSpec.current_example
