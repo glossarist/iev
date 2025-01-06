@@ -3,7 +3,7 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
+module Iev
   class Profiler
     attr_reader :bench, :dir, :prefix, :profile
 

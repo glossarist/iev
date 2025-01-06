@@ -1,7 +1,7 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
+module Iev
   module FixtureHelper
     def fixture_path(fixture_name)
       File.expand_path(fixture_name, fixture_root)

@@ -4,12 +4,12 @@ require "iev/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "iev"
-  spec.version       = IEV::VERSION
+  spec.version       = Iev::VERSION
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
 
-  spec.summary       = "IEV: Fetch and encode IEV term from Electropedia"
-  spec.description   = "IEV: Fetch and encode IEV term from Electropedia"
+  spec.summary       = "Iev: Fetch and encode Iev term from Electropedia"
+  spec.description   = "Iev: Fetch and encode Iev term from Electropedia"
   spec.homepage      = "https://github.com/metanorma/iev"
   spec.license       = "BSD-2-Clause"
 

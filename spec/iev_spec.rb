@@ -1,11 +1,11 @@
-RSpec.describe IEV do
+RSpec.describe Iev do
   before :each do
     FileUtils.rm_rf %w(testcache testcache2)
-    @db = IEV::Db.new "testcache", "testcache2"
+    @db = Iev::Db.new "testcache", "testcache2"
   end
 
   it "has a version number" do
-    expect(IEV::VERSION).not_to be nil
+    expect(Iev::VERSION).not_to be nil
   end
 
   it "get term, cache it and return" do
@@ -52,8 +52,8 @@ RSpec.describe IEV do
     mock_open_uri("103-01-02")
     @db.fetch "103-01-02", "en"
     expect(@db.instance_variable_get(:@db).all.any?).to be_truthy
-    stub_const "IEV::VERSION", "new_version"
-    db = IEV::Db.new "testcache", "testcache2"
+    stub_const "Iev::VERSION", "new_version"
+    db = Iev::Db.new "testcache", "testcache2"
     testcache = db.instance_variable_get :@db
     expect(testcache.all.any?).to be_falsey
     testcache = db.instance_variable_get :@local_db
@@ -78,9 +78,9 @@ RSpec.describe IEV do
     testcache["test key"] = "test value"
     expect(testcache["test key"]).to eq "test value"
     expect(testcache["not existed key"]).to be_nil
-    testcache = IEV::DbCache.new "testcache"
+    testcache = Iev::DbCache.new "testcache"
     testcache.delete("test_key")
-    testcache2 = IEV::DbCache.new "testcache2"
+    testcache2 = Iev::DbCache.new "testcache2"
     testcache2.delete("test_key")
     expect(testcache["test key"]).to be_nil
   end

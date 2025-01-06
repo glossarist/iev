@@ -3,7 +3,7 @@
 
 require "spec_helper"
 
-RSpec.describe IEV::SourceParser do
+RSpec.describe Iev::SourceParser do
   subject do
     example = RSpec.current_example
     attributes_str = example.metadata[:string] || example.description

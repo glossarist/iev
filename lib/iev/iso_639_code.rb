@@ -3,7 +3,7 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
+module Iev
   # @todo This needs to be rewritten.
   class Iso639Code
     COUNTRY_CODES = YAML.load(IO.read(File.join(__dir__, "iso_639_2.yaml")))
@@ -14,7 +14,7 @@ module IEV
       when 2
         two_char_code
       else
-        # This is to handle code "nl BE" in the IEV sheet
+        # This is to handle code "nl BE" in the Iev sheet
         two_char_code.split(" ").first
       end
     end

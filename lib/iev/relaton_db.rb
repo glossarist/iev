@@ -5,11 +5,11 @@
 
 require "singleton"
 
-module IEV
+module Iev
   # Relaton cach singleton.
   class RelatonDb
     include Singleton
-    include CLI::UI
+    include Cli::Ui
 
     def initialize
       info "Initializing Relaton..."

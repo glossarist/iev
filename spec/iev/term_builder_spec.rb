@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe IEV::TermBuilder do
+RSpec.describe Iev::TermBuilder do
   subject { described_class.new({}) }
 
   describe "#flesh_date" do

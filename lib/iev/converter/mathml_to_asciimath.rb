@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IEV
+module Iev
   module Converter
     class MathmlToAsciimath
       using DataConversions

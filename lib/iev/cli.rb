@@ -3,20 +3,20 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
-  module CLI
+module Iev
+  module Cli
     def self.start(arguments)
       Signal.trap("INT") do
-        UI.info "Signal SIGINT received, quitting!"
+        Ui.info "Signal SIGINT received, quitting!"
         Kernel.exit(1)
       end
 
       Signal.trap("TERM") do
-        UI.info "Signal SIGTERM received, quitting!"
+        Ui.info "Signal SIGTERM received, quitting!"
         Kernel.exit(1)
       end
 
-      IEV::CLI::Command.start(arguments)
+      Iev::Cli::Command.start(arguments)
     end
   end
 end

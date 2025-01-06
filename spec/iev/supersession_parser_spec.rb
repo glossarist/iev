@@ -3,7 +3,7 @@
 
 require "spec_helper"
 
-RSpec.describe IEV::SupersessionParser do
+RSpec.describe Iev::SupersessionParser do
   # Parses :string metadata or example description.
   subject do
     example = RSpec.current_example

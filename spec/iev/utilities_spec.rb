@@ -3,10 +3,10 @@
 require "spec_helper"
 
 class TestUtilites
-  include IEV::Utilities
+  include Iev::Utilities
 end
 
-RSpec.describe IEV::Utilities do
+RSpec.describe Iev::Utilities do
   subject { TestUtilites.new }
 
   describe "#parse_anchor_tag" do

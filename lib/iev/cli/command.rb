@@ -3,8 +3,8 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
-module IEV
-  module CLI
+module Iev
+  module Cli
     class Command < Thor
       include CommandHelper
 
