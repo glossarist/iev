@@ -72,10 +72,10 @@ module Iev
           Glossarist::ManagedConceptCollection.new.tap do |concept_collection|
             dataset.each do |row|
               term = TermBuilder.build_from(row)
-              if term
-                concept = concept_collection.fetch_or_initialize(term.id)
-                concept.add_l10n(term)
-              end
+              next unless term
+
+              concept = concept_collection.fetch_or_initialize(term.id)
+              concept.add_l10n(term)
             end
           end
         end

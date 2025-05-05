@@ -11,9 +11,20 @@ RSpec.describe "Iev" do
   describe "xlsx2yaml" do
     let(:expected_concept1) do
       {
-        "data" => { "identifier" => "103-01-01",
-                    "localized_concepts" => { "ara" => "a36d1b2f-f3cd-5cf2-ade8-df02e5b87d0c",
-                                              "deu" => "8ec20cf3-980d-59ba-87df-fabd0456516f", "eng" => "2257cbc6-142f-5c7b-aa0a-9aefb4eaad66", "fra" => "76f9d5e5-c7e7-5b44-b416-97ea4cab88ba", "jpn" => "33419587-0fe6-5bdb-8b56-64b844a7bdf8", "kor" => "6aaae1be-cfcb-56ad-b0d9-800665788576", "pol" => "35de3a28-5eb3-5aeb-98eb-68ebda314c05", "por" => "77fd4c13-8e92-5a7e-801d-1147829466ce", "zho" => "1cc72f48-8133-57ed-8361-4a24c1ec9d4a" } },
+        "data" => {
+          "identifier" => "103-01-01",
+          "localized_concepts" => {
+            "ara" => "bdb77f6b-5beb-53e9-ad15-ad2fa274b24a",
+            "deu" => "e31b74fe-785f-5d91-aff5-d77b919485db",
+            "eng" => "fb47471b-2692-5075-b273-b3f671e9ca9f",
+            "fra" => "55272d39-f150-51ea-845f-d0a092964c14",
+            "jpn" => "47740b93-6f57-5b37-97f3-69f41e65acbd",
+            "kor" => "da5f0c48-2110-5d54-a274-7583189fb2d5",
+            "pol" => "c85859a3-d630-50b6-9564-1bd4108472ee",
+            "por" => "eaa113f3-247d-5b64-8b80-13eaecae5206",
+            "zho" => "48ee39d6-4e9a-5fee-92b6-660496eb7f6b",
+          },
+        },
         "id" => "a9e98ffa-5960-5cd8-8f1e-9d0939da6fc0",
       }
     end
@@ -63,16 +74,23 @@ RSpec.describe "Iev" do
           "review_decision_event" => "published",
         },
         "date_accepted" => "2017-07-01T00:00:00+00:00",
-        "id" => "2257cbc6-142f-5c7b-aa0a-9aefb4eaad66",
-        "status" => "valid",
+        "id" => "fb47471b-2692-5075-b273-b3f671e9ca9f",
       }
     end
 
     let(:expected_concept2) do
       {
-        "data" => { "identifier" => "103-01-02",
-                    "localized_concepts" => { "ara" => "b6fc2694-8d48-5cbf-9049-64604bbe72dd",
-                                              "deu" => "b48bc0ef-422c-515f-81ec-3763d53d6e89", "eng" => "aeb511ce-9de0-5b98-a12d-5b920bd2dcd9", "fra" => "ba52518d-3e93-5b52-b18d-f2de54f620c8", "jpn" => "e08370c9-b29d-5984-8284-2051b1799d5a", "kor" => "f3593ebc-5afc-578a-942f-af346b59fba3" } },
+        "data" => {
+          "identifier" => "103-01-02",
+          "localized_concepts" => {
+            "ara" => "60fe802b-844d-5e23-bd23-aa43e79cabed",
+            "deu" => "a74756b7-aa12-5a3e-82b0-b37320cbf365",
+            "eng" => "cac82820-d563-50d8-8166-73bc4bbc34ab",
+            "fra" => "35052869-4db7-5ed1-959f-0cc4cbb87428",
+            "jpn" => "2288f10b-bbeb-53b3-a58e-9968e338cc5b",
+            "kor" => "a3b9a0e6-fdc4-520d-8caa-c50388bc91d4",
+          },
+        },
         "id" => "13ef6c25-6083-55e0-bcd8-85c887cafc6f",
       }
     end
@@ -80,7 +98,6 @@ RSpec.describe "Iev" do
     let(:expected_localized_concept2) do
       {
         "data" => {
-          "dates" => [],
           "definition" => [{}],
           "examples" => [],
           "id" => "103-01-02",
@@ -96,8 +113,7 @@ RSpec.describe "Iev" do
           "entry_status" => "valid",
           "review_decision_event" => "published",
         },
-        "id" => "f3593ebc-5afc-578a-942f-af346b59fba3",
-        "status" => "valid",
+        "id" => "a3b9a0e6-fdc4-520d-8caa-c50388bc91d4",
       }
     end
 

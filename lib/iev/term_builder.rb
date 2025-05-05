@@ -44,7 +44,7 @@ module Iev
 
       split_definition
 
-      Glossarist::LocalizedConcept.new(term_hash)
+      Glossarist::LocalizedConcept.from_hash(term_hash)
     end
 
     def term_hash
@@ -65,19 +65,22 @@ module Iev
 
       {
         id: term_id,
-        entry_status: extract_entry_status,
         classification: extract_classification,
-        dates: dates,
-        review_date: flesh_date(find_value_for("PUBLICATIONDATE")),
-        review_decision_date: flesh_date(find_value_for("PUBLICATIONDATE")),
-        review_decision_event: "published",
-        terms: extract_terms,
-        notes: extract_notes,
-        examples: extract_examples,
-        definition: [{ "content" => extract_definition_value }],
-        sources: extract_authoritative_source,
-        language_code: term_language,
-        related: extract_superseded_concepts,
+        entry_status: extract_entry_status,
+        data: {
+          id: term_id,
+          dates: dates,
+          definition: [{ "content" => extract_definition_value }],
+          examples: extract_examples,
+          notes: extract_notes,
+          terms: extract_terms,
+          review_date: flesh_date(find_value_for("PUBLICATIONDATE")),
+          review_decision_date: flesh_date(find_value_for("PUBLICATIONDATE")),
+          review_decision_event: "published",
+          language_code: term_language,
+          sources: extract_authoritative_source,
+          related: extract_superseded_concepts,
+        }.compact,
       }.compact
     end
 
@@ -215,17 +218,21 @@ module Iev
 
     def extract_examples
       @examples.map do |str|
-        Iev::Converter.mathml_to_asciimath(
-          replace_newlines(parse_anchor_tag(str, term_domain)),
-        ).strip
+        {
+          content: Iev::Converter.mathml_to_asciimath(
+            replace_newlines(parse_anchor_tag(str, term_domain)),
+          ).strip,
+        }
       end
     end
 
     def extract_notes
       @notes.map do |str|
-        Iev::Converter.mathml_to_asciimath(
-          replace_newlines(parse_anchor_tag(str, term_domain)),
-        ).strip
+        {
+          content: Iev::Converter.mathml_to_asciimath(
+            replace_newlines(parse_anchor_tag(str, term_domain)),
+          ).strip,
+        }
       end
     end
 
