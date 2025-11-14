@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
+require "bundler/setup"
+
+require "canon"
 require "simplecov"
 
 SimpleCov.start do
   add_filter "/spec/"
 end
 
-require "bundler/setup"
-require "iev"
+require_relative "../lib/iev"
 
 Dir["./spec/support/**/*.rb"].sort.each { |file| require file }
 
