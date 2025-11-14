@@ -7,7 +7,9 @@ module Iev
   # @todo This needs to be rewritten.
   class Iso639Code
     COUNTRY_CODES = YAML.load(IO.read(File.join(__dir__, "iso_639_2.yaml")))
-    THREE_CHAR_MEMO = {}.freeze
+    # rubocop:disable Style/MutableConstant
+    THREE_CHAR_MEMO = {} # Memoization cache, must be mutable
+    # rubocop:enable Style/MutableConstant
 
     def initialize(two_char_code)
       @code = case two_char_code.length
