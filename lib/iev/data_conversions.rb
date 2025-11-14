@@ -3,6 +3,8 @@
 # (c) Copyright 2020 Ribose Inc.
 #
 
+require "htmlentities"
+
 module Iev
   module DataConversions
     refine String do
