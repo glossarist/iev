@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require "iev/version"
-require "iev/db"
+require_relative "iev/version"
 require "open-uri"
 require "nokogiri"
 
@@ -15,17 +14,28 @@ require "relaton_bib"
 require "sequel"
 require "thor"
 require "yaml"
-require "zeitwerk"
-
-loader = Zeitwerk::Loader.for_gem
-loader.setup
 
 module Iev
+  autoload :Cli, "iev/cli"
+  autoload :Converter, "iev/converter"
+  autoload :DataConversions, "iev/data_conversions"
+  autoload :Db, "iev/db"
+  autoload :DbCache, "iev/db_cache"
+  autoload :DbWriter, "iev/db_writer"
+  autoload :Iso639Code, "iev/iso_639_code"
+  autoload :Profiler, "iev/profiler"
+  autoload :RelatonDb, "iev/relaton_db"
+  autoload :SourceParser, "iev/source_parser"
+  autoload :SupersessionParser, "iev/supersession_parser"
+  autoload :TermAttrsParser, "iev/term_attrs_parser"
+  autoload :TermBuilder, "iev/term_builder"
+  autoload :Utilities, "iev/utilities"
+
   #
   # Scrape Electropedia for term.
   #
   # @param [String] code for example "103-01-02"
-  # @param [String] lang language code, for examle "en"
+  # @param [String] lang language code, for example "en"
   #
   # @return [String, nil] if found than term,
   # if code not found then empty string,
@@ -44,4 +54,4 @@ module Iev
   end
 end
 
-require "iev/cli"
+require_relative "iev/cli"

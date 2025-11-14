@@ -5,6 +5,10 @@
 
 module Iev
   module Cli
+    autoload :Command, "iev/cli/command"
+    autoload :CommandHelper, "iev/cli/command_helper"
+    autoload :Ui, "iev/cli/ui"
+
     def self.start(arguments)
       Signal.trap("INT") do
         Ui.info "Signal SIGINT received, quitting!"
