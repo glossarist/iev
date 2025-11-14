@@ -3,6 +3,7 @@
 source "https://rubygems.org"
 
 gem "canon"
+gem "openssl"
 gem "rake"
 gem "rspec"
 gem "rubocop"
