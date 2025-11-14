@@ -65,14 +65,22 @@ module Iev
     end
 
     def extract_gender(str)
-      gender_rx = /\b[mfn]\b/
+      # Match gender either:
+      # 1. Inside brackets/parentheses: (m), [f], (n)
+      # 2. As standalone word with boundaries: m, f, n
+      gender_rx = /(?:\(|\[)[mfn](?:\)|\])|\b[mfn]\b/
 
-      @gender = remove_from_string(str, gender_rx)
+      match = remove_from_string(str, gender_rx)
+      # Extract just the letter from the match (remove brackets if present)
+      @gender = match&.gsub(/[\[\]()]/, "")
     end
 
     # Must happen after #extract_gender
     def extract_plurality(str)
-      plural_rx = /\bpl\b/
+      # Match plurality either:
+      # 1. Inside brackets/parentheses: (pl), [pl]
+      # 2. As standalone word with boundaries: pl
+      plural_rx = /(?:\(|\[)pl(?:\)|\])|\bpl\b/
 
       if remove_from_string(str, plural_rx)
         @plurality = "plural"
