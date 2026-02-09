@@ -11,7 +11,7 @@ RSpec.describe Iev do
   end
 
   it "get term, cache it and return" do
-    mock_open_uri("103-01-02")
+    mock_mechanize("103-01-02")
     term = @db.fetch "103-01-02", "en"
     expect(term).to eq "functional"
     id = "103-01-02/en"
@@ -26,13 +26,13 @@ RSpec.describe Iev do
 
   # <td><b><i>p</i>-fractile</b>, &lt;of a probability distribution&gt;<br><b><i>p</i>-quantile</b>, &lt;of a probability distribution&gt;</td>
   it "strips extraneous information from term" do
-    mock_open_uri("103-08-14")
+    mock_mechanize("103-08-14")
     term = @db.fetch "103-08-14", "en"
     expect(term).to eq "p-fractile"
   end
 
   it "return empty string if code not found" do
-    mock_open_uri("111-11-11")
+    mock_mechanize("111-11-11")
     term = @db.fetch "111-11-11", "en"
     expect(term).to eq ""
     id = "111-11-11/en"
@@ -42,7 +42,7 @@ RSpec.describe Iev do
   end
 
   it "return nil if lang not found" do
-    mock_open_uri("103-01-02")
+    mock_mechanize("103-01-02")
     term = @db.fetch "103-01-02", "eee"
     expect(term).to eq nil
     id = "103-01-02/eee"
@@ -51,7 +51,7 @@ RSpec.describe Iev do
   end
 
   it "shoudl clear global cache if version is changed" do
-    mock_open_uri("103-01-02")
+    mock_mechanize("103-01-02")
     @db.fetch "103-01-02", "en"
     expect(@db.instance_variable_get(:@db).all.any?).to be_truthy
     stub_const "Iev::VERSION", "new_version"
@@ -89,12 +89,31 @@ RSpec.describe Iev do
 
   private
 
-  def mock_open_uri(code)
-    expect(OpenURI).to receive(:open_uri).and_wrap_original do |m, *args|
-      expect(args[0]).to be_instance_of String
+  def mock_mechanize(code)
+    # Create mock objects
+    mock_page = double("Mechanize::Page")
+    mock_agent = double("Mechanize")
+
+    # Set up the mock chain
+    allow(Mechanize).to receive(:new).and_return(mock_agent)
+    allow(mock_agent).to receive(:user_agent=)
+
+    allow(mock_agent).to receive(:get) do |url|
+      expect(url).to be_instance_of String
       file = "spec/examples/#{code.tr('-', '_')}.html"
-      File.write file, m.call(*args).read unless File.exist? file
-      File.read file
+
+      # If file doesn't exist, fetch it from the real site
+      unless File.exist?(file)
+        real_agent = Mechanize.new
+        real_agent.user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        real_page = real_agent.get(url)
+        File.write(file, real_page.body)
+      end
+
+      # Return mock page with the HTML content
+      html_content = File.read(file)
+      allow(mock_page).to receive(:parser).and_return(Nokogiri::HTML(html_content, nil, "UTF-8"))
+      mock_page
     end
   end
 end

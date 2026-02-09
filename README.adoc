@@ -2,7 +2,7 @@
 
 image:https://img.shields.io/gem/v/iev.svg["Gem Version", link="https://rubygems.org/gems/iev"]
 image:https://github.com/glossarist/iev/workflows/rake/badge.svg["Build Status", link="https://github.com/glossarist/iev/actions?query=workflow%3Arake"]
-image:https://codeclimate.com/github/glossarist/iev/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/glossarist/iev"]
+// image:https://codeclimate.com/github/glossarist/iev/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/glossarist/iev"]
 image:https://img.shields.io/github/issues-pr-raw/glossarist/iev.svg["Pull Requests", link="https://github.com/glossarist/iev/pulls"]
 image:https://img.shields.io/github/commits-since/glossarist/iev/latest.svg["Commits since latest",link="https://github.com/glossarist/iev/releases"]
 
