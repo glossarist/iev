@@ -18,7 +18,7 @@ RSpec.describe "Iev" do
             "deu" => "e31b74fe-785f-5d91-aff5-d77b919485db",
             "eng" => "fb47471b-2692-5075-b273-b3f671e9ca9f",
             "fra" => "55272d39-f150-51ea-845f-d0a092964c14",
-            "jpn" => "8afc92ec-b320-58b4-a13b-aa32314c8ea1",
+            "jpn" => "47740b93-6f57-5b37-97f3-69f41e65acbd",
             "kor" => "da5f0c48-2110-5d54-a274-7583189fb2d5",
             "pol" => "c85859a3-d630-50b6-9564-1bd4108472ee",
             "por" => "eaa113f3-247d-5b64-8b80-13eaecae5206",
