@@ -32,22 +32,25 @@ module Iev
   #   if language not found then nil.
   #
   def self.get(code, lang)
-    url = "http://www.electropedia.org/iev/iev.nsf/"\
-          "display?openform&ievref=#{code}"
-    
-    # Use Mechanize with User-Agent to avoid 403 Forbidden errors from bot detection
-    agent = Mechanize.new
-    agent.user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    
-    page = agent.get(url)
-    doc = page.parser  # Nokogiri document
-    
+    doc = get_doc(code)
     xpath = "//table/tr/td/div/font[.=\"#{lang}\"]/../../"\
             "following-sibling::td[2]"
     a = doc&.at(xpath)&.children&.to_xml
     a&.sub(%r{<br/>.*$}, "")
       &.sub(/, &lt;.*$/, "")
       &.gsub(/<[^<>]*>/, "")&.strip
+  end
+
+  def self.get_doc(code)
+    url = "https://www.electropedia.org/iev/iev.nsf/"\
+         "display?openform&ievref=#{code}"
+
+    # Use Mechanize with User-Agent to avoid 403 Forbidden errors from bot detection
+    agent = Mechanize.new
+    agent.user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+    page = agent.get(url)
+    page.parser # Nokogiri document
   end
 end
 
