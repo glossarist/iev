@@ -5,7 +5,6 @@
 
 # rubocop:todo Style/RedundantRegexpEscape
 
-require "English"
 module Iev
   # Parses information from the spreadsheet's SOURCE column.
   #

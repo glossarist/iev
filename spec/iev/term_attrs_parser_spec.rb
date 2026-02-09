@@ -41,7 +41,9 @@ RSpec.describe Iev::TermAttrsParser do
       expect(subject.gender).to be(nil)
     end
 
-    pending "it cannot be placed inside brackets" # too difficult for now
+    it "cannot be placed inside brackets", string: "(m)" do
+      expect(subject.gender).to eq("m")
+    end
   end
 
   describe "plurality" do
@@ -89,7 +91,9 @@ RSpec.describe Iev::TermAttrsParser do
       expect(subject.plurality).to eq("singular")
     end
 
-    pending "it cannot be placed inside brackets" # too difficult for now
+    it "cannot be placed inside brackets", string: "(pl)" do
+      expect(subject.plurality).to eq("plural")
+    end
   end
 
   describe "part of speech" do

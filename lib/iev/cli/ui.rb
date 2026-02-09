@@ -62,7 +62,7 @@ module Iev
         end
 
         def should_out?(level, topic)
-          topic.nil? || level == :warn || $IEV_DEBUG[topic]
+          topic.nil? || level == :warn || ($IEV_DEBUG && $IEV_DEBUG[topic])
         end
       end
     end

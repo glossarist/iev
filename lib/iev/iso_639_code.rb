@@ -7,16 +7,18 @@ module Iev
   # @todo This needs to be rewritten.
   class Iso639Code
     COUNTRY_CODES = YAML.load(IO.read(File.join(__dir__, "iso_639_2.yaml")))
-    THREE_CHAR_MEMO = {}
+    # rubocop:disable Style/MutableConstant
+    THREE_CHAR_MEMO = {} # Memoization cache, must be mutable
+    # rubocop:enable Style/MutableConstant
 
     def initialize(two_char_code)
       @code = case two_char_code.length
-        when 2
-          two_char_code
-        else
-          # This is to handle code "nl BE" in the Iev sheet
-          two_char_code.split(" ").first
-        end
+              when 2
+                two_char_code
+              else
+                # This is to handle code "nl BE" in the Iev sheet
+                two_char_code.split.first
+              end
     end
 
     def find(code_type)

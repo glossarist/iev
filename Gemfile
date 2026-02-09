@@ -2,13 +2,14 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in lutaml-model.gemspec
-gemspec
-
-gem "rake", "~> 13.0"
-gem "rspec", "~> 3.0"
-gem "rubocop", "~> 1.21"
-gem "rubocop-performance", require: false
-gem "rubocop-rake", require: false
-gem "rubocop-rspec", require: false
+gem "canon"
+gem "openssl"
+gem "rake"
+gem "rspec"
+gem "rubocop"
+gem "rubocop-performance"
+gem "rubocop-rake"
+gem "rubocop-rspec"
 gem "simplecov"
+
+gemspec
