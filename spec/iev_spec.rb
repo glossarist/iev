@@ -10,6 +10,36 @@ RSpec.describe Iev do
     expect(Iev::VERSION).not_to be nil
   end
 
+  it "should handle empty cache directory gracefully" do
+    # Simulate fresh installation with empty cache
+    cache_dir = "testcache_empty_#{Time.now.to_i}"
+    FileUtils.rm_rf(cache_dir) if Dir.exist?(cache_dir)
+
+    # This should not raise an exception
+    expect do
+      db = Iev::Db.new(cache_dir, nil)
+      expect(db).not_to be_nil
+    end.not_to raise_error
+
+    # Cleanup
+    FileUtils.rm_rf(cache_dir) if Dir.exist?(cache_dir)
+  end
+
+  it "should handle non-existent cache directory gracefully" do
+    # Use a path that doesn't exist
+    cache_dir = "/tmp/iev_test_nonexistent_#{Time.now.to_i}"
+
+    # This should not raise an exception
+    expect do
+      db = Iev::Db.new(cache_dir, nil)
+      expect(db).not_to be_nil
+      expect(Dir.exist?(cache_dir)).to be_truthy
+    end.not_to raise_error
+
+    # Cleanup
+    FileUtils.rm_rf(cache_dir) if Dir.exist?(cache_dir)
+  end
+
   it "get term, cache it and return" do
     mock_mechanize("103-01-02")
     term = @db.fetch "103-01-02", "en"

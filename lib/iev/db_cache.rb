@@ -70,8 +70,13 @@ module Iev
     # Check if version of the DB match to the gem version.
     # @return [TrueClass, FalseClass]
     def check_version?
-      v = File.read "#{@dir}/version", encoding: "utf-8"
+      version_file = "#{@dir}/version"
+      return false unless File.exist?(version_file)
+
+      v = File.read version_file, encoding: "utf-8"
       v == VERSION
+    rescue StandardError
+      false
     end
 
     # Set version of the DB to the gem version.
