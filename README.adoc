@@ -6,6 +6,13 @@ image:https://github.com/glossarist/iev/workflows/rake/badge.svg["Build Status",
 image:https://img.shields.io/github/issues-pr-raw/glossarist/iev.svg["Pull Requests", link="https://github.com/glossarist/iev/pulls"]
 image:https://img.shields.io/github/commits-since/glossarist/iev/latest.svg["Commits since latest",link="https://github.com/glossarist/iev/releases"]
 
+[WARNING]
+--
+As of 2026-02-10, Electropedia is limiting programmatic access to its URLs, and is blocking access from GitHub Actions completely.
+The gem has had its headers updated so that local programmatic access is reenabled, but can not be relied on as a means of
+programmatically accessing Electropedia content.
+--
+
 
 == Purpose
 
