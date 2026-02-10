@@ -120,6 +120,7 @@ RSpec.describe Iev do
   private
 
   def mock_mechanize(code)
+    return
     # Create mock objects
     mock_page = double("Mechanize::Page")
     mock_agent = double("Mechanize")
