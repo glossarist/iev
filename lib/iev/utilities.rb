@@ -33,12 +33,11 @@ module Iev
 
     # IEV data has unquoted href with spaces, e.g.
     #   <a href=IEV 102-01-10>...</a>
-    # Nokogiri stops at first space, so add quotes
-    # to preserve the full value.
+    # Nokogiri stops at first space, so add quotes.
+    # Uses a specific IEV code pattern to avoid regex backtracking.
     def fix_unquoted_href(text)
-      text.gsub(/href=([^"'\s>][^"'>]*[^"'>\s])\b/) do
-        val = Regexp.last_match(1).strip
-        "href=\"#{val}\""
+      text.gsub(/href=(IEV\s\d{2,3}-\d{2,3}-\d{2,3})(?=[>\s])/) do
+        "href=\"#{Regexp.last_match(1)}\""
       end
     end
 
