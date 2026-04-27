@@ -34,6 +34,8 @@ module Iev
                              desc: "Enables debug messages about authoritative sources recognition"
       option :debug_relaton, type: :boolean, default: false,
                              desc: "Enables debug messages about Relaton integration"
+      option :relaton, type: :boolean, default: false,
+                       desc: "Fetch source URLs via Relaton (slow, makes network requests)"
       def export(file)
         handle_generic_options(options)
 
@@ -42,6 +44,7 @@ module Iev
           output_dir: options[:output],
           only_concepts: options[:only_concepts],
           only_languages: options[:only_languages],
+          fetch_relaton_links: options[:relaton],
         ).export
 
         info "Done!"

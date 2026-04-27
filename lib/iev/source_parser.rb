@@ -14,6 +14,12 @@ module Iev
     include Utilities
     using DataConversions
 
+    # When false, obtain_source_link skips Relaton network calls.
+    @relaton_enabled = true
+    class << self
+      attr_accessor :relaton_enabled
+    end
+
     attr_reader :src_split, :parsed_sources, :raw_str, :src_str
 
     def initialize(source_str, term_domain)
@@ -89,7 +95,7 @@ module Iev
         origin: origin,
         modification: relationship[:modification],
       )
-    rescue ::RelatonBib::RequestError => e
+    rescue ::RelatonBib::RequestError, Socket::ResolutionError, SocketError => e
       warn e.message
     end
 
@@ -347,10 +353,11 @@ module Iev
 
     # Uses Relaton to obtain link for given source ref.
     def obtain_source_link(ref)
+      return nil unless self.class.relaton_enabled
       return nil unless defined?(RelatonDb)
 
       RelatonDb.instance.fetch(ref)&.url
-    rescue ::RelatonBib::RequestError => e
+    rescue ::RelatonBib::RequestError, Socket::ResolutionError, SocketError => e
       warn e.message
       nil
     end

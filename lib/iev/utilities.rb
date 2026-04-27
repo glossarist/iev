@@ -13,9 +13,13 @@ module Iev
 
     def parse_anchor_tag(text, term_domain)
       return nil if text.nil?
+      return text unless text.include?("<")
 
       text = process_simg_figures(text, term_domain)
       text = fix_unquoted_href(text)
+
+      # Second check: regex substitutions may have consumed all tags
+      return text unless text.include?("<")
 
       doc = Nokogiri::HTML::DocumentFragment.parse(text)
       nodes_to_adoc(doc.children, term_domain)
@@ -86,9 +90,43 @@ module Iev
         "#{IMAGE_PATH_PREFIX}/#{term_domain}/#{src}[]"
       when "p", "div", "span"
         inner
+      when "i"
+        convert_italic(inner)
+      when "sub"
+        inner.empty? ? "" : "~#{inner}~"
+      when "sup"
+        inner.empty? ? "" : "^#{inner}^"
+      when "ol"
+        convert_list(node, ". ")
+      when "ul"
+        convert_list(node, "* ")
+      when "li"
+        inner
+      when "font"
+        convert_font(node, inner)
       else
         node.to_s
       end
+    end
+
+    def convert_italic(text)
+      case text.length
+      when 0
+        ""
+      when 1..12
+        "stem:[#{text}]"
+      else
+        "_#{text}_"
+      end
+    end
+
+    def convert_list(node, prefix)
+      node.css("li").map { |li| "#{prefix}#{li.text}" }.join
+    end
+
+    def convert_font(node, inner)
+      style = node["style"].to_s
+      style.include?("sans-serif") ? "`#{inner}`" : inner
     end
 
     def convert_link(node, inner)
