@@ -27,12 +27,15 @@ module Iev
     # @param output_dir [String, Pathname] destination for YAML files
     # @param only_concepts [String, nil] SQL LIKE pattern for IEVREF filtering
     # @param only_languages [String, nil] comma-separated language codes
+    # @param fetch_relaton_links [Boolean] whether to fetch source URLs via Relaton
     def initialize(input_path, output_dir: Dir.pwd,
-                   only_concepts: nil, only_languages: nil)
+                   only_concepts: nil, only_languages: nil,
+                   fetch_relaton_links: false)
       @input_path = Pathname.new(input_path)
       validate_input!
 
       @output_dir = Pathname.new(output_dir)
+      @fetch_relaton_links = fetch_relaton_links
       @filters = {
         only_concepts: only_concepts,
         only_languages: only_languages,
@@ -102,15 +105,28 @@ module Iev
     end
 
     def build_collection(dataset)
-      Glossarist::ManagedConceptCollection.new.tap do |collection|
-        dataset.each do |row|
-          term = TermBuilder.build_from(row)
-          next unless term
+      SourceParser.relaton_enabled = @fetch_relaton_links
 
-          concept = collection.fetch_or_initialize(term.id)
-          concept.add_l10n(term)
+      # Use a hash index for O(1) concept lookup instead of
+      # Glossarist's O(n) fetch_or_initialize which does linear scan.
+      concept_index = {}
+      collection = Glossarist::ManagedConceptCollection.new
+
+      dataset.each do |row|
+        term = TermBuilder.build_from(row)
+        next unless term
+
+        concept = concept_index[term.id] ||= begin
+          c = Glossarist::ManagedConcept.new(data: { "id" => term.id })
+          collection.store(c)
+          c
         end
+        concept.add_l10n(term)
       end
+
+      collection
+    ensure
+      SourceParser.relaton_enabled = true
     end
 
     def save_collection(collection)

@@ -48,7 +48,16 @@ module Iev
           mathml_to_asciimath(input)
         end
 
+        # Clear the Plurimath expression cache. Call between export runs.
+        def clear_cache
+          @math_cache = nil
+        end
+
         private
+
+        def math_cache
+          @math_cache ||= {}
+        end
 
         def mathml_to_asciimath(input)
           return input unless input&.match?(/<|&/)
@@ -58,17 +67,18 @@ module Iev
           to_asciimath = Nokogiri::HTML.fragment(input, "UTF-8")
 
           to_asciimath.css("math").each do |math_element|
-            asciimath = Plurimath::Math.parse(
-              math_element.to_xml, :mathml
-            ).to_asciimath.strip
+            math_xml = math_element.to_xml
+            asciimath = math_cache[math_xml] ||= begin
+              Plurimath::Math.parse(math_xml, :mathml).to_asciimath.strip
+            rescue Plurimath::Math::ParseError
+              ""
+            end
 
             if asciimath.empty?
               math_element.remove
             else
               math_element.replace "stem:[#{asciimath}]"
             end
-          rescue Plurimath::Math::ParseError
-            math_element.remove
           end
 
           html_to_asciimath(
@@ -78,6 +88,13 @@ module Iev
 
         def html_to_asciimath(input)
           return input if input.nil? || input.empty?
+
+          # Fast path: if no HTML elements remain that need Nokogiri processing
+          # (after parse_anchor_tag handles <i>/<sub>/<sup>/<ol>/<ul>/<font>),
+          # just do the Greek entity replacement.
+          unless input.match?(/<([iI]|sub|sup|ol|ul|font)\b/)
+            return html_entities_to_stem(input)
+          end
 
           to_asciimath = Nokogiri::HTML.fragment(input, "UTF-8")
 

@@ -298,6 +298,8 @@ module Iev
     end
 
     def strip_html_comments(str)
+      return str unless str.include?("<!--")
+
       doc = Nokogiri::HTML::DocumentFragment.parse(str)
       comments = doc.children.select(&:comment?)
       return str if comments.empty?

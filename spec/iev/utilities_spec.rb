@@ -76,20 +76,20 @@ RSpec.describe Iev::Utilities do
       end
     end
 
-    # Preserve unhandled HTML elements for downstream mathml_to_asciimath processing
+    # Inline elements are converted directly in parse_anchor_tag
     context "when text contains italic and other inline elements" do
-      it "preserves <i> tags as raw HTML" do
+      it "converts <i> tags to stem notation" do
         text = "<i>f</i>(<i>t</i>)"
 
         expect(subject.parse_anchor_tag(text, "103"))
-          .to eq("<i>f</i>(<i>t</i>)")
+          .to eq("stem:[f](stem:[t])")
       end
 
-      it "preserves <sup> tags as raw HTML" do
+      it "converts <sup> tags to caret notation" do
         text = "x<sup>2</sup>"
 
         expect(subject.parse_anchor_tag(text, "103"))
-          .to eq("x<sup>2</sup>")
+          .to eq("x^2^")
       end
     end
 
