@@ -28,6 +28,7 @@ module Iev
   autoload :DataConversions, "iev/data_conversions"
   autoload :DataSource, "iev/data_source"
   autoload :DbWriter, "iev/db_writer"
+  autoload :Exporter, "iev/exporter"
   autoload :Iso639Code, "iev/iso_639_code"
   autoload :Profiler, "iev/profiler"
   autoload :RelatonDb, "iev/relaton_db"
