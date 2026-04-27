@@ -61,14 +61,16 @@ $ gem install iev
 
 The gem comes with the `iev` executable, which provides the following commands:
 
-`iev xlsx2yaml FILE`::
-Converts Excel IEV exports to YAMLs.
+`iev export FILE -o OUTPUT_DIR`::
+Exports IEV data to Glossarist YAML format.
+Supports both Excel (`.xlsx`/`.xls`) and SQLite (`.sqlite3`/`.sqlite`/`.db`) input files.
+Format is detected automatically from the file extension.
 
 `iev xlsx2db FILE`::
 Imports Excel to SQLite database.
 
-`iev db2yaml DB_FILE`:::
-Exports SQLite to IEV YAMLs.
+`iev fetch CODE`::
+Fetches a single IEV concept and outputs YAML to stdout.
 
 WARNING: The IEV XLSX export files can only be obtained from the IEC
 Electropedia administrator.
@@ -116,23 +118,41 @@ concept = scraper.fetch_concept("103-01-02")
 ----
 
 
-=== Converting IEV Excel exports to a Glossarist dataset
+=== Converting IEV data to a Glossarist dataset
 
-Run the following command:
+The `export` command converts an IEV Excel export or SQLite database into
+Glossarist YAML concept files:
 
 [source,sh]
 ----
-$ iev xlsx2yaml [termbase.xlsx]
+# From an Excel export
+$ iev export termbase.xlsx -o /path/to/output
+
+# From a SQLite database
+$ iev export termbase.sqlite3 -o /path/to/output
+
+# With filters
+$ iev export termbase.xlsx -o /output --only-concepts "103-%" --only-languages "en,fr"
 ----
 
-Where,
+The output directory will contain a `concepts/` subdirectory with Glossarist
+concept and localized concept YAML files.
 
-* the Glossarist termbase YAML files will be created at `[termbase.yaml]` at
-  the current working directory;
+You can also use the `Iev::Exporter` class programmatically:
 
-* ConceptYAML files for each concept (each concept identified by a unique "`Term-ID`")
-  are created under the `concepts/` directory (based on the current working directory).
-  i.e. `concepts/concept-338.yaml`.
+[source,ruby]
+----
+# Export from Excel
+Iev::Exporter.new("termbase.xlsx", output_dir: "/path/to/output").export
+
+# Export from SQLite with filters
+collection = Iev::Exporter.new("termbase.sqlite3",
+  output_dir: "/path/to/output",
+  only_concepts: "103-%",
+  only_languages: "en,fr",
+).export
+# collection is a Glossarist::ManagedConceptCollection
+----
 
 
 == Structure of the IEV Excel export
