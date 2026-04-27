@@ -13,7 +13,6 @@ module Iev
   #   parser.plurality # returns grammatical plurality
   #   parser.part_of_speech # returns part of speech
   class TermAttrsParser
-    include Cli::Ui
     using DataConversions
 
     attr_reader :raw_str, :src_str, :gender, :geographical_area,
@@ -44,6 +43,19 @@ module Iev
       "<ATTRIBUTES: #{src_str}>".freeze
     end
 
+    # Constructs a Glossarist::Designation::GrammarInfo from the parsed
+    # gender, plurality, and part_of_speech attributes.
+    # Returns nil if none of these attributes were parsed.
+    def to_grammar_info
+      return nil unless gender || plurality || part_of_speech
+
+      Glossarist::Designation::GrammarInfo.new(
+        gender: gender ? [gender] : nil,
+        number: plurality ? [plurality] : nil,
+        part_of_speech: part_of_speech,
+      )
+    end
+
     private
 
     def parse
@@ -58,10 +70,7 @@ module Iev
 
       return unless /\p{Word}/.match?(curr_str)
 
-      debug(
-        :term_attributes,
-        "Term attributes could not be parsed completely: '#{src_str}'",
-      )
+      # Term attributes could not be parsed completely
     end
 
     def extract_gender(str)
@@ -130,11 +139,16 @@ module Iev
         \b
       /x
 
-      @prefix = true if remove_from_string(str, prefix_rx)
+      removed = remove_from_string(str, prefix_rx)
+      @prefix = removed if removed
     end
 
     def decode_attrs_string(str)
-      str.decode_html || ""
+      decoded = str.decode_html || ""
+      # Strip common HTML inline tags that appear in TERMATTRIBUTE data
+      # and would interfere with usage_info angle-bracket parsing.
+      # Only strip known HTML tags, not usage_info like <telecommunications>.
+      decoded.gsub(/<\/?(?:sup|sub|i|b|em|strong|span|small)>/, "")
     end
 
     def remove_from_string(string, regexp)

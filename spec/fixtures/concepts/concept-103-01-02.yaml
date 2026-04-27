@@ -1,0 +1,196 @@
+---
+termid: 103-01-02
+term: functional
+ara:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: دالى
+  language_code: ara
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published
+deu:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: Funktional
+    gender: n
+    plurality: singular
+  language_code: deu
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published
+eng:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: functional
+  definition: function for which the argument is a function and the value a number
+  language_code: eng
+  notes:
+  - An example of a functional of the function stem:[f](stem:[t]) is stem:[int_(t_2)^(t_1)
+    f ( t ) d t].
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published
+spa:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: funcional
+  language_code: spa
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published
+fra:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: fonctionnelle
+    gender: f
+    plurality: singular
+  definition: fonction dont l'argument est une fonction et la valeur un nombre
+  language_code: fra
+  notes:
+  - Un exemple de fonctionnelle de la fonction stem:[f](stem:[t]) est stem:[int_(t_2)^(t_1)
+    f ( t ) d t].
+  examples: []
+  entry_status: Standard
+  review_decision_event: published
+ita:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: funzionale
+  language_code: ita
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published
+jpn:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: 汎関数
+  language_code: jpn
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published
+kor:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: 범함수
+  language_code: kor
+  notes: []
+  examples: []
+  entry_status: Standard
+  review_decision_event: published
+pol:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: funkcjonał
+  language_code: pol
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published
+por:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: funcional
+  language_code: por
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published
+srp:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: функционал
+  language_code: srp
+  notes: []
+  examples: []
+  entry_status: Standard
+  review_decision_event: published
+swe:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: funktional
+  language_code: swe
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published
+zho:
+  id: 103-01-02
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: 泛函
+  language_code: zho
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2009-12-01T00:00:00+00:00'
+  date_amended: '2009-12-01T00:00:00+00:00'
+  review_date: '2009-12-01T00:00:00+00:00'
+  review_decision_date: '2009-12-01T00:00:00+00:00'
+  review_decision_event: published

@@ -9,8 +9,8 @@ module Iev
   #
   # @example
   #   SupersessionParser.new(cell_data_string).supersessions
+  #   # => [Glossarist::RelatedConcept, ...]
   class SupersessionParser
-    include Cli::Ui
     using DataConversions
 
     attr_reader :raw_str, :src_str, :supersessions
@@ -52,18 +52,14 @@ module Iev
     end
 
     def relation_from_match(match_data)
-      {
-        "type" => "supersedes",
-        "ref" => iev_ref_from_match(match_data),
-      }
-    end
-
-    def iev_ref_from_match(match_data)
-      {
-        "source" => "IEV",
-        "id" => match_data[:ref],
-        "version" => match_data[:version],
-      }
+      Glossarist::RelatedConcept.new(
+        type: "supersedes",
+        ref: Glossarist::Citation.new(
+          source: "IEV",
+          id: match_data[:ref],
+          version: match_data[:version],
+        ),
+      )
     end
   end
 end

@@ -2,6 +2,17 @@
 # frozen_string_literal: true
 
 require_relative "../lib/iev"
+
+# CLI dependencies — loaded eagerly for the conversion pipeline
+require "benchmark"
+require "creek"
+require "glossarist"
+require "nokogiri"
+require "relaton"
+require "relaton_bib"
+require "sequel"
+require "thor"
+
 require_relative "../lib/iev/cli"
 
 Iev::Cli.start(ARGV)
