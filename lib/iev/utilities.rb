@@ -5,9 +5,10 @@ module Iev
     IMAGE_PATH_PREFIX = "image::/assets/images/parts"
     IEV_CODE_RE = /\A(IEV)?\s*(\d{2,3}-\d{2,3}-\d{2,3})\z/
 
-    # SIMG/Figure patterns — custom IEV XML, pre-processed before Nokogiri
-    SIMG_PATH_REGEX = /<simg .*\/\$file\/([\d\-\w.]+)>/
-    FIGURE_ONE_REGEX = '<p><b>\\s*Figure\\s+(\\d)\\s+[–-]\\s+(.+)\\s*<\\/b>(<\\/p>)?'
+    # SIMG/Figure patterns — custom IEV XML, pre-processed before Nokogiri.
+    # Uses [^>] and [^<] instead of . to avoid polynomial backtracking.
+    SIMG_PATH_REGEX = /<simg [^>]*\/\$file\/([\d\-\w.]+)>/
+    FIGURE_ONE_REGEX = '<p><b>\\s*Figure\\s+(\\d)\\s+[–-]\\s+([^<]+)\\s*<\\/b>(<\\/p>)?'
     FIGURE_TWO_REGEX = "#{FIGURE_ONE_REGEX}\\s*#{FIGURE_ONE_REGEX}".freeze
 
     def parse_anchor_tag(text, term_domain)
