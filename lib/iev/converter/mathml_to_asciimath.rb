@@ -58,11 +58,15 @@ module Iev
           to_asciimath = Nokogiri::HTML.fragment(input, "UTF-8")
 
           to_asciimath.css("math").each do |math_element|
-            asciimath = Plurimath::Math.parse(
-              text_to_asciimath(math_element.to_xml), :mathml
-            ).to_asciimath.strip
+            asciimath = begin
+              Plurimath::Math.parse(
+                text_to_asciimath(math_element.to_xml), :mathml
+              ).to_asciimath.strip
+            rescue Plurimath::Math::ParseError
+              nil
+            end
 
-            if asciimath.empty?
+            if asciimath.nil? || asciimath.empty?
               math_element.remove
             else
               math_element.replace "stem:[#{asciimath}]"
