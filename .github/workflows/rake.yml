@@ -2,8 +2,6 @@ name: rake
 
 permissions:
   contents: read
-  actions: write         # Add this if you need to approve or trigger workflows
-
 
 on:
   push:
