@@ -65,6 +65,82 @@ RSpec.describe Iev::Utilities do
           .to eq("{{adjective, IEV:103-05-02}}")
       end
     end
+
+    # CodeQL fix: unquoted href with space (IEV data: href=IEV 102-01-10)
+    context "when href has unquoted value with space" do
+      it "preserves the full IEV code including space" do
+        text = 'See <a href=IEV 102-01-10>IEV 102-01-10</a>'
+
+        expect(subject.parse_anchor_tag(text, "103"))
+          .to eq("See {{IEV 102-01-10, IEV:102-01-10}}")
+      end
+    end
+
+    # Preserve unhandled HTML elements for downstream mathml_to_asciimath processing
+    context "when text contains italic and other inline elements" do
+      it "preserves <i> tags as raw HTML" do
+        text = "<i>f</i>(<i>t</i>)"
+
+        expect(subject.parse_anchor_tag(text, "103"))
+          .to eq("<i>f</i>(<i>t</i>)")
+      end
+
+      it "preserves <sup> tags as raw HTML" do
+        text = "x<sup>2</sup>"
+
+        expect(subject.parse_anchor_tag(text, "103"))
+          .to eq("x<sup>2</sup>")
+      end
+    end
+
+    # SIMG/Figure patterns (custom IEV XML, pre-processed with regex)
+    # IEV format: SIMG tag followed by figure captions
+    context "when text contains SIMG figure references" do
+      it "converts SIMG with two figures" do
+        text = '<simg type="negative"/$file/103-01-02en.gif>' \
+               '<p><b> Figure  1  –  Description 1 </b></p>' \
+               '<p><b> Figure  2  –  Description 2 </b></p>'
+
+        result = subject.parse_anchor_tag(text, "103")
+        expect(result).to start_with("image::/assets/images/parts/103/103-01-02en.gif[")
+        expect(result).to include("Figure 1 - Description 1")
+        expect(result).to include("Description 2")
+      end
+
+      it "converts SIMG with single figure" do
+        text = '<simg type="negative"/$file/103-01-02en.gif>' \
+               '<p><b> Figure  1  –  Description </b></p>'
+
+        result = subject.parse_anchor_tag(text, "103")
+        expect(result).to start_with("image::/assets/images/parts/103/103-01-02en.gif[")
+        expect(result).to include("Figure 1 - Description")
+      end
+
+      it "converts standalone SIMG without figure label" do
+        text = '<simg type="negative"/$file/103-01-02en.gif>'
+
+        result = subject.parse_anchor_tag(text, "103")
+        expect(result).to eq("image::/assets/images/parts/103/103-01-02en.gif[]")
+      end
+    end
+
+    context "when text contains bold tags" do
+      it "wraps bold content in asciidoc asterisks" do
+        text = "<b>important</b>"
+
+        expect(subject.parse_anchor_tag(text, "103"))
+          .to eq("*important*")
+      end
+    end
+
+    context "when text contains br tags" do
+      it "converts br to newline" do
+        text = "line1<br>line2"
+
+        expect(subject.parse_anchor_tag(text, "103"))
+          .to eq("line1\nline2")
+      end
+    end
   end
 
   describe "#replace_newlines" do
