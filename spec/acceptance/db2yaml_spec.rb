@@ -15,15 +15,15 @@ RSpec.describe "Iev" do
         "data" => {
           "identifier" => "103-01-01",
           "localized_concepts" => {
-            "ara" => "bdb77f6b-5beb-53e9-ad15-ad2fa274b24a",
-            "deu" => "e31b74fe-785f-5d91-aff5-d77b919485db",
+            "ara" => "2facc2da-b31c-5865-a461-7b09beb50306",
+            "deu" => "b428bdb9-caae-56e2-843e-fc235e237caf",
             "eng" => "fb47471b-2692-5075-b273-b3f671e9ca9f",
-            "fra" => "55272d39-f150-51ea-845f-d0a092964c14",
-            "jpn" => "47740b93-6f57-5b37-97f3-69f41e65acbd",
-            "kor" => "da5f0c48-2110-5d54-a274-7583189fb2d5",
-            "pol" => "c85859a3-d630-50b6-9564-1bd4108472ee",
-            "por" => "eaa113f3-247d-5b64-8b80-13eaecae5206",
-            "zho" => "48ee39d6-4e9a-5fee-92b6-660496eb7f6b",
+            "fra" => "c390520c-2eab-540e-bf70-bfa68a5a5d71",
+            "jpn" => "c7120404-7fea-5433-aa45-a2f314935991",
+            "kor" => "a89b8a05-ca41-5fb7-b435-c9bec070cd6f",
+            "pol" => "18ab22c6-5924-520b-978d-9344491a38e9",
+            "por" => "3d56d72b-8c68-52f8-8965-ecfdef4d0ec8",
+            "zho" => "a2ba7d83-7768-5460-a7df-7d3cd5246d84",
           },
         },
         "id" => "a9e98ffa-5960-5cd8-8f1e-9d0939da6fc0",
@@ -84,12 +84,12 @@ RSpec.describe "Iev" do
         "data" => {
           "identifier" => "103-01-02",
           "localized_concepts" => {
-            "ara" => "60fe802b-844d-5e23-bd23-aa43e79cabed",
-            "deu" => "a74756b7-aa12-5a3e-82b0-b37320cbf365",
+            "ara" => "6ede724c-74e6-59da-b4e6-ae13f7f9ab17",
+            "deu" => "974775b1-ce18-5718-ad79-ec092c83df24",
             "eng" => "cac82820-d563-50d8-8166-73bc4bbc34ab",
-            "fra" => "35052869-4db7-5ed1-959f-0cc4cbb87428",
-            "jpn" => "2288f10b-bbeb-53b3-a58e-9968e338cc5b",
-            "kor" => "a3b9a0e6-fdc4-520d-8caa-c50388bc91d4",
+            "fra" => "6ed485dc-3cbf-5b2f-ad9b-17009da3e2b5",
+            "jpn" => "c86300c6-3b00-5c74-ae88-459d49e766a4",
+            "kor" => "9e352209-a7b6-50b3-9906-b91d87015f9a",
           },
         },
         "id" => "13ef6c25-6083-55e0-bcd8-85c887cafc6f",
@@ -99,7 +99,7 @@ RSpec.describe "Iev" do
     let(:expected_localized_concept2) do
       {
         "data" => {
-          "definition" => [{}],
+          "definition" => [],
           "examples" => [],
           "id" => "103-01-02",
           "notes" => [],
@@ -114,7 +114,7 @@ RSpec.describe "Iev" do
           "entry_status" => "valid",
           "review_decision_event" => "published",
         },
-        "id" => "a3b9a0e6-fdc4-520d-8caa-c50388bc91d4",
+        "id" => "9e352209-a7b6-50b3-9906-b91d87015f9a",
       }
     end
 

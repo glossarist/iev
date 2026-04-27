@@ -44,44 +44,46 @@ module Iev
 
       split_definition
 
-      Glossarist::LocalizedConcept.from_hash(term_hash)
+      concept_data = build_concept_data
+
+      concept = Glossarist::LocalizedConcept.new
+      concept.data = concept_data
+      concept.id = term_id
+      concept.entry_status = extract_entry_status
+      concept.classification = extract_classification
+
+      concept
     end
 
-    def term_hash
-      dates = nil
+    def build_concept_data
+      cd = Glossarist::ConceptData.new
+      cd.id = term_id
+      cd.language_code = term_language
 
-      if flesh_date(find_value_for("PUBLICATIONDATE"))
-        dates = [
-          {
-            type: :accepted,
-            date: flesh_date(find_value_for("PUBLICATIONDATE")),
-          },
-          {
-            type: :amended,
-            date: flesh_date(find_value_for("PUBLICATIONDATE")),
-          },
+      pub_date = flesh_date(find_value_for("PUBLICATIONDATE"))
+      if pub_date
+        cd.dates = [
+          Glossarist::ConceptDate.new(type: "accepted", date: pub_date),
+          Glossarist::ConceptDate.new(type: "amended", date: pub_date),
         ]
+        cd.review_date = pub_date
+        cd.review_decision_date = pub_date
       end
+      cd.review_decision_event = "published"
 
-      {
-        id: term_id,
-        classification: extract_classification,
-        entry_status: extract_entry_status,
-        data: {
-          id: term_id,
-          dates: dates,
-          definition: [{ "content" => extract_definition_value }],
-          examples: extract_examples,
-          notes: extract_notes,
-          terms: extract_terms,
-          review_date: flesh_date(find_value_for("PUBLICATIONDATE")),
-          review_decision_date: flesh_date(find_value_for("PUBLICATIONDATE")),
-          review_decision_event: "published",
-          language_code: term_language,
-          sources: extract_authoritative_source,
-          related: extract_superseded_concepts,
-        }.compact,
-      }.compact
+      definition = extract_definition_value
+      cd.definition = [definition] if definition
+      cd.examples = extract_examples
+      cd.notes = extract_notes
+      cd.terms = extract_terms
+
+      sources = extract_authoritative_source
+      cd.sources = sources if sources&.any?
+
+      related = extract_superseded_concepts
+      cd.related = related if related&.any?
+
+      cd
     end
 
     def term_id
@@ -121,10 +123,10 @@ module Iev
             Note&nbsp;\d+\sto\sentry: |
             Note\s*\d+\sto\sthe\sentry: |
             Note\sto\sentry\s*\d+: |
-            Note\s*\d+?\sà\sl['’]article: |
-            <NOTE/?>?\s*\d?\s+.*?– |
-            NOTE(?:\s+-)? |
-            Note\s+\d+\s– |
+            Note\s*\d+?\sà\sl['']article: |
+            <NOTE/?>?\s*\d?\s+[–-]\s* |
+            NOTE(?:\s+-)?\s* |
+            Note\s+\d+\s[–-]\s* |
             Note&nbsp;\d+\s
           )
         )
@@ -140,28 +142,14 @@ module Iev
 
       while (md = remaining_str&.match(slicer_rx))
         next_part = md.pre_match
-        next_part.sub!(/^\[:Ex(a|e)mple\]/, 'Ex\\1mple')
+        next_part.sub!(/^\[:Ex(a|e)mple\]/, 'Ex\1mple')
         next_part_arr.push(next_part)
         next_part_arr = md[:example] ? @examples : @notes
-        # 112-03-17
-        # supplements the name of a quantity, especially for a component in a
-        # system, to indicate the quotient of that quantity by the total
-        # volume
-        # <NOTE – Examples: amount-of-substance volume concentration of
-        # component B (or concentration of B, in particular, ion
-        # concentration), molecular concentration of B, electron concentration
-        # (or electron density).
-        #
-        # In the above case the `Example` is part of the note but the regex
-        # above will capture it as an example and will add an empty `Note`
-        # and put the rest in an `Example`. So In this case we will replace
-        # the `Example` with `[:Example]` and revert it in the next iteration
-        # so it will not be caught by the regex.
         remaining_str = md.post_match
-        remaining_str.sub!(/^Ex(a|e)mple/, '[:Ex\\1mple]') if md[:note]
+        remaining_str.sub!(/^Ex(a|e)mple/, '[:Ex\1mple]') if md[:note]
       end
 
-      remaining_str&.sub!(/^\[:Ex(a|e)mple\]/, 'Ex\\1mple')
+      remaining_str&.sub!(/^\[:Ex(a|e)mple\]/, 'Ex\1mple')
       next_part_arr.push(remaining_str)
       @definition = definition_arr.first
       @definition = nil if @definition&.empty?
@@ -211,28 +199,21 @@ module Iev
     def extract_definition_value
       return unless @definition
 
-      Iev::Converter.mathml_to_asciimath(
-        replace_newlines(parse_anchor_tag(@definition, term_domain)),
-      ).strip
+      content = convert_content(@definition)
+      Glossarist::DetailedDefinition.new(content: content)
     end
 
     def extract_examples
       @examples.map do |str|
-        {
-          content: Iev::Converter.mathml_to_asciimath(
-            replace_newlines(parse_anchor_tag(str, term_domain)),
-          ).strip,
-        }
+        content = convert_content(clean_extracted_text(str))
+        Glossarist::DetailedDefinition.new(content: content)
       end
     end
 
     def extract_notes
       @notes.map do |str|
-        {
-          content: Iev::Converter.mathml_to_asciimath(
-            replace_newlines(parse_anchor_tag(str, term_domain)),
-          ).strip,
-        }
+        content = convert_content(clean_extracted_text(str))
+        Glossarist::DetailedDefinition.new(content: content)
       end
     end
 
@@ -246,14 +227,14 @@ module Iev
       classification_val = find_value_for("SYNONYM1STATUS")
 
       case classification_val
-      when ""
-        "admitted"
+      when nil, ""
+        nil
       when "认可的", "допустимый", "admitido"
         "admitted"
       when "首选的", "suositettava", "suositeltava", "рекомендуемый", "preferente"
         "preferred"
       else
-        classification_val
+        classification_val.downcase
       end
     end
 
@@ -261,12 +242,12 @@ module Iev
       source_val = find_value_for("SOURCE")
       return nil if source_val.nil?
 
-      SourceParser.new(source_val, term_domain)
+      sources = SourceParser.new(source_val, term_domain)
         .parsed_sources
         .compact
-        .map do |source|
-        source.merge({ "type" => "authoritative" })
-      end
+
+      sources.each { |src| src.type = "authoritative" }
+      sources.empty? ? nil : sources
     end
 
     def extract_superseded_concepts
@@ -279,9 +260,7 @@ module Iev
     private
 
     def build_expression_designation(raw_term, attribute_data:, status:)
-      term = Iev::Converter.mathml_to_asciimath(
-        parse_anchor_tag(raw_term, term_domain),
-      )
+      term = convert_content(raw_term)
       term_attributes = TermAttrsParser.new(attribute_data.to_s)
 
       statuses = {
@@ -289,29 +268,56 @@ module Iev
         "напуштен" => "deprecated",
       }
 
-      {
-        "type" => "expression",
-        "prefix" => term_attributes.prefix,
-        "normative_status" => statuses[status] || status,
-        "usage_info" => term_attributes.usage_info,
-        "designation" => term,
-        "part_of_speech" => term_attributes.part_of_speech,
-        "geographical_area" => term_attributes.geographical_area,
-        "gender" => term_attributes.gender,
-        "plurality" => term_attributes.plurality,
+      grammar_info = term_attributes.to_grammar_info
+      attrs = {
+        designation: term,
+        normative_status: statuses[status] || status,
+        geographical_area: term_attributes.geographical_area,
+        prefix: term_attributes.prefix,
+        usage_info: term_attributes.usage_info,
+        grammar_info: grammar_info ? [grammar_info] : nil,
       }.compact
+
+      Glossarist::Designation::Expression.new(**attrs)
     end
 
     def build_symbol_designation(raw_term)
-      term = Iev::Converter.mathml_to_asciimath(
-        parse_anchor_tag(raw_term, term_domain),
-      )
+      term = convert_content(raw_term)
 
-      {
-        "type" => "symbol",
-        "designation" => term,
-        "international" => true,
-      }.compact
+      Glossarist::Designation::Symbol.new(
+        designation: term,
+        international: true,
+      )
+    end
+
+    def convert_content(str)
+      stripped = strip_html_comments(str.to_s)
+      Iev::Converter.mathml_to_asciimath(
+        replace_newlines(parse_anchor_tag(stripped, term_domain)),
+      ).strip
+    end
+
+    def strip_html_comments(str)
+      doc = Nokogiri::HTML::DocumentFragment.parse(str)
+      comments = doc.children.select(&:comment?)
+      return str if comments.empty?
+
+      result = str.dup
+      comments.each { |c| result = result.gsub("<!--#{c.content}-->", "") }
+      result
+    end
+
+    # Remove leading numbering artifacts from extracted notes/examples.
+    # The definition text sometimes duplicates note/example numbers:
+    #   "1  A time interval comprises..." (note)
+    #   "1: In a vending machine..." (example)
+    #   "2 à l'article: ..." (French note)
+    #   ": Par la réticulation..." (French note)
+    def clean_extracted_text(str)
+      # Strip leading number + optional separator (colon, em-space, etc.)
+      str.gsub(/\A\s*\d+[\s: ]*\s*/, "")
+        # Strip leading standalone colon (French style: ": text")
+        .gsub(/\A\s*:\s*/, "")
     end
   end
 end

@@ -16,19 +16,19 @@ module Iev
       # Need to take care of this pattern:
       #  `inverse de la <a href="IEV103-06-01">période<a>`
       text.gsub(
-        %r{<a href="?(IEV)\s*(\d\d\d-\d\d-\d\d\d?)"?>(.*?)</?a>},
+        %r{<a\s+href="?(IEV)\s*(\d{2,3}-\d{2,3}-\d{2,3})"?>(.*?)</?a>}m,
         '{{\3, \1:\2}}',
       ).gsub(
-        %r{<a href="?\s*(\d\d\d-\d\d-\d\d\d?)"?>(.*?)</?a>},
-        '{{\3, IEV:\2}}',
+        %r{<a\s+href="?\s*(\d{2,3}-\d{2,3}-\d{2,3})"?>(.*?)</?a>}m,
+        '{{\2, IEV:\1}}',
       ).gsub(
         # To handle <a> tags without ending tag like
         #  `Voir <a href=IEV103-05-21>IEV 103-05-21`
         #  for concept '702-03-11' in `fr`
-        /<a href="?(IEV)?\s*(\d\d\d-\d\d-\d\d\d?)"?>(.*?)$/,
+        /<a\s+href="?(IEV)?\s*(\d{2,3}-\d{2,3}-\d{2,3})"?>(.*?)$/m,
         '{{\3, IEV:\2}}',
       ).gsub(
-        %r{<a href="?([^<>]*?)"?>(.*?)</a>},
+        %r{<a\s+href="?([^<>]*?)"?>(.*?)</a>}m,
         '\1[\2]',
       ).gsub(
         Regexp.new([SIMG_PATH_REGEX, '\\s*', FIGURE_TWO_REGEX].join),
@@ -40,7 +40,7 @@ module Iev
         /<img\s+([^<>]+?)\s*>/,
         "#{IMAGE_PATH_PREFIX}/#{term_domain}/\\1[]",
       ).gsub(
-        /<br>/,
+        /<br\s*\/?>/,
         "\n",
       ).gsub(
         %r{<b>(.*?)</b>},
@@ -51,6 +51,7 @@ module Iev
     def replace_newlines(input)
       input.gsub('\n', "\n\n")
         .gsub(/<[pbr]+>/, "\n\n")
+        .gsub(/<br\s*\/?>/, "\n\n")
         .gsub(/\s*\n[\n\s]+/, "\n\n")
         .strip
     end

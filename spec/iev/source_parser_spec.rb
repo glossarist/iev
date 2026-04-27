@@ -61,19 +61,18 @@ RSpec.describe Iev::SourceParser do
   end
 
   example 'IEC 62302:2007, 3.2, modified – math element "<i>L</i>"' do
-    expected_parsed_sources = {
-      "ref" => "IEC 62302:2007",
-      "clause" => "3.2",
-      "link" => "https://webstore.iec.ch/publication/6790",
-      "relationship" => {
-        "type" => "modified",
-        "modification" => 'math element "stem:[L]"',
-      },
-      "original" => 'IEC 62302:2007, 3.2, modified – math element "stem:[L]"',
-    }
+    source = subject.parsed_sources.first
 
-    expect(subject.parsed_sources)
-      .to be_an(Array)
-      .and contain_exactly(expected_parsed_sources)
+    expect(source).to be_a(Glossarist::ConceptSource)
+    expect(source.status).to eq("modified")
+    expect(source.modification).to eq('math element "stem:[L]"')
+
+    expect(source.origin).to be_a(Glossarist::Citation)
+    expect(source.origin.text).to eq("IEC 62302:2007")
+    expect(source.origin.locality).to be_a(Glossarist::Locality)
+    expect(source.origin.locality.type).to eq("clause")
+    expect(source.origin.locality.reference_from).to eq("3.2")
+    expect(source.origin.link).to eq("https://webstore.iec.ch/publication/6790")
+    expect(source.origin.original).to eq('IEC 62302:2007, 3.2, modified – math element "stem:[L]"')
   end
 end

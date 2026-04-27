@@ -177,6 +177,24 @@ RSpec.describe Iev::TermAttrsParser do
        string: "a string \uFF1Cinfo>" do
       expect(subject.usage_info).to be(nil)
     end
+
+    # #126: HTML tags in TERMATTRIBUTE should not interfere with usage_info
+    it "strips HTML <sup> tags and extracts usage_info",
+       string: "<telecommunications>" do
+      expect(subject.usage_info).to eq("telecommunications")
+    end
+
+    it "strips HTML <i> tags before extracting usage_info",
+       string: "genau <i>(exakt)" do
+      # After stripping <i>, no angle-bracketed usage_info remains
+      expect(subject.usage_info).to be(nil)
+    end
+
+    it "handles attribute string with <sup> tags",
+       string: "kibibajt = 2<sup>20</sup> B" do
+      # After stripping <sup>, no angle-bracketed usage_info remains
+      expect(subject.usage_info).to be(nil)
+    end
   end
 
   describe "geographical area" do
@@ -209,35 +227,35 @@ RSpec.describe Iev::TermAttrsParser do
 
   describe "prefix" do
     example "Präfix" do
-      expect(subject.prefix).to be(true)
+      expect(subject.prefix).to eq("Präfix")
     end
 
     example "prefix" do
-      expect(subject.prefix).to be(true)
+      expect(subject.prefix).to eq("prefix")
     end
 
     example "préfixe" do
-      expect(subject.prefix).to be(true)
+      expect(subject.prefix).to eq("préfixe")
     end
 
     example "接尾語" do
-      expect(subject.prefix).to be(true)
+      expect(subject.prefix).to eq("接尾語")
     end
 
     example "접두사" do
-      expect(subject.prefix).to be(true)
+      expect(subject.prefix).to eq("접두사")
     end
 
     example "przedrostek" do
-      expect(subject.prefix).to be(true)
+      expect(subject.prefix).to eq("przedrostek")
     end
 
     example "prefixo" do
-      expect(subject.prefix).to be(true)
+      expect(subject.prefix).to eq("prefixo")
     end
 
     example "词头" do
-      expect(subject.prefix).to be(true)
+      expect(subject.prefix).to eq("词头")
     end
 
     it "works for empty strings", string: "" do

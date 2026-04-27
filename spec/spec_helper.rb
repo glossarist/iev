@@ -11,6 +11,17 @@ end
 
 require_relative "../lib/iev"
 
+# CLI dependencies — needed for acceptance tests that exercise the CLI
+require "benchmark"
+require "creek"
+require "glossarist"
+require "nokogiri"
+require "relaton"
+require "relaton_bib"
+require "sequel"
+require "thor"
+require_relative "../lib/iev/cli"
+
 Dir["./spec/support/**/*.rb"].sort.each { |file| require file }
 
 RSpec.configure do |config|

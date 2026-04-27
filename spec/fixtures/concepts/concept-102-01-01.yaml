@@ -1,0 +1,190 @@
+---
+termid: 102-01-01
+term: equality
+deu:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: Gleichheit
+    gender: f
+    plurality: singular
+  language_code: deu
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2007-08-01T00:00:00+00:00'
+  date_amended: '2007-08-01T00:00:00+00:00'
+  review_date: '2007-08-01T00:00:00+00:00'
+  review_decision_date: '2007-08-01T00:00:00+00:00'
+  review_decision_event: published
+eng:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: equality
+  definition: "relation between two entities stem:[a] and stem:[b] having the following
+    properties:\n\n* reflexivity: stem:[a] = stem:[a], \n\n* symmetry: if stem:[a]
+    = stem:[b] then stem:[b] = stem:[a], \n\n* transitivity: if stem:[a] = stem:[b]
+    and stem:[b] = stem:[c] then stem:[a] = stem:[c], where stem:[c] is a third entity,
+    \n\n* if stem:[a] = stem:[b] and ℛ{stem:[u]} is any statement involving the entity
+    stem:[u], then ℛ{stem:[a]} is true if and only if ℛ{stem:[b]} is true"
+  language_code: eng
+  notes:
+  - The equality of two entities stem:[a] and stem:[b] is denoted by stem:[a] = stem:[b]
+    and expressed by "stem:[a] is equal to stem:[b]".
+  examples: []
+  entry_status: Standard
+  date_accepted: '2008-08-01T00:00:00+00:00'
+  date_amended: '2008-08-01T00:00:00+00:00'
+  review_date: '2008-08-01T00:00:00+00:00'
+  review_decision_date: '2008-08-01T00:00:00+00:00'
+  review_decision_event: published
+spa:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: igualdad
+  language_code: spa
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2007-08-01T00:00:00+00:00'
+  date_amended: '2007-08-01T00:00:00+00:00'
+  review_date: '2007-08-01T00:00:00+00:00'
+  review_decision_date: '2007-08-01T00:00:00+00:00'
+  review_decision_event: published
+fra:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: égalité
+    gender: f
+    plurality: singular
+  definition: "relation entre deux entités stem:[a] et stem:[b], ayant les propriétés
+    suivantes:\n\n * réflexivité: stem:[a] = stem:[a], \n\n* symétrie: si stem:[a]
+    = stem:[b] alors stem:[b] = stem:[a], \n\n* transitivité: if stem:[a] = stem:[b]
+    et stem:[b] = stem:[c] alors stem:[a] = stem:[c], où stem:[c] est une troisième
+    entité, \n\n* si stem:[a] = stem:[b] et ℛ{stem:[u]} est un énoncé quelconque concernant
+    l'entité stem:[u], alors ℛ{stem:[a]} est vrai si et seulement si ℛ{stem:[b]} est
+    vrai"
+  language_code: fra
+  notes:
+  - L'égalité de deux entités stem:[a] et stem:[b] est notée stem:[a] = stem:[b] et
+    exprimée par «stem:[a] est égal à stem:[b]».
+  examples: []
+  entry_status: Standard
+  review_decision_event: published
+jpn:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: 相当
+  - type: expression
+    normative_status: preferred
+    designation: 等式
+  language_code: jpn
+  notes: []
+  examples: []
+  entry_status: Standard
+  classification: Preferred
+  date_accepted: '2007-08-01T00:00:00+00:00'
+  date_amended: '2007-08-01T00:00:00+00:00'
+  review_date: '2007-08-01T00:00:00+00:00'
+  review_decision_date: '2007-08-01T00:00:00+00:00'
+  review_decision_event: published
+kor:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: 등식
+  language_code: kor
+  notes: []
+  examples: []
+  entry_status: Standard
+  review_decision_event: published
+nld:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: gelijkheid
+    gender: f
+    plurality: singular
+  language_code: nld
+  notes: []
+  examples: []
+  entry_status: Standard
+  review_decision_event: published
+pol:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: równość
+  language_code: pol
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2007-08-01T00:00:00+00:00'
+  date_amended: '2007-08-01T00:00:00+00:00'
+  review_date: '2007-08-01T00:00:00+00:00'
+  review_decision_date: '2007-08-01T00:00:00+00:00'
+  review_decision_event: published
+por:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: igualdade
+  language_code: por
+  notes: []
+  examples: []
+  entry_status: Standard
+  review_decision_event: published
+srp:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: једнакост
+  language_code: srp
+  notes: []
+  examples: []
+  entry_status: Standard
+  review_decision_event: published
+swe:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: likhet
+  language_code: swe
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2007-08-01T00:00:00+00:00'
+  date_amended: '2007-08-01T00:00:00+00:00'
+  review_date: '2007-08-01T00:00:00+00:00'
+  review_decision_date: '2007-08-01T00:00:00+00:00'
+  review_decision_event: published
+zho:
+  id: 102-01-01
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: 相等
+  language_code: zho
+  notes: []
+  examples: []
+  entry_status: Standard
+  date_accepted: '2007-08-01T00:00:00+00:00'
+  date_amended: '2007-08-01T00:00:00+00:00'
+  review_date: '2007-08-01T00:00:00+00:00'
+  review_decision_date: '2007-08-01T00:00:00+00:00'
+  review_decision_event: published

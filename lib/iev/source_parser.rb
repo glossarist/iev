@@ -11,7 +11,6 @@ module Iev
   # @example
   #   SourceParser.new(cell_data_string).parsed_sources
   class SourceParser
-    include Cli::Ui
     include Utilities
     using DataConversions
 
@@ -71,20 +70,25 @@ module Iev
     end
 
     def extract_single_source(raw_ref)
-      relation_type = extract_source_relationship(raw_ref)
+      relationship = extract_source_relationship(raw_ref)
       clean_ref = normalize_ref_string(raw_ref)
       source_ref = extract_source_ref(clean_ref)
       clause = extract_source_clause(clean_ref)
 
-      {
-        "ref" => source_ref,
-        "clause" => clause,
-        "link" => obtain_source_link(source_ref),
-        "relationship" => relation_type,
-        "original" => Iev::Converter.mathml_to_asciimath(
+      origin = Glossarist::Citation.new(
+        ref: source_ref,
+        locality: build_locality(clause),
+        link: obtain_source_link(source_ref),
+        original: Iev::Converter.mathml_to_asciimath(
           parse_anchor_tag(raw_ref, @term_domain),
         ),
-      }.compact
+      )
+
+      Glossarist::ConceptSource.new(
+        status: relationship[:status],
+        origin: origin,
+        modification: relationship[:modification],
+      )
     rescue ::RelatonBib::RequestError => e
       warn e.message
     end
@@ -208,7 +212,6 @@ module Iev
         /Constitution de l’Union internationale des télécommunications (UIT)/
         "International Telecommunication Union (ITU) Constitution (Ed. 2015)"
       else
-        debug :sources, "Failed to parse source: '#{str}'"
         str
       end
     end
@@ -320,26 +323,36 @@ module Iev
 
       case str
       when /^MOD ([\d\-])/
-        {
-          "type" => type.to_s,
-        }
+        { status: type.to_s }
       when /(modified|modifié|modifiée|modifiés|MOD)\s*[–-]?\s+(.+)\Z/
         {
-          "type" => type.to_s,
-          "modification" => Iev::Converter.mathml_to_asciimath(
+          status: type.to_s,
+          modification: Iev::Converter.mathml_to_asciimath(
             parse_anchor_tag(::Regexp.last_match(2), @term_domain),
           ).strip,
         }
       else
-        {
-          "type" => type.to_s,
-        }
+        { status: type.to_s }
       end
+    end
+
+    def build_locality(clause)
+      return nil unless clause
+
+      Glossarist::Locality.new(
+        type: "clause",
+        reference_from: clause,
+      )
     end
 
     # Uses Relaton to obtain link for given source ref.
     def obtain_source_link(ref)
+      return nil unless defined?(RelatonDb)
+
       RelatonDb.instance.fetch(ref)&.url
+    rescue ::RelatonBib::RequestError => e
+      warn e.message
+      nil
     end
   end
 end

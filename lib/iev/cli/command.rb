@@ -40,6 +40,25 @@ module Iev
         summary
       end
 
+      desc "fetch CODE", "Fetch an IEV concept and output YAML to stdout."
+      option :scrape, type: :boolean, default: false,
+                      desc: "Scrape from Electropedia instead of using cached data"
+      def fetch(code)
+        raw = if options[:scrape]
+                Scraper.new.fetch_concept(code)
+              else
+                DataSource.fetch_concept(code)
+              end
+
+        unless raw
+          warn "IEV: concept #{code} not found."
+          exit 1
+        end
+
+        concept = build_concept_from_raw(code, raw)
+        print_concept_grouped_yaml(concept)
+      end
+
       def self.exit_on_failure?
         true
       end

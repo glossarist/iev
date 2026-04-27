@@ -8,9 +8,9 @@ image:https://img.shields.io/github/commits-since/glossarist/iev/latest.svg["Com
 
 [WARNING]
 --
-As of 2026-02-10, Electropedia is limiting programmatic access to its URLs, and is blocking access from GitHub Actions completely.
-The gem has had its headers updated so that local programmatic access is reenabled, but can not be relied on as a means of
-programmatically accessing Electropedia content.
+As of 2026-02-10, Electropedia is behind AWS WAF, which blocks simple HTTP clients.
+Scraping now uses Ferrum (headless Chrome via DevTools Protocol) to handle the WAF challenge.
+Chrome/Chromium must be installed for scraping to work.
 --
 
 
@@ -74,11 +74,11 @@ WARNING: The IEV XLSX export files can only be obtained from the IEC
 Electropedia administrator.
 
 
-=== Fetching IEV terms from Electropedia
+=== Fetching IEV terms from cached data
 
 [source, ruby]
 ----
-# Get term
+# Get term designation (from local YAML or GitHub remote)
 
 Iev.get("103-01-02", "en")
 => "functional"
@@ -90,6 +90,29 @@ Iev.get("111-11-11", "en")
 # If language not found
 Iev.get("103-01-02", "eee")
 => nil
+
+# Fetch full concept data (all languages)
+Iev.fetch_concept("103-01-02")
+=> { "id" => "103-01-02", "data" => { ... } }
+
+# Fetch localized term data
+Iev.fetch_term("103-01-02", "en")
+=> { "term" => "functional", ... }
+----
+
+=== Scraping IEV terms from Electropedia
+
+Requires Chrome/Chromium installed. Uses Ferrum (headless Chrome) to bypass AWS WAF.
+
+[source, ruby]
+----
+# Scrape concept data directly from electropedia.org
+Iev.scrape_concept("103-01-02")
+=> { "id" => "103-01-02", "data" => { "identifier" => "103-01-02", "localized_concepts" => { "eng" => { ... }, ... } } }
+
+# Custom browser options (e.g., headless mode, window size)
+scraper = Iev::Scraper.new(browser_opts: { headless: true, window_size: [1280, 800] })
+concept = scraper.fetch_concept("103-01-02")
 ----
 
 
