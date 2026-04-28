@@ -85,19 +85,21 @@ Electropedia administrator.
 Iev.get("103-01-02", "en")
 => "functional"
 
-# If code not found
+# If code not found, returns nil (does not raise)
 Iev.get("111-11-11", "en")
-=> ""
+=> nil
 
-# If language not found
+# If language not found, returns nil
 Iev.get("103-01-02", "eee")
 => nil
 
 # Fetch full concept data (all languages)
+# Raises Iev::DataSource::NotFoundError if code not found
 Iev.fetch_concept("103-01-02")
 => { "id" => "103-01-02", "data" => { ... } }
 
 # Fetch localized term data
+# Raises Iev::DataSource::NotFoundError if code not found
 Iev.fetch_term("103-01-02", "en")
 => { "term" => "functional", ... }
 ----

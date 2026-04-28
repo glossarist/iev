@@ -32,6 +32,11 @@ module Iev
         print "#{Helper.clear_progress}#{message}\n"
       end
 
+      # Prints error message to stderr.
+      def error(message)
+        Kernel.warn "Error: #{message}"
+      end
+
       # Sets an UI tag which will be prepended to messages printed with
       # #debug and #warn.
       def set_ui_tag(str)

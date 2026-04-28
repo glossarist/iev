@@ -31,9 +31,9 @@ RSpec.describe Iev::DataSource do
       expect(concept).to have_key("fra")
     end
 
-    it "returns nil for non-existent code" do
-      concept = described_class.fetch_concept("999-99-99")
-      expect(concept).to be_nil
+    it "raises NotFoundError for non-existent code" do
+      expect { described_class.fetch_concept("999-99-99") }
+        .to raise_error(Iev::DataSource::NotFoundError, /not found/)
     end
   end
 
@@ -57,9 +57,9 @@ RSpec.describe Iev::DataSource do
       expect(term["terms"][0]["designation"]).to eq("Funktional")
     end
 
-    it "returns nil for non-existent code" do
-      term = described_class.fetch_term("999-99-99", "eng")
-      expect(term).to be_nil
+    it "raises NotFoundError for non-existent code" do
+      expect { described_class.fetch_term("999-99-99", "eng") }
+        .to raise_error(Iev::DataSource::NotFoundError, /not found/)
     end
 
     it "returns nil for non-existent language" do
@@ -79,9 +79,9 @@ RSpec.describe Iev::DataSource do
       expect(result).to eq("Funktional")
     end
 
-    it "returns nil for non-existent code" do
-      result = described_class.fetch_term_designation("999-99-99", "en")
-      expect(result).to be_nil
+    it "raises NotFoundError for non-existent code" do
+      expect { described_class.fetch_term_designation("999-99-99", "en") }
+        .to raise_error(Iev::DataSource::NotFoundError, /not found/)
     end
 
     it "returns nil for non-existent language" do

@@ -12,19 +12,21 @@ module Iev
       # Fetch full concept data (all languages) for a given IEV code.
       #
       # @param code [String] IEV code, e.g. "103-01-02"
-      # @return [Hash, nil] concept data hash or nil if not found
+      # @return [Hash] concept data hash
+      # @raise [NotFoundError] if the concept does not exist
       def fetch_concept(code)
-        fetch_concept_data(code)
+        fetch_concept_data(code) ||
+          raise(NotFoundError, "IEV concept not found: #{code}")
       end
 
       # Fetch localized term data for a given IEV code and language.
       #
       # @param code [String] IEV code, e.g. "103-01-02"
       # @param lang [String] language code, e.g. "en" or "eng"
-      # @return [Hash, nil] localized concept data or nil
+      # @return [Hash, nil] localized concept data or nil if language not found
+      # @raise [NotFoundError] if the concept does not exist
       def fetch_term(code, lang)
         concept = fetch_concept(code)
-        return nil unless concept
 
         lang_key = normalize_lang(lang)
         concept[lang_key]
@@ -35,7 +37,8 @@ module Iev
       #
       # @param code [String] IEV code, e.g. "103-01-02"
       # @param lang [String] language code, e.g. "en"
-      # @return [String, nil] term designation or nil
+      # @return [String, nil] term designation or nil if not found
+      # @raise [NotFoundError] if the concept does not exist
       def fetch_term_designation(code, lang)
         term_data = fetch_term(code, lang)
         return nil unless term_data

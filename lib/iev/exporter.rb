@@ -27,15 +27,18 @@ module Iev
     # @param output_dir [String, Pathname] destination for YAML files
     # @param only_concepts [String, nil] SQL LIKE pattern for IEVREF filtering
     # @param only_languages [String, nil] comma-separated language codes
-    # @param fetch_relaton_links [Boolean] whether to fetch source URLs via Relaton
+    # @param fetch_relaton_links [Boolean] fetch source URLs via Relaton
+    # @param on_progress [Proc, nil] callback (current, total) during build
     def initialize(input_path, output_dir: Dir.pwd,
                    only_concepts: nil, only_languages: nil,
-                   fetch_relaton_links: false)
+                   fetch_relaton_links: false,
+                   on_progress: nil)
       @input_path = Pathname.new(input_path)
       validate_input!
 
       @output_dir = Pathname.new(output_dir)
       @fetch_relaton_links = fetch_relaton_links
+      @on_progress = on_progress
       @filters = {
         only_concepts: only_concepts,
         only_languages: only_languages,
@@ -45,11 +48,22 @@ module Iev
     # Run the export pipeline: load → transform → save.
     # @return [Glossarist::ManagedConceptCollection]
     def export
+      start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       dataset = load_dataset
       collection = build_collection(dataset)
       save_collection(collection)
+      elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
+
+      @stats = {
+        concept_count: collection.count,
+        localized_count: localized_count(collection),
+        elapsed_seconds: elapsed,
+      }
       collection
     end
+
+    # @return [Hash, nil] stats from last export, or nil if export hasn't run
+    attr_reader :stats
 
     private
 
@@ -111,8 +125,13 @@ module Iev
       # Glossarist's O(n) fetch_or_initialize which does linear scan.
       concept_index = {}
       collection = Glossarist::ManagedConceptCollection.new
+      row_count = dataset.count
+      current = 0
 
       dataset.each do |row|
+        current += 1
+        @on_progress&.call(current, row_count)
+
         term = TermBuilder.build_from(row)
         next unless term
 
@@ -133,6 +152,10 @@ module Iev
       concepts_dir = output_dir.expand_path.join("concepts")
       FileUtils.mkdir_p(concepts_dir)
       collection.save_to_files(concepts_dir.to_s)
+    end
+
+    def localized_count(collection)
+      collection.sum { |c| c.localized_concepts.count }
     end
   end
 end

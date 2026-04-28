@@ -45,17 +45,19 @@ module Iev
   # @param [String] lang language code, for example "en"
   #
   # @return [String, nil] if found then term,
-  # if code not found then nil,
-  #   if language not found then nil.
+  #   if code or language not found then nil.
   #
   def self.get(code, lang)
     DataSource.fetch_term_designation(code, lang)
+  rescue DataSource::NotFoundError
+    nil
   end
 
   # Fetch full concept data (all languages) for a given IEV code.
   #
   # @param [String] code IEV code, e.g. "103-01-02"
-  # @return [Hash, nil] concept data hash with all languages
+  # @return [Hash] concept data hash with all languages
+  # @raise [DataSource::NotFoundError] if concept not found
   def self.fetch_concept(code)
     DataSource.fetch_concept(code)
   end
@@ -64,7 +66,8 @@ module Iev
   #
   # @param [String] code IEV code, e.g. "103-01-02"
   # @param [String] lang language code, e.g. "en" or "eng"
-  # @return [Hash, nil] localized concept data
+  # @return [Hash, nil] localized concept data or nil if not found
+  # @raise [DataSource::NotFoundError] if concept not found
   def self.fetch_term(code, lang)
     DataSource.fetch_term(code, lang)
   end
