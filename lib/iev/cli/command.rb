@@ -8,6 +8,11 @@ module Iev
     class Command < Thor
       include CommandHelper
 
+      desc "version", "Show iev gem version"
+      def version
+        puts "iev #{Iev::VERSION}"
+      end
+
       desc "export FILE", "Export IEV data to Glossarist YAML format"
       long_desc <<~DESC
         Exports IEV data from an Excel (.xlsx/.xls) or SQLite (.sqlite3/.sqlite/.db)
@@ -39,18 +44,25 @@ module Iev
       def export(file)
         handle_generic_options(options)
 
-        Iev::Exporter.new(
+        exporter = Iev::Exporter.new(
           file,
           output_dir: options[:output],
           only_concepts: options[:only_concepts],
           only_languages: options[:only_languages],
           fetch_relaton_links: options[:relaton],
-        ).export
-
-        info "Done!"
+          on_progress: method(:export_progress),
+        )
+        exporter.export
+        print_export_summary(exporter.stats)
+      rescue ArgumentError => e
+        error e.message
+        exit 1
+      rescue Sequel::Error => e
+        error "Database error: #{e.message}"
+        exit 1
       end
 
-      desc "xlsx2yaml FILE", "Converts Excel IEV exports to YAMLs."
+      desc "xlsx2yaml FILE", "[DEPRECATED] Use 'export' instead."
       option :output, desc: "Output directory", aliases: :o, default: Dir.pwd
       option :only_concepts,
              desc: "Only process concepts with IEVREF matching this argument, " \
@@ -69,6 +81,7 @@ module Iev
       option :debug_sources, type: :boolean, default: false
       option :debug_relaton, type: :boolean, default: false
       def xlsx2yaml(file)
+        warn "[DEPRECATED] 'xlsx2yaml' is deprecated. Use 'export' instead."
         handle_generic_options(options)
 
         Iev::Exporter.new(
@@ -81,7 +94,7 @@ module Iev
         summary
       end
 
-      desc "db2yaml DB_FILE", "Exports SQLite to IEV YAMLs."
+      desc "db2yaml DB_FILE", "[DEPRECATED] Use 'export' instead."
       option :output, desc: "Output directory", aliases: :o, default: Dir.pwd
       option :only_concepts,
              desc: "Only process concepts with IEVREF matching this argument, " \
@@ -100,6 +113,7 @@ module Iev
       option :debug_sources, type: :boolean, default: false
       option :debug_relaton, type: :boolean, default: false
       def db2yaml(dbfile)
+        warn "[DEPRECATED] 'db2yaml' is deprecated. Use 'export' instead."
         handle_generic_options(options)
 
         Iev::Exporter.new(
@@ -138,13 +152,14 @@ module Iev
                 DataSource.fetch_concept(code)
               end
 
-        unless raw
-          warn "IEV: concept #{code} not found."
-          exit 1
-        end
-
         concept = build_concept_from_raw(code, raw)
         print_concept_grouped_yaml(concept)
+      rescue Iev::DataSource::NotFoundError
+        error "IEV concept not found: #{code}"
+        exit 1
+      rescue Ferrum::Error => e
+        error "Scraping failed: #{e.message}"
+        exit 1
       end
 
       def self.exit_on_failure?

@@ -24,6 +24,36 @@ module Iev
         info "Done!"
       end
 
+      def export_progress(current, total)
+        return unless $IEV_PROGRESS
+        return if total <= 1 # single-row dataset, skip progress
+
+        if current == total
+          Ui.info "" # clear progress line
+        else
+          Ui.progress "Processing #{current}/#{total}..."
+        end
+      end
+
+      def print_export_summary(stats)
+        return unless stats
+
+        s = stats
+        elapsed = format_elapsed(s[:elapsed_seconds])
+        info "Exported #{s[:concept_count]} concepts " \
+             "(#{s[:localized_count]} localized) in #{elapsed}"
+      end
+
+      def format_elapsed(seconds)
+        if seconds < 60
+          "%.1fs" % seconds
+        else
+          mins = (seconds / 60).to_i
+          secs = (seconds % 60).round
+          "#{mins}m #{secs}s"
+        end
+      end
+
       def handle_generic_options(options)
         $IEV_PROFILE = options[:profile]
         $IEV_PROGRESS = options.fetch(:progress, !ENV["CI"])
