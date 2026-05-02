@@ -134,7 +134,7 @@ module Iev
 
       if href.match?(IEV_CODE_RE)
         iev_code = href.sub(/\AIEV\s*/, "")
-        "{{#{inner}, IEV:#{iev_code}}}"
+        "{{#{inner}, urn:iec:std:iec:60050-#{iev_code}}}"
       elsif !href.empty?
         "#{href}[#{inner}]"
       else
