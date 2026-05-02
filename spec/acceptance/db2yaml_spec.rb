@@ -17,8 +17,8 @@ RSpec.describe "Iev" do
           "localized_concepts" => {
             "ara" => "2facc2da-b31c-5865-a461-7b09beb50306",
             "deu" => "b428bdb9-caae-56e2-843e-fc235e237caf",
-            "eng" => "fb47471b-2692-5075-b273-b3f671e9ca9f",
-            "fra" => "c390520c-2eab-540e-bf70-bfa68a5a5d71",
+            "eng" => "7ed95403-bf50-5441-8390-d0212000fde0",
+            "fra" => "82febf21-e705-5eca-b924-8df37f174c29",
             "jpn" => "26880cae-c119-53f2-bd78-41c717173a69",
             "kor" => "9545c889-80f7-5662-8880-d8036a6c0378",
             "pol" => "3c3c4681-28c1-5df5-9c53-64f862750686",
@@ -45,7 +45,7 @@ RSpec.describe "Iev" do
           ],
           "definition" => [
             {
-              "content" => "See {{IEV 102-01-10, IEV:102-01-10}}",
+              "content" => "See {{IEV 102-01-10, urn:iec:std:iec:60050-102-01-10}}",
             },
           ],
           "examples" => [],
@@ -75,7 +75,7 @@ RSpec.describe "Iev" do
           "review_decision_event" => "published",
         },
         "date_accepted" => "2017-07-01T00:00:00+00:00",
-        "id" => "fb47471b-2692-5075-b273-b3f671e9ca9f",
+        "id" => "7ed95403-bf50-5441-8390-d0212000fde0",
       }
     end
 
