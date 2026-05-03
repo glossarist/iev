@@ -95,7 +95,7 @@ module Iev
         origin: origin,
         modification: relationship[:modification],
       )
-    rescue ::RelatonBib::RequestError, Socket::ResolutionError, SocketError => e
+    rescue Relaton::RequestError, Socket::ResolutionError, SocketError => e
       warn e.message
     end
 
@@ -356,8 +356,11 @@ module Iev
       return nil unless self.class.relaton_enabled
       return nil unless defined?(RelatonDb)
 
-      RelatonDb.instance.fetch(ref)&.url
-    rescue ::RelatonBib::RequestError, Socket::ResolutionError, SocketError => e
+      item = RelatonDb.instance.fetch(ref)
+      return nil unless item
+
+      item.source("src")
+    rescue Relaton::RequestError, Socket::ResolutionError, SocketError => e
       warn e.message
       nil
     end
