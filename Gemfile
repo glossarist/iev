@@ -18,9 +18,11 @@ gemspec
 
 # Override relaton gems with lutaml-model 0.8 compatible versions.
 # Released 2.0.0 sub-gems have untyped lutaml-model attributes that fail with 0.8+.
-# fix/lutaml-model-0.8 branches keep version 2.0.0 (compatible) + lutaml-model ~> 0.8.
-# lutaml-integration branches also have typed attributes and work with relaton-bib ~> 2.0.0.
+# relaton-bib ~> 2.0.0 is required by sub-gems; fix/lutaml-model-0.8 provides 2.0.0 + lutaml-model ~> 0.8.
+# lutaml-integration branches have typed attributes and are compatible with relaton-bib 2.0.0.
+# relaton/relaton#142 provides the meta-gem with lutaml-model ~> 0.8 support.
 # TODO: Remove once relaton gems release versions with lutaml-model 0.8 support.
+gem "relaton", github: "relaton/relaton", branch: "lutaml-integration"
 gem "relaton-bib", github: "relaton/relaton-bib", branch: "fix/lutaml-model-0.8"
 gem "relaton-iso", github: "relaton/relaton-iso", branch: "fix/lutaml-model-0.8"
 gem "relaton-3gpp", github: "relaton/relaton-3gpp", branch: "fix/lutaml-model-0.8"
