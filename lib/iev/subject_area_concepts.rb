@@ -71,22 +71,8 @@ module Iev
         mc
       end
 
-      def build_localization(id, title, lang_code)
-        cd = build_concept_data(id, title, lang_code)
-
-        l10n = Glossarist::LocalizedConcept.new(data: cd)
-        l10n.id = id
-        l10n
-      end
-
-      def build_localization_from_data(id, concept_data)
-        l10n = Glossarist::LocalizedConcept.new(data: concept_data)
-        l10n.id = id
-        l10n
-      end
-
       def build_concept_data(id, title, lang_code)
-        cd = Glossarist::ConceptData.new(
+        Glossarist::ConceptData.new(
           id: id,
           language_code: lang_code,
           terms: [
@@ -97,9 +83,26 @@ module Iev
             ),
           ],
         )
-        cd.entry_status = "valid"
-        cd.review_decision_event = "published"
-        cd
+      end
+
+      def build_localization(id, title, lang_code)
+        cd = build_concept_data(id, title, lang_code)
+
+        l10n = Glossarist::LocalizedConcept.new
+        l10n.data = cd
+        l10n.id = id
+        l10n.entry_status = "valid"
+        l10n.data.review_decision_event = "published"
+        l10n
+      end
+
+      def build_localization_from_data(id, concept_data)
+        l10n = Glossarist::LocalizedConcept.new
+        l10n.data = concept_data
+        l10n.id = id
+        l10n.entry_status = "valid"
+        l10n.data.review_decision_event = "published"
+        l10n
       end
 
       def build_broader_ref(area_code)

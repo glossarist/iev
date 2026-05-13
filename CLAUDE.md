@@ -31,6 +31,9 @@ This is a Ruby gem (`iev`) for working with the International Electrotechnical V
 - `SourceParser` — parses the SOURCE column from IEV exports, normalizing references (CEI→IEC, UIT→ITU, etc.) and extracting ref/clause/relationship using extensive regex matching.
 - `TermAttrsParser` — parses the TERMATTRIBUTE field (gender, plurality, part of speech, geographical area, abbreviations).
 - `SupersessionParser` — parses the REPLACES field for deprecated term relationships.
+- `SubjectAreas` — manages the IEV subject area/section hierarchy. Bundled `data/subject_areas.yaml` contains the area/section tree. URI scheme: `area-{code}` and `section-{code}`.
+- `SubjectAreaConcepts` — builds area and section hierarchy concepts with `ConceptReference.domain()` objects in `ManagedConceptData#domains`, `broader`/`narrower` relations, and `ConceptData#domain` references.
+- `Exporter` — full export pipeline (Excel/SQLite → Glossarist YAML). Assigns domain `ConceptReference` objects via `domain_references_for`.
 - `Converter::MathmlToAsciimath` — converts MathML markup to AsciiMath using Plurimath.
 - `Utilities` — HTML processing: converts IEV cross-references (`<a href=IEV...>`) to `{{term, IEV:code}}` format, handles figures, images, bold tags, and newline normalization.
 
