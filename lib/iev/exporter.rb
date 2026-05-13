@@ -28,16 +28,19 @@ module Iev
     # @param only_concepts [String, nil] SQL LIKE pattern for IEVREF filtering
     # @param only_languages [String, nil] comma-separated language codes
     # @param fetch_relaton_links [Boolean] fetch source URLs via Relaton
+    # @param include_areas [Boolean] create area/section hierarchy concepts
     # @param on_progress [Proc, nil] callback (current, total) during build
     def initialize(input_path, output_dir: Dir.pwd,
                    only_concepts: nil, only_languages: nil,
                    fetch_relaton_links: false,
+                   include_areas: true,
                    on_progress: nil)
       @input_path = Pathname.new(input_path)
       validate_input!
 
       @output_dir = Pathname.new(output_dir)
       @fetch_relaton_links = fetch_relaton_links
+      @include_areas = include_areas
       @on_progress = on_progress
       @filters = {
         only_concepts: only_concepts,
@@ -51,6 +54,7 @@ module Iev
       start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       dataset = load_dataset
       collection = build_collection(dataset)
+      add_subject_area_concepts(collection) if @include_areas
       save_collection(collection)
       elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
 
@@ -137,6 +141,7 @@ module Iev
 
         concept = concept_index[term.id] ||= begin
           c = Glossarist::ManagedConcept.new(data: { "id" => term.id })
+          c.data.domains = domain_references_for(term.id)
           collection.store(c)
           c
         end
@@ -148,6 +153,10 @@ module Iev
       SourceParser.relaton_enabled = true
     end
 
+    def add_subject_area_concepts(collection)
+      SubjectAreaConcepts.add_to(collection)
+    end
+
     def save_collection(collection)
       concepts_dir = output_dir.expand_path.join("concepts")
       FileUtils.mkdir_p(concepts_dir)
@@ -156,6 +165,16 @@ module Iev
 
     def localized_count(collection)
       collection.sum { |c| c.localized_concepts.count }
+    end
+
+    def domain_references_for(ievref)
+      parts = ievref.to_s.split("-")
+      return [] unless parts.length >= 2
+
+      [
+        SubjectAreas.area_uri(parts[0]),
+        SubjectAreas.section_uri(parts[0..1].join("-")),
+      ].map { |id| Glossarist::ConceptReference.domain(id) }
     end
   end
 end
