@@ -77,6 +77,9 @@ module Iev
       cd.notes = extract_notes
       cd.terms = extract_terms
 
+      domain = extract_domain
+      cd.domain = domain if domain
+
       sources = extract_authoritative_source
       cd.sources = sources if sources&.any?
 
@@ -96,6 +99,22 @@ module Iev
 
     def term_language
       @term_language ||= find_value_for("LANGUAGE").to_three_char_code
+    end
+
+    # Derives the domain (subject area section) from the IEVREF identifier.
+    # IEVREF format: "AAA-BB-CC" where AAA = area, AAA-BB = section.
+    # Returns a URI reference to the section concept (e.g. "section-103-01").
+    def extract_domain
+      return nil unless term_id
+
+      section_code = term_id.split("-")[0..1].join("-")
+      section = Iev.find_section(section_code)
+      return SubjectAreas.section_uri(section_code) if section
+
+      area_code = term_id.split("-")[0]
+      SubjectAreas.area_uri(area_code)
+    rescue StandardError
+      nil
     end
 
     # Splits unified definition (from the spreadsheet) into separate

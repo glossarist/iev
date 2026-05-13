@@ -1,0 +1,1920 @@
+---
+areas:
+- code: '102'
+  title: Mathematics - General concepts and linear algebra
+  sections:
+  - code: 102-01
+    title: Sets and operations
+  - code: 102-02
+    title: Numbers
+  - code: 102-03
+    title: Vectors and tensors
+  - code: 102-04
+    title: Geometry
+  - code: 102-05
+    title: Scalar and vector fields
+  - code: 102-06
+    title: Matrices
+  fetched: true
+- code: '103'
+  title: Mathematics - Functions
+  sections:
+  - code: 103-01
+    title: General concepts
+  - code: 103-02
+    title: Means
+  - code: 103-03
+    title: Distributions
+  - code: 103-04
+    title: Integral transformations
+  - code: 103-05
+    title: Functions of one variable, mainly time-dependent quantities
+  - code: 103-06
+    title: Periodic quantities
+  - code: 103-07
+    title: Sinusoidal quantities
+  - code: 103-08
+    title: Probability
+  - code: 103-09
+    title: Spectrum
+  - code: 103-10
+    title: Mathematical concepts related to waves
+  fetched: true
+- code: '112'
+  title: Quantities and units
+  sections:
+  - code: 112-01
+    title: Basic concepts
+  - code: 112-02
+    title: International System of Units
+  - code: 112-03
+    title: Terms used in names and definitions for quantities
+  - code: 112-04
+    title: Metrology
+  fetched: true
+- code: '113'
+  title: Physics for electrotechnology
+  sections:
+  - code: 113-01
+    title: Space and time
+  - code: 113-02
+    title: General macroscopic concepts
+  - code: 113-03
+    title: Mechanics
+  - code: 113-04
+    title: Thermodynamics
+  - code: 113-05
+    title: Particle physics
+  - code: 113-06
+    title: Solid-state physics
+  - code: 113-07
+    title: Relativistic physics for electrotechnology
+  fetched: true
+- code: '114'
+  title: Electrochemistry
+  sections:
+  - code: 114-01
+    title: Ionic solutions
+  - code: 114-02
+    title: Electrochemical reactions
+  - code: 114-03
+    title: Electrochemical devices
+  - code: 114-04
+    title: Applications
+  fetched: true
+- code: '121'
+  title: Electromagnetism
+  sections:
+  - code: 121-11
+    title: Electromagnetic concepts and quantities
+  - code: 121-12
+    title: Electromagnetic properties of materials
+  - code: 121-13
+    title: Electric conduction
+  - code: 121-14
+    title: Magnetohydrodynamics
+  fetched: true
+- code: '131'
+  title: Circuit theory
+  sections:
+  - code: 131-11
+    title: General
+  - code: 131-12
+    title: Circuit elements and their characteristics
+  - code: 131-13
+    title: Network topology
+  fetched: true
+- code: '141'
+  title: Polyphase systems and circuits
+  sections:
+  - code: 141-01
+    title: Polyphase systems of quantities
+  - code: 141-02
+    title: Polyphase elements and circuits
+  - code: 141-03
+    title: Polyphase lines
+  fetched: true
+- code: '151'
+  title: Electrical and magnetic devices
+  sections:
+  - code: 151-11
+    title: General
+  - code: 151-12
+    title: Connections and connecting devices
+  - code: 151-13
+    title: Particular electric devices
+  - code: 151-14
+    title: Particular magnetic devices
+  - code: 151-15
+    title: Behaviour and use
+  - code: 151-16
+    title: Operating conditions and testing
+  fetched: true
+- code: '161'
+  title: Electromagnetic compatibility
+  sections:
+  - code: 161-01
+    title: Basic concepts
+  - code: 161-02
+    title: Disturbance waveforms
+  - code: 161-03
+    title: Interference control related terms
+  - code: 161-04
+    title: Measurements
+  - code: 161-05
+    title: Equipment classification
+  - code: 161-06
+    title: Receiver and transmitter terms
+  - code: 161-07
+    title: Power controls and supply network impedances
+  fetched: true
+- code: '171'
+  title: Digital technology – Fundamental concepts
+  sections:
+  - code: 171-01
+    title: General
+  - code: 171-02
+    title: Organization and representation of data
+  - code: 171-03
+    title: Logic operations
+  - code: 171-04
+    title: Hardware
+  - code: 171-05
+    title: Software
+  fetched: true
+- code: '192'
+  title: Dependabilty
+  sections:
+  - code: 192-01
+    title: Basic concepts
+  - code: 192-02
+    title: States and times
+  - code: 192-03
+    title: 'Reliability related concepts: failures'
+  - code: 192-04
+    title: 'Reliability related concepts: faults'
+  - code: 192-05
+    title: 'Reliability related concepts: measures'
+  - code: 192-06
+    title: Maintenance and maintenance support related concepts
+  - code: 192-07
+    title: 'Maintainability and maintenance support: measures'
+  - code: 192-08
+    title: Availability related measures
+  - code: 192-09
+    title: Concepts related to test, demonstration and improvement
+  - code: 192-10
+    title: Design-related dependability concepts
+  - code: 192-11
+    title: Analysis concepts
+  - code: 192-12
+    title: Dependability improvement related concepts
+  - code: 192-13
+    title: Measurement concepts and modifiers
+  fetched: true
+- code: '195'
+  title: Earthing and protection against electric shock
+  sections:
+  - code: 195-01
+    title: Fundamental concepts
+  - code: 195-02
+    title: Electrical installations and equipment
+  fetched: true
+- code: '212'
+  title: Electrical insulating solids, liquids and gases
+  sections:
+  - code: 212-11
+    title: Concepts relating to electric properties of insulating solids, liquids
+      and gases
+  - code: 212-12
+    title: Concepts relating to physical properties other than electric of insulating
+      materials
+  - code: 212-13
+    title: Concepts related to processing of insulating materials
+  - code: 212-14
+    title: Chemical concepts related to insulating materials
+  - code: 212-15
+    title: Generic concepts for insulating materials
+  - code: 212-16
+    title: Concepts relating to specific insulating materials
+  - code: 212-17
+    title: General concepts relating to insulating liquids and gases
+  - code: 212-18
+    title: Concepts related to properties and tests of insulating liquids and gases
+  - code: 212-19
+    title: Concepts related to processing of insulating liquids and gases
+  fetched: true
+- code: '221'
+  title: Magnetic materials and components
+  sections:
+  - code: 221-01
+    title: General terms
+  - code: 221-02
+    title: State of magnetization
+  - code: 221-03
+    title: Permeability and losses
+  - code: 221-04
+    title: Magnetic bodies
+  - code: 221-05
+    title: Non-reciprocal electromagnetic components
+  fetched: true
+- code: '311'
+  title: Electrical and electronic measurements - General terms relating to measurements
+  sections:
+  - code: 311-01
+    title: Basic terms
+  - code: 311-02
+    title: Methods of measurement
+  - code: 311-03
+    title: Measuring instruments
+  - code: 311-04
+    title: Standards
+  - code: 311-05
+    title: Constructional elements
+  - code: 311-06
+    title: Factors affecting performance
+  - code: 311-07
+    title: Operating conditions
+  fetched: true
+- code: '312'
+  title: Electrical and electronic measurements - General terms relating to electrical
+    measurements
+  sections:
+  - code: 312-01
+    title: Basic terms
+  - code: 312-02
+    title: Types of instruments
+  - code: 312-03
+    title: Accessories
+  - code: 312-04
+    title: Component parts
+  - code: 312-05
+    title: Physical characteristics
+  - code: 312-06
+    title: Electrical characteristics
+  - code: 312-07
+    title: Performance
+  fetched: true
+- code: '313'
+  title: Electrical and electronic measurements - Types of electrical measuring instruments
+  sections:
+  - code: 313-01
+    title: Detecting and indicating instruments
+  - code: 313-02
+    title: Recorders
+  - code: 313-03
+    title: Transducers
+  - code: 313-04
+    title: Stabilized power supplies
+  - code: 313-05
+    title: Oscilloscopes
+  - code: 313-06
+    title: Energy meters
+  - code: 313-07
+    title: Signal generators
+  - code: 313-08
+    title: Measuring bridges
+  - code: 313-09
+    title: Accessories
+  fetched: true
+- code: '314'
+  title: Electrical and electronic measurements - Specific terms according to the
+    type of instrument
+  sections:
+  - code: 314-01
+    title: Analogue instruments
+  - code: 314-02
+    title: Digital instruments
+  - code: 314-03
+    title: Recorders
+  - code: 314-04
+    title: Transducers
+  - code: 314-05
+    title: Stabilized power supplies
+  - code: 314-06
+    title: Oscilloscopes
+  - code: 314-07
+    title: Energy meters
+  - code: 314-08
+    title: Signal generators
+  - code: 314-09
+    title: Measuring bridges
+  fetched: true
+- code: '321'
+  title: Instrument transformers
+  sections:
+  - code: 321-01
+    title: General and common terms
+  - code: 321-02
+    title: Current transformers
+  - code: 321-03
+    title: Voltage transformers
+  fetched: true
+- code: '351'
+  title: Control technology
+  sections:
+  - code: 351-41
+    title: Variables and signals
+  - code: 351-42
+    title: General concepts
+  - code: 351-43
+    title: Tasks/functions in control technology
+  - code: 351-44
+    title: Structures of control systems
+  - code: 351-45
+    title: Behaviour and characteristics of transfer elements
+  fetched: true
+- code: '371'
+  title: Telecontrol
+  sections:
+  - code: 371-01
+    title: General terms
+  - code: 371-02
+    title: Types of monitored information
+  - code: 371-03
+    title: Types of command information
+  fetched: true
+- code: '395'
+  title: 'Nuclear instrumentation: Physical phenomena, basic concepts, instruments,
+    systems, equipment and detectors'
+  sections:
+  - code: 395-01
+    title: Quantities and units
+  - code: 395-02
+    title: 'Nuclear physics: Ionizing radiation, radioactive disintegration, nuclear
+      reactions and interactions'
+  - code: 395-03
+    title: Radiation detectors
+  - code: 395-04
+    title: Radiation measuring equipment including electronic and assemblies for industrial
+      use
+  - code: 395-05
+    title: Radiation protection instrumentation and dosimetry
+  - code: 395-06
+    title: 'Radiation detection applications: Radiation protection, industrial and
+      medical applications'
+  - code: 395-07
+    title: Nuclear fission reactors, including the nuclear fuel cycle and thermonuclear
+      facilities
+  - code: 395-08
+    title: Nuclear fuel cycle, waste management, decommissioning and decontamination
+  fetched: true
+- code: '411'
+  title: Rotating machinery
+  sections:
+  - code: 411-31
+    title: General
+  - code: 411-32
+    title: Generators
+  - code: 411-33
+    title: Motors
+  - code: 411-34
+    title: Special machines
+  - code: 411-35
+    title: Machines for control systems
+  - code: 411-36
+    title: Qualifying terms
+  - code: 411-37
+    title: Winding arrangements
+  - code: 411-38
+    title: Construction of windings
+  - code: 411-39
+    title: Insulation
+  - code: 411-40
+    title: Magnetic parts
+  - code: 411-41
+    title: Brushes, brush-holders, commutators, slip-rings, terminations
+  - code: 411-42
+    title: Bearings and lubrication
+  - code: 411-43
+    title: Mechanical structure, mounting arrangement, direction of rotation
+  - code: 411-44
+    title: Cooling
+  - code: 411-46
+    title: State variables (of a machine)
+  - code: 411-47
+    title: Characteristics
+  - code: 411-48
+    title: Characteristic quantities
+  - code: 411-49
+    title: Analytical quantities
+  - code: 411-50
+    title: Parameters
+  - code: 411-51
+    title: Load, duty, rating
+  - code: 411-52
+    title: Operation
+  - code: 411-53
+    title: Testing
+  - code: 411-54
+    title: Excitation system and field winding characteristics
+  fetched: true
+- code: '415'
+  title: Wind turbine generator systems
+  sections:
+  - code: 415-01
+    title: Wind turbines and wind turbine generator systems
+  - code: 415-02
+    title: Design and safety parameters
+  - code: 415-03
+    title: Wind characteristics
+  - code: 415-04
+    title: Electrical interconnection
+  - code: 415-05
+    title: Power performance measurement techniques
+  - code: 415-06
+    title: Acoustic measurement techniques
+  fetched: true
+- code: '417'
+  title: Marine energy - Wave, tidal and other water current converters
+  sections:
+  - code: 417-01
+    title: Basic concepts
+  - code: 417-02
+    title: Marine energy converters
+  - code: 417-03
+    title: Current energy converters
+  - code: 417-04
+    title: Wave energy converters
+  - code: 417-05
+    title: Current characteristics
+  - code: 417-06
+    title: Wave characteristics
+  - code: 417-07
+    title: Power performance measures
+  - code: 417-08
+    title: Testing
+  - code: 417-09
+    title: Marine energy processes
+  fetched: true
+- code: '421'
+  title: Power transformers and reactors
+  sections:
+  - code: 421-01
+    title: General terms
+  - code: 421-02
+    title: Terminals
+  - code: 421-03
+    title: Windings
+  - code: 421-04
+    title: Rating
+  - code: 421-05
+    title: Tappings
+  - code: 421-06
+    title: Losses and no-load current
+  - code: 421-07
+    title: Impedance voltage, short-circuit impedance and voltage drop
+  - code: 421-08
+    title: Temperature rise
+  - code: 421-09
+    title: Insulation
+  - code: 421-10
+    title: Connections
+  - code: 421-11
+    title: On-load tap-changers
+  - code: 421-12
+    title: On-load tap-changer motor-drive mechanisms
+  fetched: true
+- code: '426'
+  title: Equipment for explosive atmospheres
+  sections:
+  - code: 426-01
+    title: General terms
+  - code: 426-02
+    title: Physical and chemical phenomena
+  - code: 426-03
+    title: Areas and zones
+  - code: 426-04
+    title: Construction of electrical apparatus (general)
+  - code: 426-06
+    title: Flameproof enclosure "D"
+  - code: 426-07
+    title: Powder filling "q"
+  fetched: true
+- code: '428'
+  title: Safety of machinery
+  sections:
+  - code: 428-01
+    title: General
+  - code: 428-02
+    title: Electrical equipment
+  - code: 428-03
+    title: Electrical safety
+  - code: 428-04
+    title: Functional safety
+  - code: 428-05
+    title: Electro-sensitive protective equipment
+  - code: 428-06
+    title: Safety-related sensors
+  - code: 428-07
+    title: Security aspects
+  fetched: true
+- code: '431'
+  title: Transductors
+  sections:
+  - code: 431-01
+    title: Terms relating to constructional elements
+  - code: 431-02
+    title: Terms relating to physical quantities
+  - code: 431-03
+    title: Modes of excitation
+  - code: 431-04
+    title: Classification
+  - code: 431-05
+    title: Applications
+  fetched: true
+- code: '436'
+  title: Power capacitors
+  sections:
+  - code: 436-01
+    title: General terms
+  - code: 436-02
+    title: Functions
+  - code: 436-03
+    title: Technology
+  - code: 436-04
+    title: Operational characteristics
+  fetched: true
+- code: '441'
+  title: Switchgear, controlgear and fuses
+  sections:
+  - code: 441-11
+    title: General terms
+  - code: 441-12
+    title: Assemblies of switchgear and controlgear
+  - code: 441-13
+    title: Parts of assemblies
+  - code: 441-14
+    title: Switching devices
+  - code: 441-15
+    title: Parts of switching devices
+  - code: 441-16
+    title: Operation
+  - code: 441-17
+    title: Characteristic quantities of switchgear, controlgear and fuses
+  - code: 441-18
+    title: Fuses
+  fetched: true
+- code: '442'
+  title: Electrical accessories
+  sections:
+  - code: 442-01
+    title: General
+  - code: 442-02
+    title: Cable management systems
+  - code: 442-03
+    title: Plugs and socket-outlets
+  - code: 442-04
+    title: Switches
+  - code: 442-05
+    title: Circuit-breakers and similar equipment for household use
+  - code: 442-06
+    title: Connecting devices
+  - code: 442-07
+    title: Appliance couplers
+  - code: 442-08
+    title: Boxes
+  - code: 442-09
+    title: Insulation coordination for low voltage equipment
+  fetched: true
+- code: '444'
+  title: Elementary relays
+  sections:
+  - code: 444-01
+    title: Relay types
+  - code: 444-02
+    title: Conditions and operations
+  - code: 444-03
+    title: Energization
+  - code: 444-04
+    title: Output circuits
+  - code: 444-05
+    title: Times
+  - code: 444-06
+    title: Influence quantities
+  - code: 444-07
+    title: Endurance
+  fetched: true
+- code: '445'
+  title: Time relays
+  sections:
+  - code: 445-01
+    title: Time relay types
+  - code: 445-02
+    title: Conditions and operations
+  - code: 445-03
+    title: Energization
+  - code: 445-04
+    title: Output circuits
+  - code: 445-05
+    title: Times
+  - code: 445-06
+    title: Influence quantities, errors and accuracy
+  - code: 445-07
+    title: Electromagnetic comptability
+  fetched: true
+- code: '447'
+  title: Measuring relays
+  sections:
+  - code: 447-01
+    title: Terms relating to types
+  - code: 447-02
+    title: Terms relating to conditions
+  - code: 447-03
+    title: Terms relating to energization
+  - code: 447-04
+    title: Terms relating to output circuits
+  - code: 447-05
+    title: Terms relating to times
+  - code: 447-06
+    title: Terms relating to influence quantities
+  - code: 447-07
+    title: Terms relating to characteristics
+  - code: 447-08
+    title: Terms relating to accuracy
+  fetched: true
+- code: '448'
+  title: Power system protection
+  sections:
+  - code: 448-11
+    title: General terms
+  - code: 448-12
+    title: Reliability of protection
+  - code: 448-13
+    title: Power system faults
+  - code: 448-14
+    title: Protection
+  - code: 448-15
+    title: Protection using telecommunication
+  - code: 448-16
+    title: Automatic control equipment
+  fetched: true
+- code: '461'
+  title: Electric cables
+  sections:
+  - code: 461-01
+    title: Conductors
+  - code: 461-02
+    title: Insulations
+  - code: 461-03
+    title: Electrical screens and shields
+  - code: 461-04
+    title: Cabling
+  - code: 461-05
+    title: Coverings and various components
+  - code: 461-06
+    title: Cables in general
+  - code: 461-07
+    title: Pressure cables
+  - code: 461-08
+    title: Aerial insulated cables
+  - code: 461-09
+    title: Special cables
+  - code: 461-10
+    title: Terminations
+  - code: 461-11
+    title: Joints
+  - code: 461-12
+    title: Miscellaneous accessories
+  - code: 461-13
+    title: Practices of laying
+  - code: 461-14
+    title: Shield bonding
+  - code: 461-15
+    title: Shield bonding accessories
+  - code: 461-16
+    title: Miscellaneous terms
+  - code: 461-17
+    title: Components of accessories
+  - code: 461-18
+    title: Aerial insulated cable accessories
+  - code: 461-19
+    title: Connecting methods
+  - code: 461-20
+    title: Handling of cables
+  - code: 461-21
+    title: Cable laying
+  - code: 461-22
+    title: Tests
+  - code: 461-23
+    title: Operation
+  fetched: true
+- code: '466'
+  title: Overhead lines
+  sections:
+  - code: 466-01
+    title: General terms
+  - code: 466-02
+    title: Mechanical design
+  - code: 466-03
+    title: Spans
+  - code: 466-04
+    title: Profiles
+  - code: 466-05
+    title: Conductor arrangements
+  - code: 466-06
+    title: Supports
+  - code: 466-07
+    title: Poles and brackets
+  - code: 466-08
+    title: Towers
+  - code: 466-09
+    title: Foundations
+  - code: 466-10
+    title: Bare conductors
+  - code: 466-11
+    title: Conductor fittings
+  - code: 466-12
+    title: Insulator sets - Accessories
+  fetched: true
+- code: '471'
+  title: Insulators
+  sections:
+  - code: 471-01
+    title: General terms
+  - code: 471-02
+    title: Terms concerning bushings
+  - code: 471-03
+    title: Terms concerning insulators for overhead lines
+  - code: 471-04
+    title: Terms concerning insulators for substations
+  fetched: true
+- code: '482'
+  title: Primary and secondary cells and batteries
+  sections:
+  - code: 482-01
+    title: Fundamental concepts
+  - code: 482-02
+    title: Parts, components, accessories, shape
+  - code: 482-03
+    title: Electrical properties and operation
+  - code: 482-04
+    title: Terms typically used for primary cells and batteries
+  - code: 482-05
+    title: Terms typically used for secondary cells and batteries
+  fetched: true
+- code: '485'
+  title: Fuel cell technologies
+  sections:
+  - code: 485-01
+    title: Catalyst
+  - code: 485-02
+    title: Electrode
+  - code: 485-03
+    title: Electrolyte
+  - code: 485-04
+    title: Membrane electrode assembly
+  - code: 485-05
+    title: Cell
+  - code: 485-06
+    title: Stack
+  - code: 485-07
+    title: Fuel processing
+  - code: 485-08
+    title: Fuel cell
+  - code: 485-09
+    title: Fuel cell power system
+  - code: 485-10
+    title: Efficiency
+  - code: 485-11
+    title: Operation
+  - code: 485-12
+    title: Electric current
+  - code: 485-13
+    title: Voltage
+  - code: 485-14
+    title: Power
+  - code: 485-15
+    title: Polarization
+  - code: 485-16
+    title: Life
+  - code: 485-17
+    title: Pressure
+  - code: 485-18
+    title: Start
+  - code: 485-19
+    title: Shutdown
+  - code: 485-20
+    title: Time
+  - code: 485-21
+    title: State
+  - code: 485-22
+    title: Test
+  fetched: true
+- code: '511'
+  title: Nano-enabled electrotechnical products and systems
+  sections:
+  - code: 511-01
+    title: General terms related to nano-enabled electrotechnical products and systems
+  - code: 511-02
+    title: Terms related to nano-enabled photovoltaics and thin-film organic electronics
+  - code: 511-03
+    title: Terms related to luminescent nanomaterials
+  fetched: true
+- code: '521'
+  title: Semiconductor devices and integrated circuits
+  sections:
+  - code: 521-01
+    title: Introduction to atomic physics
+  - code: 521-02
+    title: Properties of semiconductor materials
+  - code: 521-03
+    title: Processing semiconductor materials
+  - code: 521-04
+    title: Types of semiconductor devices
+  fetched: true
+- code: '523'
+  title: Micro-electromechanical systems (MEMS)
+  sections:
+  - code: 523-01
+    title: General
+  - code: 523-02
+    title: Science and engineering
+  - code: 523-03
+    title: Material science
+  - code: 523-04
+    title: Functional elements
+  - code: 523-05
+    title: Machining technology
+  - code: 523-06
+    title: Bonding and assembling technology
+  - code: 523-07
+    title: Measurement technology
+  - code: 523-08
+    title: Application technologies
+  fetched: true
+- code: '531'
+  title: Electronic tubes
+  sections:
+  - code: 531-11
+    title: General tube classification
+  - code: 531-12
+    title: Emission and space charge
+  - code: 531-13
+    title: Discharge in a gas
+  - code: 531-14
+    title: Beam focusing and deflection
+  - code: 531-15
+    title: Tube noise
+  - code: 531-16
+    title: Current, voltage and power
+  - code: 531-17
+    title: General properties and quantities other than current, voltage and power
+  - code: 531-18
+    title: Characteristics and conditions of operation
+  - code: 531-21
+    title: Electrode (general), elements and emitting electrodes
+  - code: 531-22
+    title: Controlling and collecting electrodes
+  - code: 531-23
+    title: Structure (envelope, gun and accessories)
+  - code: 531-31
+    title: Space-charge-controlled tubes and diodes
+  - code: 531-32
+    title: Space-charge-wave tubes and space-charge-controlled microwave tubes
+  - code: 531-33
+    title: Cathode-ray tubes and storage tubes
+  - code: 531-34
+    title: Photosensitive tubes
+  - code: 531-35
+    title: Gas-filled tubes
+  - code: 531-41
+    title: Space-charge-wave tubes and space-charge-controlled microwave tubes
+  - code: 531-42
+    title: Cathode-ray tubes
+  - code: 531-43
+    title: Storage tubes
+  - code: 531-44
+    title: General properties and quantities of photosensitive tubes
+  - code: 531-45
+    title: Camera tubes
+  - code: 531-46
+    title: Gas-filled tubes other than radiation-counter tubes
+  - code: 531-47
+    title: Radiation-counter tubes
+  fetched: true
+- code: '541'
+  title: Printed circuits
+  sections:
+  - code: 541-01
+    title: General terms
+  - code: 541-02
+    title: Base material
+  - code: 541-03
+    title: Conception - Artwork master
+  - code: 541-04
+    title: Manufacturing
+  fetched: true
+- code: '551'
+  title: Power electronics
+  sections:
+  - code: 551-11
+    title: General
+  - code: 551-12
+    title: Types of electronic power converters
+  - code: 551-13
+    title: Electronic power switches and electronic AC power controllers
+  - code: 551-14
+    title: Essential components of power electronic equipment
+  - code: 551-15
+    title: Circuits and circuit elements of power electronic equipment
+  - code: 551-16
+    title: Operations within power electronic equipment
+  fetched: true
+- code: '561'
+  title: Piezoelectric devices for frequency control and selection
+  sections:
+  - code: 561-01
+    title: Piezoelectric and dielectric resonators
+  - code: 561-02
+    title: Piezoelectric and dielectric filters
+  - code: 561-03
+    title: Piezoelectric and dielectric oscillators
+  - code: 561-04
+    title: Synthetic quartz crystal
+  - code: 561-05
+    title: Piezoelectric ceramics
+  - code: 561-06
+    title: Materials for dielectric devices
+  - code: 561-07
+    title: Materials for Surface  Acoustic Wave (SAW) devices
+  fetched: true
+- code: '581'
+  title: Electromechanical components for electronic equipment
+  sections:
+  - code: 581-21
+    title: General terms of electromechanical components
+  - code: 581-22
+    title: Terms for parts of electromechanical components
+  - code: 581-23
+    title: Terms for technical features  of electromechanical components
+  - code: 581-24
+    title: Terms for special features and accessories
+  fetched: true
+- code: '601'
+  title: Generation, transmission and distribution of electricity - General
+  sections:
+  - code: 601-01
+    title: Fundamental concepts
+  - code: 601-02
+    title: System configuration
+  - code: 601-03
+    title: Equipment
+  - code: 601-04
+    title: High-voltage DC systems
+  fetched: true
+- code: '602'
+  title: Generation, transmission and distribution of electricity - Generation
+  sections:
+  - code: 602-01
+    title: Power stations
+  - code: 602-02
+    title: Installation and generation equipment
+  - code: 602-03
+    title: Operation of power stations
+  fetched: true
+- code: '603'
+  title: Generation, transmission and distribution of electricity - Power systems
+    planning and management
+  sections:
+  - code: 603-01
+    title: Power system planning
+  - code: 603-02
+    title: Network calculation
+  - code: 603-03
+    title: Stability
+  - code: 603-04
+    title: Power system control
+  - code: 603-05
+    title: Power system reliability
+  - code: 603-06
+    title: Economic optimization
+  fetched: true
+- code: '605'
+  title: Generation, transmission and distribution of electricity - Substations
+  sections:
+  - code: 605-01
+    title: Types of substations - Substation layouts
+  - code: 605-02
+    title: Primary plant of substations
+  - code: 605-03
+    title: Secondary arrangements of substations
+  fetched: true
+- code: '614'
+  title: Generation, transmission and distribution of electricity - Operation
+  sections:
+  - code: 614-01
+    title: Power quality
+  - code: 614-02
+    title: Faults and fault clearance
+  - code: 614-03
+    title: Insulation coordination and overvoltages
+  - code: 614-04
+    title: Electromagnetic influence on other systems
+  fetched: true
+- code: '617'
+  title: Organization/Market of electricity
+  sections:
+  - code: 617-01
+    title: Concepts and parameters
+  - code: 617-02
+    title: Parts
+  - code: 617-03
+    title: Market organization and technical constraints
+  - code: 617-04
+    title: Connection  and supply
+  fetched: true
+- code: '631'
+  title: Electrical energy storage systems
+  sections:
+  - code: 631-01
+    title: Electrical energy storage systems classification
+  - code: 631-02
+    title: Electrical energy storage systems specification
+  - code: 631-03
+    title: Electrical energy storage systems planning and installation
+  - code: 631-04
+    title: Electrical energy storage systems operation
+  - code: 631-05
+    title: Electrical energy storage systems safety and environmental issues
+  fetched: true
+- code: '651'
+  title: Live working
+  sections:
+  - code: 651-21
+    title: General
+  - code: 651-22
+    title: Basic tools, devices and equipment
+  - code: 651-23
+    title: Personal protective equipment
+  - code: 651-24
+    title: Diagnostic devices
+  - code: 651-25
+    title: Earthing and short-circuiting equipment
+  - code: 651-26
+    title: Additional terms of interest for live working
+  - code: 651-27
+    title: Arc flash protection
+  fetched: true
+- code: '691'
+  title: Tariffs for electricity
+  sections:
+  - code: 691-01
+    title: 'Agreement : Tariff parties'
+  - code: 691-02
+    title: Energy and demand
+  - code: 691-03
+    title: Tariff components
+  - code: 691-04
+    title: Tariffs
+  - code: 691-05
+    title: Tariffs classed according to structure
+  - code: 691-06
+    title: Tariffs by times of day and year
+  - code: 691-07
+    title: Tariffs by consumer class
+  - code: 691-08
+    title: Tariffs by class of use
+  - code: 691-09
+    title: Additional tariff conditions
+  - code: 691-10
+    title: Associated demand terms
+  - code: 691-11
+    title: Costing terms
+  fetched: true
+- code: '692'
+  title: Generation, transmission and distribution of electrical energy – Dependability
+    and quality of service of electric power systems
+  sections:
+  - code: 692-01
+    title: System concepts
+  - code: 692-02
+    title: Operating states of electric power systems
+  - code: 692-03
+    title: Failures in electric power systems
+  - code: 692-04
+    title: Outages of electric power systems equipment
+  - code: 692-05
+    title: Outage occurrences in electric power systems
+  - code: 692-06
+    title: State durations and availability related concepts
+  - code: 692-07
+    title: Interruptions in electric power systems
+  - code: 692-08
+    title: Selected customer interruption measures
+  - code: 692-09
+    title: Bulk electric system load/energy curtailments
+  - code: 692-10
+    title: Bulk electric system failures and measures
+  - code: 692-11
+    title: Supply performance measures
+  fetched: true
+- code: '701'
+  title: Telecommunications, channels and networks
+  sections:
+  - code: 701-01
+    title: Forms of telecommunications
+  - code: 701-02
+    title: Channels, circuits and networks
+  - code: 701-03
+    title: Use and operation of circuits and networks
+  fetched: true
+- code: '702'
+  title: Oscillations, signals and related devices
+  sections:
+  - code: 702-01
+    title: Frequencies
+  - code: 702-02
+    title: Oscillations and waves
+  - code: 702-03
+    title: Pulses
+  - code: 702-04
+    title: Signals; General terms
+  - code: 702-05
+    title: Discrete signals and digital signals; Coding
+  - code: 702-06
+    title: Modulation and demodulation
+  - code: 702-07
+    title: Transmission characteristics and performance; Distortion
+  - code: 702-08
+    title: Noise and interference
+  - code: 702-09
+    title: Linear and non-linear networks and devices
+  fetched: true
+- code: '704'
+  title: Transmission
+  sections:
+  - code: 704-01
+    title: Basic terms in transmission
+  - code: 704-02
+    title: Transmission media
+  - code: 704-03
+    title: Physical transmission circuits
+  - code: 704-04
+    title: Transmission networks
+  - code: 704-05
+    title: Repeaters
+  - code: 704-06
+    title: Repeater stations
+  - code: 704-07
+    title: Echo control
+  - code: 704-08
+    title: Multiplexing
+  - code: 704-09
+    title: Basic terms in analogue transmission
+  - code: 704-10
+    title: Frequency division multiplexing
+  - code: 704-11
+    title: Analogue carrier transmission
+  - code: 704-12
+    title: Pilot signals
+  - code: 704-13
+    title: Timing
+  - code: 704-14
+    title: Frames and channels
+  - code: 704-15
+    title: Synchronized networks
+  - code: 704-16
+    title: Basic terms in digital transmission
+  - code: 704-17
+    title: Line codes
+  - code: 704-18
+    title: Digital errors
+  - code: 704-19
+    title: Digital transmission networks
+  - code: 704-20
+    title: Digital multiplexing
+  - code: 704-21
+    title: Justification
+  - code: 704-22
+    title: Basic terms in pulse code modulation
+  - code: 704-23
+    title: Sampling in pulse code modulation (in PCM)
+  - code: 704-24
+    title: Quantizing in pulse code modulation (in PCM)
+  - code: 704-25
+    title: Encoding in pulse code modulation (in PCM)
+  - code: 704-26
+    title: Multiplexing in pulse code modulation (in PCM)
+  fetched: true
+- code: '705'
+  title: Radio wave propagation
+  sections:
+  - code: 705-01
+    title: Essential characteristics of electromagnetic fields and waves
+  - code: 705-02
+    title: Radiation, paths and velocity of electromagnetic waves
+  - code: 705-03
+    title: Electromagnetic properties of propagation media
+  - code: 705-04
+    title: Phenomena related to the boundaries of propagation media
+  - code: 705-05
+    title: Tropospheric propagation including the influence of the ground
+  fetched: true
+- code: '712'
+  title: Antennas
+  sections:
+  - code: 712-01
+    title: Basic terms for antennas and antenna assemblies
+  - code: 712-02
+    title: Electrical or radiating characteristics of antennas
+  - code: 712-03
+    title: Types of antennas defined by their electrical or radiating characteristics
+  - code: 712-04
+    title: Specific terms for antennas consisting of radiating conductors
+  fetched: true
+- code: '713'
+  title: 'Radiocommunications: transmitters, receivers, networks and operation'
+  sections:
+  - code: 713-01
+    title: Basic terms
+  - code: 713-02
+    title: Radio links and stations
+  - code: 713-03
+    title: Mobile radio communications
+  - code: 713-04
+    title: Radio determination and radio navigation
+  - code: 713-05
+    title: Other types of radio communication
+  - code: 713-06
+    title: Frequencies and channels
+  - code: 713-07
+    title: Modulation and signal processing
+  - code: 713-08
+    title: Transmitters and transceivers
+  - code: 713-09
+    title: Transmission characteristics
+  - code: 713-10
+    title: Radio reception and receivers
+  - code: 713-11
+    title: Radio-frequency noise and interference
+  - code: 713-12
+    title: Radio-frequency networks and operation
+  fetched: true
+- code: '714'
+  title: Switching and signalling in telecommunications
+  sections:
+  - code: 714-01
+    title: General terms
+  - code: 714-02
+    title: Basic terms in switching
+  - code: 714-03
+    title: Switching networks
+  - code: 714-04
+    title: Switching functions
+  - code: 714-05
+    title: Switching techniques
+  - code: 714-06
+    title: Basic signalling terms
+  - code: 714-07
+    title: Main signals for switched services
+  - code: 714-08
+    title: Tone signals for telephony
+  - code: 714-09
+    title: Principal signalling methods
+  - code: 714-10
+    title: Signals in analogue signalling
+  - code: 714-11
+    title: 'Common channel signalling : User aspects'
+  - code: 714-12
+    title: 'Common channel signalling : Signalling networks'
+  - code: 714-13
+    title: 'Common channel signalling : Signal units'
+  - code: 714-14
+    title: Security in common channel signalling
+  - code: 714-15
+    title: Control functions
+  - code: 714-16
+    title: Control techniques
+  - code: 714-17
+    title: Automatic switching equipment
+  - code: 714-18
+    title: Control equipment
+  - code: 714-19
+    title: Other equipment in automatic switching exchanges
+  - code: 714-20
+    title: Switchboards
+  fetched: true
+- code: '715'
+  title: Telecommunication networks, teletraffic and operation
+  sections:
+  - code: 715-01
+    title: Basic terms
+  - code: 715-02
+    title: Resources
+  - code: 715-03
+    title: Calls
+  - code: 715-04
+    title: Times and delays
+  - code: 715-05
+    title: Traffic
+  - code: 715-06
+    title: Circuit groups
+  - code: 715-07
+    title: Traffic engineering
+  - code: 715-08
+    title: Networks
+  - code: 715-09
+    title: Circuit switched networks
+  - code: 715-10
+    title: Message switched networks
+  - code: 715-11
+    title: Packet switched networks
+  fetched: true
+- code: '716'
+  title: 'Integrated services digital network (ISDN) - Part 1: General aspects'
+  sections:
+  - code: 716-01
+    title: General terms
+  - code: 716-02
+    title: Services
+  - code: 716-03
+    title: Networks
+  - code: 716-04
+    title: Access
+  fetched: true
+- code: '721'
+  title: Telegraphy, facsimile and data communication
+  sections:
+  - code: 721-01
+    title: Forms of telecommunications using discrete signals
+  - code: 721-02
+    title: Discretely-timed and digital signals, signal elements
+  - code: 721-03
+    title: Transmission using discretely-timed or digital signals
+  - code: 721-04
+    title: Transmission channels and methods
+  - code: 721-05
+    title: Direct current transmission
+  - code: 721-06
+    title: Carrier transmission, multiplexing
+  - code: 721-07
+    title: Transmission performance, distortion in time
+  - code: 721-08
+    title: Errors and error control
+  - code: 721-09
+    title: Codes and alphabets
+  - code: 721-10
+    title: Function controls and function signals
+  - code: 721-11
+    title: Transmission channels and processes
+  - code: 721-12
+    title: Telegraph and data transmission equipments
+  - code: 721-13
+    title: Facsimile equipments and services
+  - code: 721-14
+    title: Facsimile operational characteristics
+  - code: 721-15
+    title: Defects and distortion in facsimile reproduction
+  - code: 721-16
+    title: Telegraph and data networks
+  - code: 721-17
+    title: Telegraph and data switching, signalling
+  - code: 721-18
+    title: Telegraph operation and services
+  - code: 721-19
+    title: Data transmission operation and services
+  fetched: true
+- code: '722'
+  title: Telephony
+  sections:
+  - code: 722-01
+    title: General terms
+  - code: 722-02
+    title: Telephone set components
+  - code: 722-03
+    title: Telephone set feeding and signalling
+  - code: 722-04
+    title: Telephone set types
+  - code: 722-05
+    title: Telephone set accessories
+  - code: 722-06
+    title: Telephone networks
+  - code: 722-07
+    title: Telephone exchanges
+  - code: 722-08
+    title: Private telephone system
+  - code: 722-10
+    title: Telephone calls description
+  - code: 722-12
+    title: Local line networks
+  - code: 722-13
+    title: Telephone station usage
+  - code: 722-15
+    title: Transmission performance
+  - code: 722-16
+    title: Measuring apparatus
+  - code: 722-17
+    title: Telephonometry
+  fetched: true
+- code: '723'
+  title: 'Broadcasting: Sound, television, data'
+  sections:
+  - code: 723-01
+    title: General terms
+  - code: 723-02
+    title: Common sound and television broadcasting terms
+  - code: 723-03
+    title: Sound broadcasting
+  - code: 723-04
+    title: 'Television : General terms'
+  - code: 723-05
+    title: 'Television : Picture analysis and display – Video signals'
+  - code: 723-06
+    title: Picture quality and impairment
+  - code: 723-07
+    title: Equipment and devices used in television
+  - code: 723-08
+    title: Terms specific to colour television systems
+  - code: 723-09
+    title: Cables distribution systems
+  - code: 723-10
+    title: Digital television
+  - code: 723-11
+    title: Three-dimensional television
+  fetched: true
+- code: '725'
+  title: Space radiocommunications
+  sections:
+  - code: 725-11
+    title: Satellites, spacecrafts and orbits
+  - code: 725-12
+    title: Space radio communication systems
+  - code: 725-13
+    title: Antennas and beams
+  - code: 725-14
+    title: Transmission
+  fetched: true
+- code: '726'
+  title: Transmission lines and waveguides
+  sections:
+  - code: 726-01
+    title: Transmission line, waveguide and cavity resonator configurations
+  - code: 726-02
+    title: Waves in transmission lines
+  - code: 726-03
+    title: Modes in transmission lines and cavity resonators
+  - code: 726-04
+    title: Polarization of waves and fields
+  - code: 726-05
+    title: Wave quantities and characteristics in transmission lines
+  - code: 726-06
+    title: Power and energy of waves in transmission lines
+  - code: 726-07
+    title: Impedances, reflection, transmission and transfer characteristics in transmission
+      lines
+  - code: 726-08
+    title: Flanges and flange joints
+  - code: 726-09
+    title: Junctions, bends and corners
+  - code: 726-10
+    title: Waveguide transitions
+  - code: 726-11
+    title: Terminations and loads
+  - code: 726-12
+    title: Attenuators
+  - code: 726-13
+    title: Reactive elements
+  - code: 726-14
+    title: Directional couplers
+  - code: 726-15
+    title: Miscellaneous components
+  - code: 726-16
+    title: Gyromagnetic and non-reciprocal effects
+  - code: 726-17
+    title: Gyromagnetic and non-reciprocal devices
+  - code: 726-18
+    title: Characteristics of non-reciprocal devices
+  - code: 726-19
+    title: Standing-wave and impedance measurements
+  - code: 726-20
+    title: Frequency and wavelength measurements
+  - code: 726-21
+    title: Power measurements
+  - code: 726-22
+    title: Multicore cables and symmetrical pairs for digital communications
+  fetched: true
+- code: '731'
+  title: Optical fibre communication
+  sections:
+  - code: 731-01
+    title: General concepts
+  - code: 731-02
+    title: Fibre construction and optical characteristics
+  - code: 731-03
+    title: Propagation characteristics
+  - code: 731-04
+    title: Optical fibre cables
+  - code: 731-05
+    title: Optical fibre connectors, couplers and other passive components
+  - code: 731-06
+    title: Optical sources and detectors
+  - code: 731-07
+    title: Measurement techniques
+  - code: 731-08
+    title: Optical fibre systems
+  fetched: true
+- code: '732'
+  title: Computer network technology
+  sections:
+  - code: 732-01
+    title: General concepts
+  - code: 732-02
+    title: Network management
+  - code: 732-03
+    title: Applications
+  - code: 732-04
+    title: Navigation
+  - code: 732-05
+    title: Registration
+  - code: 732-06
+    title: Security
+  - code: 732-07
+    title: Internet terms
+  - code: 732-08
+    title: Internet applications
+  - code: 732-09
+    title: Miscellaneous
+  - code: 732-10
+    title: Home networks
+  fetched: true
+- code: '736'
+  title: Information Technology - Vocabulary for Learning, Education and Training
+  sections: []
+  fetched: true
+- code: '741'
+  title: Internet of Things (IoT)
+  sections:
+  - code: 741-01
+    title: General terms
+  - code: 741-02
+    title: Internet of Things specific terms
+  fetched: true
+- code: '801'
+  title: Acoustics and electroacoustics
+  sections:
+  - code: 801-21
+    title: General terms
+  - code: 801-22
+    title: Levels
+  - code: 801-23
+    title: Transmission and propagation
+  - code: 801-24
+    title: Oscillation
+  - code: 801-25
+    title: Transducer parameters
+  - code: 801-26
+    title: Microphones
+  - code: 801-27
+    title: Loudspeakers and earphones
+  - code: 801-28
+    title: Various apparatus
+  - code: 801-29
+    title: Physiological acoustics
+  - code: 801-30
+    title: Musical acoustics
+  - code: 801-31
+    title: Architectural acoustics
+  - code: 801-32
+    title: Underwater acoustics
+  fetched: true
+- code: '802'
+  title: Ultrasonics
+  sections:
+  - code: 802-01
+    title: ''
+  fetched: true
+- code: '806'
+  title: Recording and reproduction of audio and video
+  sections:
+  - code: 806-11
+    title: General terms relating to both audio and video
+  - code: 806-12
+    title: General terms relating to audio
+  - code: 806-13
+    title: 'Sound recording and reproduction on disk : terms relating to disk'
+  - code: 806-14
+    title: 'Sound recording and reproduction on disk : terms relating to recording
+      equipment and to reproducing equipment'
+  - code: 806-15
+    title: 'Magnetic recording and reproduction : terms relating to both audio and
+      video'
+  - code: 806-16
+    title: Magnetic recording and reproduction of sound
+  - code: 806-17
+    title: Magnetic recording and reproduction of video
+  fetched: true
+- code: '807'
+  title: Digital recording of audio and video signals
+  sections:
+  - code: 807-01
+    title: Digital recording - Signals and coding
+  - code: 807-02
+    title: Tracks and recording media parameters
+  - code: 807-03
+    title: Digital disk recording
+  - code: 807-04
+    title: Digital tape recording
+  fetched: true
+- code: '808'
+  title: Video cameras for non-broadcasting
+  sections:
+  - code: 808-01
+    title: General
+  - code: 808-02
+    title: Characteristics
+  - code: 808-03
+    title: Measurements
+  - code: 808-04
+    title: Phenomena
+  - code: 808-05
+    title: Devices and elements
+  - code: 808-06
+    title: Signal processing
+  - code: 808-07
+    title: Automatic functions
+  fetched: true
+- code: '811'
+  title: Electric traction
+  sections:
+  - code: 811-01
+    title: General terms
+  - code: 811-02
+    title: Types of vehicle
+  - code: 811-03
+    title: Traffic and train loads
+  - code: 811-04
+    title: Methods of use
+  - code: 811-05
+    title: Train movement
+  - code: 811-06
+    title: Braking
+  - code: 811-07
+    title: Adhesion
+  - code: 811-08
+    title: Riding quality
+  - code: 811-09
+    title: Gauges
+  fetched: true
+- code: '815'
+  title: Superconductivity
+  sections:
+  - code: 815-20
+    title: Superconducting properties
+  - code: 815-21
+    title: Superconducting materials
+  - code: 815-22
+    title: Electromagnetic phenomena and properties
+  - code: 815-23
+    title: Wires and conductors
+  - code: 815-24
+    title: Production processes
+  - code: 815-25
+    title: Technologies for superconducting magnets and power devices
+  - code: 815-26
+    title: Technologies for superconducting electronics
+  - code: 815-27
+    title: Applied technologies for superconducting magnets and power devices
+  - code: 815-28
+    title: Applied technologies for superconducting electronics
+  - code: 815-29
+    title: Technologies for cooling
+  - code: 815-30
+    title: Test and evaluation methods
+  fetched: true
+- code: '821'
+  title: Signalling and security apparatus for railways
+  sections:
+  - code: 821-01
+    title: General concepts and terms
+  - code: 821-02
+    title: Signals
+  - code: 821-03
+    title: Train detection
+  - code: 821-04
+    title: Operation and detection of points and other rail-mounted equipment
+  - code: 821-05
+    title: Interlocking and signal box equipment
+  - code: 821-06
+    title: Block signalling system
+  - code: 821-07
+    title: Level crossing protection
+  - code: 821-08
+    title: Automatic train protection
+  - code: 821-09
+    title: Automatic train operation
+  - code: 821-10
+    title: Miscellaneous
+  - code: 821-11
+    title: Communication in transmission systems
+  - code: 821-12
+    title: Reliabilty, availability, maintainability and safety
+  fetched: true
+- code: '826'
+  title: Electrical installations
+  sections:
+  - code: 826-10
+    title: Characteristics of electrical installations
+  - code: 826-11
+    title: Voltages and currents
+  - code: 826-12
+    title: Electric shock and protective measures
+  - code: 826-13
+    title: Earthing and bonding
+  - code: 826-14
+    title: Electric circuits
+  - code: 826-15
+    title: Wiring systems
+  - code: 826-16
+    title: Other equipment
+  - code: 826-17
+    title: Isolation and switching
+  - code: 826-18
+    title: Capability of persons
+  - code: 826-19
+    title: Energy efficiency
+  - code: 826-20
+    title: Smart grid
+  fetched: true
+- code: '831'
+  title: Smart city systems
+  sections:
+  - code: 831-01
+    title: Fundamental concepts
+  - code: 831-02
+    title: Digital system concepts
+  - code: 831-03
+    title: Physical system concepts
+  - code: 831-04
+    title: Social system concepts
+  fetched: true
+- code: '841'
+  title: Industrial electroheat
+  sections:
+  - code: 841-21
+    title: General concepts relating to heat transfer and conversion of electric energy
+      into heat
+  - code: 841-22
+    title: General concepts relating to electro heat equipment, characteristic values
+      and applications
+  - code: 841-23
+    title: Resistance heating
+  fetched: true
+- code: '845'
+  title: Lighting
+  sections:
+  - code: 845-21
+    title: Radiation, quantities and units
+  - code: 845-22
+    title: Vision, colour rendering
+  fetched: true
+- code: '851'
+  title: Electric welding
+  sections:
+  - code: 851-11
+    title: General terms
+  - code: 851-12
+    title: Electric and thermal characteristics of welding equipment
+  - code: 851-13
+    title: Welding power sources
+  - code: 851-14
+    title: Welding accessories and consumables
+  - code: 851-15
+    title: Safety equipment
+  fetched: true
+- code: '871'
+  title: Active assisted living (AAL)
+  sections:
+  - code: 871-01
+    title: General terms and definitions in the field of active assisted living (AAL)
+  - code: 871-02
+    title: Terms and definitions relating to persons and organizations
+  - code: 871-03
+    title: Terms and definitions relating to the home and to building management
+  - code: 871-04
+    title: Terms and definitions relating to devices and systems
+  - code: 871-05
+    title: Terms and definitions relating to information technology
+  - code: 871-06
+    title: Terms and definitions relating to telemonitoring and medical technology
+  - code: 871-07
+    title: Terms and definitions used in the AAL domain relating to architectures
+      (in the field of information technology)
+  fetched: true
+- code: '872'
+  title: Accessibility
+  sections:
+  - code: 872-01
+    title: Terms and definitions relating to persons
+  - code: 872-02
+    title: Terms and definitions relating to communication
+  - code: 872-03
+    title: Terms and definitions relating to interaction and inclusion
+  - code: 872-04
+    title: Terms and definitions relating to products and characteristics
+  - code: 872-05
+    title: Terms and definitions relating to services
+  fetched: true
+- code: '881'
+  title: Radiology and radiological physics
+  sections:
+  - code: 881-01
+    title: General terms, domains, subdivisions and personnel
+  - code: 881-02
+    title: 'Ionizing radiations : types and properties'
+  - code: 881-03
+    title: 'Ionizing radiations : sources and interactions'
+  fetched: true
+- code: '891'
+  title: Electrobiology
+  sections:
+  - code: 891-01
+    title: General
+  - code: 891-02
+    title: Electrophysiology
+  - code: 891-03
+    title: Electro pathology
+  - code: 891-04
+    title: Electro diagnosis
+  fetched: true
+- code: '901'
+  title: Standardization
+  sections:
+  - code: 901-01
+    title: Principles and aims of standardization
+  - code: 901-02
+    title: Types of normative document and standard
+  - code: 901-03
+    title: Bodies responsible for standards and regulations
+  - code: 901-04
+    title: Preparation and drafting of normative documents
+  - code: 901-05
+    title: Content and structure of normative documents
+  - code: 901-06
+    title: Harmonization and implementation of normative documents
+  - code: 901-07
+    title: Inclusion of environmental aspects in standards
+  fetched: true
+- code: '902'
+  title: Conformity assessment
+  sections:
+  - code: 902-01
+    title: Activities and participants
+  - code: 902-02
+    title: Basic concepts
+  - code: 902-03
+    title: Selection and determination
+  - code: 902-04
+    title: Review and attestation
+  - code: 902-05
+    title: Surveillance
+  - code: 902-06
+    title: Facilitation of trade
+  fetched: true
+- code: '903'
+  title: Risk assessment
+  sections:
+  - code: 903-01
+    title: Safety and risk reduction
+  - code: 903-02
+    title: Safety publications and safety functions
+  - code: 903-03
+    title: Hot surfaces of electrical equipment
+  - code: 903-04
+    title: Safety requirements for information technology equipment
+  - code: 903-05
+    title: Material flammability classes
+  fetched: true
+- code: '904'
+  title: Environmental standardization for electrical and electronic products and
+    systems
+  sections:
+  - code: 904-01
+    title: General terms relating to environmental protection and management
+  - code: 904-02
+    title: Terms relating to determination and declaration of substances and materials
+  - code: 904-03
+    title: Terms relating to energy efficiency and power consumption
+  - code: 904-04
+    title: Terms relating to resource conservation and re-use
+  fetched: true

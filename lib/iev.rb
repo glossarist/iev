@@ -34,6 +34,8 @@ module Iev
   autoload :RelatonDb, "iev/relaton_db"
   autoload :Scraper, "iev/scraper"
   autoload :SourceParser, "iev/source_parser"
+  autoload :SubjectAreas, "iev/subject_areas"
+  autoload :SubjectAreaConcepts, "iev/subject_area_concepts"
   autoload :SupersessionParser, "iev/supersession_parser"
   autoload :TermAttrsParser, "iev/term_attrs_parser"
   autoload :TermBuilder, "iev/term_builder"
@@ -79,5 +81,39 @@ module Iev
   # @return [Hash, nil] concept data hash or nil if not found
   def self.scrape_concept(code)
     Scraper.new.fetch_concept(code)
+  end
+
+  # Return all IEV subject areas with their sections (from bundled data).
+  # @return [Array<Hash>]
+  def self.subject_areas
+    SubjectAreas.all
+  end
+
+  # Find a subject area by code.
+  # @param code [String, Integer] e.g. "102"
+  # @return [Hash, nil]
+  def self.find_subject_area(code)
+    SubjectAreas.find_area(code)
+  end
+
+  # Find a section by its section code.
+  # @param section_code [String] e.g. "102-01"
+  # @return [Hash, nil]
+  def self.find_section(section_code)
+    SubjectAreas.find_section(section_code)
+  end
+
+  # Return sections for a given area code.
+  # @param code [String, Integer] e.g. "102"
+  # @return [Array<Hash>]
+  def self.sections_for(code)
+    SubjectAreas.sections_for(code)
+  end
+
+  # Return the parent subject area for a given section code.
+  # @param section_code [String] e.g. "102-01"
+  # @return [Hash, nil]
+  def self.area_for_section(section_code)
+    SubjectAreas.area_for_section(section_code)
   end
 end
