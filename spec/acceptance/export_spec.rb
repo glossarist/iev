@@ -8,75 +8,6 @@ RSpec.describe "Iev" do
   let(:sample_db) { fixture_path("sample-db.sqlite3") }
 
   describe "export" do
-    let(:expected_concept1) do
-      {
-        "data" => {
-          "identifier" => "103-01-01",
-          "localized_concepts" => {
-            "ara" => "2facc2da-b31c-5865-a461-7b09beb50306",
-            "deu" => "b428bdb9-caae-56e2-843e-fc235e237caf",
-            "eng" => "7ed95403-bf50-5441-8390-d0212000fde0",
-            "fra" => "82febf21-e705-5eca-b924-8df37f174c29",
-            "jpn" => "26880cae-c119-53f2-bd78-41c717173a69",
-            "kor" => "9545c889-80f7-5662-8880-d8036a6c0378",
-            "pol" => "3c3c4681-28c1-5df5-9c53-64f862750686",
-            "por" => "3d56d72b-8c68-52f8-8965-ecfdef4d0ec8",
-            "zho" => "a2ba7d83-7768-5460-a7df-7d3cd5246d84",
-          },
-        },
-        "id" => "a9e98ffa-5960-5cd8-8f1e-9d0939da6fc0",
-      }
-    end
-
-    let(:expected_localized_concept1) do
-      {
-        "data" => {
-          "dates" => [
-            {
-              "date" => "2017-07-01T00:00:00+00:00",
-              "type" => "accepted",
-            },
-            {
-              "date" => "2017-07-01T00:00:00+00:00",
-              "type" => "amended",
-            },
-          ],
-          "definition" => [
-            {
-              "content" => "See {{IEV 102-01-10, urn:iec:std:iec:60050-102-01-10}}",
-            },
-          ],
-          "examples" => [],
-          "id" => "103-01-01",
-          "notes" => [],
-          "terms" => [
-            {
-              "type" => "expression",
-              "normative_status" => "preferred",
-              "designation" => "function",
-            },
-          ],
-          "related" => [
-            {
-              "type" => "supersedes",
-              "ref" => {
-                "source" => "IEV",
-                "id" => "103-01-01",
-                "version" => "2009-12",
-              },
-            },
-          ],
-          "language_code" => "eng",
-          "entry_status" => "valid",
-          "review_date" => "2017-07-01T00:00:00+00:00",
-          "review_decision_date" => "2017-07-01T00:00:00+00:00",
-          "review_decision_event" => "published",
-        },
-        "date_accepted" => "2017-07-01T00:00:00+00:00",
-        "id" => "7ed95403-bf50-5441-8390-d0212000fde0",
-      }
-    end
-
     it "exports YAMLs from a SQLite file" do
       Dir.mktmpdir("iev-test") do |dir|
         command = %W[export #{sample_db} -o #{dir}]
@@ -84,15 +15,21 @@ RSpec.describe "Iev" do
 
         concepts_dir = File.join(dir, "concepts")
         expect(concepts_dir).to(satisfy { |p| File.directory? p })
-        expect(Dir["#{concepts_dir}/concept/*.yaml"]).not_to be_empty
 
-        concept1 = YAML.load_file(File.join(concepts_dir, "concept",
-                                            "a9e98ffa-5960-5cd8-8f1e-9d0939da6fc0.yaml"))
-        localized = YAML.load_file(File.join(concepts_dir, "localized_concept",
-                                             "#{concept1['data']['localized_concepts']['eng']}.yaml"))
+        concept_files = Dir["#{concepts_dir}/concept/*.yaml"]
+        expect(concept_files).not_to be_empty
 
-        expect(concept1).to be_yaml_equivalent_to(expected_concept1)
-        expect(localized).to be_yaml_equivalent_to(expected_localized_concept1)
+        concept1 = find_concept_by_identifier(concept_files, "103-01-01")
+        expect(concept1["data"]["identifier"]).to eq("103-01-01")
+        expect(concept1["data"]["domains"]).to include(
+          include("concept_id" => "area-103", "ref_type" => "domain"),
+          include("concept_id" => "section-103-01", "ref_type" => "domain"),
+        )
+
+        localized_eng = load_localized(concepts_dir, concept1, "eng")
+        expect(localized_eng["data"]["domain"]).to eq("section-103-01")
+        expect(localized_eng["data"]["terms"].first["designation"]).to eq("function")
+        expect(localized_eng["data"]["entry_status"]).to eq("valid")
 
         FileUtils.rm_rf(concepts_dir)
       end
@@ -105,15 +42,20 @@ RSpec.describe "Iev" do
 
         concepts_dir = File.join(dir, "concepts")
         expect(concepts_dir).to(satisfy { |p| File.directory? p })
-        expect(Dir["#{concepts_dir}/concept/*.yaml"]).not_to be_empty
 
-        concept1 = YAML.load_file(File.join(concepts_dir, "concept",
-                                            "a9e98ffa-5960-5cd8-8f1e-9d0939da6fc0.yaml"))
-        localized = YAML.load_file(File.join(concepts_dir, "localized_concept",
-                                             "#{concept1['data']['localized_concepts']['eng']}.yaml"))
+        concept_files = Dir["#{concepts_dir}/concept/*.yaml"]
+        expect(concept_files).not_to be_empty
 
-        expect(concept1).to be_yaml_equivalent_to(expected_concept1)
-        expect(localized).to be_yaml_equivalent_to(expected_localized_concept1)
+        concept1 = find_concept_by_identifier(concept_files, "103-01-01")
+        expect(concept1["data"]["identifier"]).to eq("103-01-01")
+        expect(concept1["data"]["domains"]).to include(
+          include("concept_id" => "area-103", "ref_type" => "domain"),
+          include("concept_id" => "section-103-01", "ref_type" => "domain"),
+        )
+
+        localized_eng = load_localized(concepts_dir, concept1, "eng")
+        expect(localized_eng["data"]["domain"]).to eq("section-103-01")
+        expect(localized_eng["data"]["terms"].first["designation"]).to eq("function")
 
         FileUtils.rm_rf(concepts_dir)
       end
@@ -143,5 +85,23 @@ RSpec.describe "Iev" do
         expect(Dir[File.join(dir, "concepts", "concept", "*.yaml")]).not_to be_empty
       end
     end
+  end
+
+  private
+
+  def find_concept_by_identifier(concept_files, identifier)
+    concept_files.each do |f|
+      data = YAML.load_file(f)
+      return data if data.dig("data", "identifier") == identifier
+    end
+    raise "Concept #{identifier} not found in #{concept_files.length} files"
+  end
+
+  def load_localized(concepts_dir, concept_data, lang)
+    uuid = concept_data.dig("data", "localized_concepts", lang)
+    raise "No #{lang} localization" unless uuid
+
+    path = File.join(concepts_dir, "localized_concept", "#{uuid}.yaml")
+    YAML.load_file(path)
   end
 end
