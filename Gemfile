@@ -16,4 +16,5 @@ gem "simplecov"
 gemspec
 
 # TODO: remove once glossarist 2.7.0 is released with domains migration
-gem "glossarist", path: "../glossarist-ruby"
+gem "glossarist", git: "https://github.com/glossarist/glossarist-ruby.git",
+                 branch: "feat/metanorma-parity-designation-model"
