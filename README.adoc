@@ -363,3 +363,37 @@ authoritative_source:
 == Copyright and license
 
 Data copyright IEC. All others copyright Ribose.
+
+
+== Data Model
+
+=== Concept Domains
+
+Exported concepts use `domains` (a collection of `ConceptReference` objects)
+to represent the IEV subject area hierarchy. Each concept's domains include
+references to its area (e.g. `area-103`) and section (e.g. `section-103-01`).
+
+[source,yaml]
+----
+data:
+  identifier: "103-01-01"
+  domains:
+    - concept_id: area-103
+      ref_type: domain
+    - concept_id: section-103-01
+      ref_type: domain
+----
+
+The `ref_type: domain` distinguishes domain references from other
+`ConceptReference` types (local, urn, designation).
+
+=== Subject Area Hierarchy
+
+The `SubjectAreaConcepts` module creates area and section concepts that
+form a two-level hierarchy:
+
+* **Area concepts** (e.g. `area-103`) — have domain reference to themselves,
+  and `narrower` relations to their sections
+* **Section concepts** (e.g. `section-103-01`) — have domain references to
+  both parent area and themselves, a `broader` relation to the parent area,
+  and `ConceptData#domain` pointing to the parent area
