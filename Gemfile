@@ -15,6 +15,6 @@ gem "simplecov"
 
 gemspec
 
-# TODO: remove once glossarist 2.7.0 is released with domains migration
+# TODO: remove once glossarist 2.7.0 is released with gloss ontology transform
 gem "glossarist", git: "https://github.com/glossarist/glossarist-ruby.git",
-                 branch: "feat/metanorma-parity-designation-model"
+                 branch: "main"
