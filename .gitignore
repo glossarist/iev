@@ -15,5 +15,7 @@
 .vscode/
 
 /concepts/
+/output/
 Gemfile.lock
 TODO*
+spec/fixtures/*.sqlite3
