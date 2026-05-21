@@ -9,7 +9,7 @@ require "creek"
 require "glossarist"
 require "nokogiri"
 require "relaton"
-require "relaton_bib"
+require "relaton/bib"
 require "sequel"
 require "thor"
 

@@ -360,6 +360,371 @@ authoritative_source:
 ----
 
 
+== Excel-to-Glossarist Column Mapping
+
+This section provides a complete mapping from every IEV Excel export column
+to the corresponding Glossarist concept model field. The IEV Excel export has
+19 columns (see <<_structure_of_the_iev_excel_export>>). Each row represents
+one *localized term entry* (one language variant of one concept).
+
+=== Glossarist Model Layers
+
+The Glossarist model organizes concept data into two layers:
+
+* *ManagedConcept* — the concept entry itself (identity, domain classification,
+  cross-concept relationships, lifecycle)
+* *LocalizedConcept* — a language-specific variant of a concept (designations,
+  definition, notes, examples, sources)
+
+One IEV Excel row produces one `LocalizedConcept`, which is attached to its
+`ManagedConcept` (identified by `IEVREF`).
+
+=== Column-by-Column Mapping
+
+The table below maps each of the 19 Excel columns to the Glossarist model.
+
+[cols="15h,25h,15h,45h",options="header"]
+|===
+| Excel Column | Glossarist Path | Data Type | Notes
+
+| `IEVREF`
+| `ManagedConceptData#id`
+| `String`
+| The concept identifier (e.g. `103-01-02`). Also set as `LocalizedConcept#id` and `ConceptData#id`. Used to group multiple language rows into one `ManagedConcept`. The IEVREF pattern `AAA-BB-CC` is also used to derive domain references (see <<_derived-fields>>).
+
+| `LANGUAGE`
+| `ConceptData#language_code`
+| `String` (ISO 639-2/3)
+| Two-character code (e.g. `en`, `fr`) converted to three-character ISO 639 code (e.g. `eng`, `fra`) via `Iev::Iso639Code`. This determines which language slot the localized concept fills.
+
+| `TERM`
+| `Designation::Expression#designation`
+| `String`
+| Primary term designation. Creates a `Designation::Expression` with `normative_status: "preferred"`. If the value is `.....` (5 dots, meaning "not available"), it is replaced with `"NA"`. The term text undergoes MathML-to-AsciiMath conversion and cross-reference expansion.
+
+| `TERMATTRIBUTE`
+| (multiple designation fields)
+| Composite string
+| Parsed by `TermAttrsParser` into multiple designation attributes. See <<_termattribute-breakdown>> for the full sub-mapping.
+
+| `SYNONYM1`
+| `Designation::Expression#designation`
+| `String`
+| Additional designation. Creates a `Designation::Expression`. Some synonyms contain multiple entries separated by `<p>`, `<b>`, `<br>` tags — each is split into a separate designation. `normative_status` comes from `SYNONYM1STATUS`.
+
+| `SYNONYM1ATTRIBUTE`
+| (multiple designation fields)
+| Composite string
+| Same parsing as `TERMATTRIBUTE`, applied to the `SYNONYM1` designation. See <<_termattribute-breakdown>>.
+
+| `SYNONYM1STATUS`
+| `Designation::Expression#normative_status`
+| `String` or nil
+| Maps to the synonym's normative status. The value is lowercased. Known localized values are mapped: e.g. `"obsoleto"` to `"deprecated"`, Cyrillic variants similarly. When nil, the synonym has no explicit status. Also used to derive `LocalizedConcept#classification` (see <<_derived-fields>>).
+
+| `SYNONYM2`
+| `Designation::Expression#designation`
+| `String`
+| Same pattern as `SYNONYM1`.
+
+| `SYNONYM2ATTRIBUTE`
+| (multiple designation fields)
+| Composite string
+| Same as `SYNONYM1ATTRIBUTE`.
+
+| `SYNONYM2STATUS`
+| `Designation::Expression#normative_status`
+| `String` or nil
+| Same as `SYNONYM1STATUS`.
+
+| `SYNONYM3`
+| `Designation::Expression#designation`
+| `String`
+| Same pattern as `SYNONYM1`.
+
+| `SYNONYM3ATTRIBUTE`
+| (multiple designation fields)
+| Composite string
+| Same as `SYNONYM1ATTRIBUTE`.
+
+| `SYNONYM3STATUS`
+| `Designation::Expression#normative_status`
+| `String` or nil
+| Same as `SYNONYM1STATUS`.
+
+| `SYMBOLE`
+| `Designation::Symbol#designation`
+| `String`
+| International math symbol. Creates a `Designation::Symbol` with `international: true`. If this column is empty, no symbol designation is created.
+
+| `DEFINITION`
+| `ConceptData#definition`, `ConceptData#examples`, `ConceptData#notes`
+| HTML string
+| The unified definition text is split by `TermBuilder#split_definition` which uses regex to detect EXAMPLE, EXEMPLE, Note N to entry, Note N a l'article, NOTE markers. Each part becomes a `DetailedDefinition` object in the corresponding collection. The content undergoes MathML-to-AsciiMath conversion and cross-reference expansion.
+
+| `SOURCE`
+| `ConceptData#sources` (via `ConceptSource`)
+| HTML string
+| Parsed by `SourceParser` into one or more `ConceptSource` objects, each with `type: "authoritative"`. The source string is split after normalization. Each source has: `status` (identical/modified/similar/related/not_equal), `origin` (a `Citation` with `ref`, `locality`, `link`, `original`), and optionally `modification` text. See <<_source-parsing>>.
+
+| `PUBLICATIONDATE`
+| `ConceptData#dates` (via `ConceptDate`)
+| `String` (YYYY-MM or YYYY-MM-DD)
+| Converted to a full ISO 8601 datetime. Creates two `ConceptDate` entries: `{type: "accepted", date: ...}` and `{type: "amended", date: ...}`. Also sets `ConceptData#review_date` and `ConceptData#review_decision_date` to the same value.
+
+| `STATUS`
+| `LocalizedConcept#entry_status`
+| `String`
+| Only `Standard` is known; it maps to `"valid"`. Lowercased and matched.
+
+| `REPLACES`
+| `ConceptData#related` (via `RelatedConcept`)
+| `String`
+| Parsed by `SupersessionParser`. Expected format: `IEVREF:VERSION` (e.g. `881-01-23:1983-01`). Creates a `RelatedConcept` with `type: "supersedes"` and a `Citation` containing `{source: "IEV", id: "...", version: "..."}`.
+
+|===
+
+
+[[_termattribute-breakdown]]
+=== TERMATTRIBUTE Sub-Field Mapping
+
+The `TERMATTRIBUTE` column is a composite string parsed by `TermAttrsParser`.
+It may contain multiple attributes separated by semicolons. The parser extracts
+them in order: gender, plurality, geographical area, part of speech, usage
+info, prefix.
+
+[cols="15h,30h,55h",options="header"]
+|===
+| Parsed Value | Glossarist Path | Notes
+
+| `m`, `f`, `n`
+| `GrammarInfo#gender` (via `Designation::Expression#grammar_info`)
+| Grammatical gender. May appear inside brackets: `(m)`, `[f]`.
+
+| `pl`
+| `GrammarInfo#number` (via `Designation::Expression#grammar_info`)
+| Plurality. `pl` maps to `"plural"`. If gender was found but not `pl`, defaults to `"singular"`.
+
+| `adj`, `noun`, `verb`
+| `GrammarInfo#part_of_speech`
+| Part of speech. Localized variants are mapped: German `Adjektiv` to `adj`, Japanese and Korean variants similarly.
+
+| Angle bracket text (ASCII or full-width)
+| `Designation::Expression#usage_info`
+| Usage info / domain indicator extracted from angle brackets. Full-width brackets used in some CJK terms.
+
+| Prefix keywords in multiple languages
+| `Designation::Expression#prefix`
+| Marks the designation as a prefix. Keywords include German, French, Japanese, Korean, Chinese, Portuguese variants.
+
+| Two-letter uppercase (e.g. `CA`, `US`)
+| `Designation::Base#geographical_area`
+| ISO 3166-1 alpha-2 country code.
+
+|===
+
+
+[[_source-parsing]]
+=== SOURCE Column Parsing
+
+The `SOURCE` column is the most complex field. It is parsed by `SourceParser`
+into one or more `ConceptSource` objects.
+
+==== Relationship Status Detection
+
+The parser detects the source relationship type from textual markers:
+
+[cols="20h,20h,60h",options="header"]
+|===
+| Marker | Status | Notes
+
+| Not-equal sign
+| `not_equal`
+| Definition differs from source.
+
+| Approximately-equal sign
+| `similar`
+| Definition is similar to source.
+
+| `see`, `voir`
+| `related`
+| Cross-reference to another definition.
+
+| `MOD`, `modified`, `modifie` (with accent)
+| `modified`
+| Definition modified from source. Modification text is captured in `ConceptSource#modification`.
+
+| (default)
+| `identical`
+| No special marker found.
+
+|===
+
+==== Source Reference Extraction
+
+The parser normalizes and extracts the source reference (e.g. `IEC 60050-121`),
+the clause locality (e.g. `151-12-05`), and optionally resolves a URL via
+Relaton. Reference normalization handles many localized forms: `CEI` to `IEC`,
+`UIT` to `ITU`, `VEI` to `IEV`, etc.
+
+
+[[_derived-fields]]
+=== Derived Fields (Not Directly From Excel Columns)
+
+Some Glossarist model fields are *derived* from IEVREF or from combinations
+of columns during export:
+
+[cols="25h,25h,50h",options="header"]
+|===
+| Glossarist Path | Source | Notes
+
+| `ManagedConceptData#domains`
+| Derived from `IEVREF`
+| The IEVREF pattern `AAA-BB-CC` is split. Creates two `ConceptReference` objects with `ref_type: "domain"` and `source: "urn:iec:std:iec:60050"` (IEC URN per IEC URN specification): `area-AAA` and `section-AAA-BB`. For example, `103-01-02` produces `area-103` + `section-103-01`.
+
+| `LocalizedConcept#classification`
+| `SYNONYM1STATUS`
+| Maps localized classification values: Chinese/Russian/Spanish `"admitido"` to `"admitted"`, various forms of `"preferred"` similarly; other values lowercased as-is.
+
+| `ConceptData#domain`
+| Derived from `IEVREF`
+| The section-level domain URI (e.g. `section-103-01`), resolved from the `SubjectAreas` data. Falls back to area-level if section not found.
+
+| `ConceptData#review_decision_event`
+| Hard-coded
+| Always set to `"published"`.
+
+| `ConceptDate {type: "amended"}`
+| `PUBLICATIONDATE`
+| A second date entry with type `"amended"` is created alongside the `"accepted"` date, using the same publication date value.
+
+| `ManagedConcept#related`
+| Derived from `IEVREF`
+| Hierarchy relations using `broader`/`narrower`. Regular IEV concepts have `broader → section-AAA-BB`. Section concepts have `broader → area-AAA` (from SubjectAreaConcepts) and `narrower → child concepts` (from Exporter). Area concepts have `narrower → section-AAA-BB`. Each `RelatedConcept` has both `content` (string) and `ref` (Citation with source `"IEV"` and `id`) set, so the glossarist RDF transform emits `skos:broader`/`skos:narrower` triples.
+
+|===
+
+
+=== Glossarist Model Fields NOT Populated From IEV Excel
+
+The following Glossarist model fields exist in the data model but are *not*
+populated from any IEV Excel column. They remain at their defaults:
+
+[cols="25h,60h,15h",options="header"]
+|===
+| Glossarist Field | Description | Default
+
+| `ManagedConceptData#uri`
+| External URI for the concept
+| nil
+
+| `ManagedConceptData#sources`
+| Managed-concept-level sources (distinct from localized sources)
+| empty
+
+| `ManagedConcept#dates`
+| Managed-concept-level dates (distinct from localized dates)
+| empty
+
+| `ManagedConcept#status`
+| Concept lifecycle status (draft/valid/retired etc.)
+| nil
+
+| `ConceptData#release`
+| Release version tag
+| nil
+
+| `ConceptData#lineage_source_similarity`
+| Lineage source similarity percentage
+| nil
+
+| `ConceptData#script`
+| ISO 15924 script code
+| nil
+
+| `ConceptData#system`
+| ISO 24229 conversion system code
+| nil
+
+| `ConceptData#references`
+| ConceptReference collection on localized concept
+| empty
+
+| `ConceptData#entry_status`
+| Entry status on ConceptData (duplicate of LocalizedConcept#entry_status)
+| nil
+
+| `Concept#non_verb_rep`
+| Non-verbal representations (images, tables, formulas)
+| empty
+
+| `Designation::Base#language`
+| Per-designation language override
+| nil
+
+| `Designation::Base#script`
+| Per-designation ISO 15924 script
+| nil
+
+| `Designation::Base#system`
+| Per-designation ISO 24229 system
+| nil
+
+| `Designation::Base#international`
+| International validity flag (set `true` only for SYMBOLE)
+| false
+
+| `Designation::Base#absent`
+| Explicitly absent designation flag
+| false
+
+| `Designation::Base#pronunciation`
+| Pronunciation entries (IPA, romanization, etc.)
+| empty
+
+| `Designation::Base#sources`
+| Per-designation bibliographic sources
+| empty
+
+| `Designation::Base#term_type`
+| ISO 12620 term type classification (24 values)
+| nil
+
+| `Designation::Base#related`
+| Designation-level relationships (abbreviated_form_for, short_form_for)
+| empty
+
+| `Designation::Expression#field_of_application`
+| Subject field / specific use
+| nil
+
+| `Designation::Abbreviation#acronym`
+| Acronym type flag
+| false
+
+| `Designation::Abbreviation#initialism`
+| Initialism type flag
+| false
+
+| `Designation::Abbreviation#truncation`
+| Truncation type flag
+| false
+
+| `Designation::LetterSymbol`
+| Letter symbol designation type (subclass of Symbol with `text`)
+| (not used)
+
+| `Designation::GraphicalSymbol`
+| Graphical symbol designation type (subclass of Symbol with `text`, `image`)
+| (not used)
+
+| `LocalizedConcept#review_type`
+| Review type
+| nil
+
+|===
+
+
 == Copyright and license
 
 Data copyright IEC. All others copyright Ribose.
@@ -379,8 +744,10 @@ data:
   identifier: "103-01-01"
   domains:
     - concept_id: area-103
+      source: urn:iec:std:iec:60050
       ref_type: domain
     - concept_id: section-103-01
+      source: urn:iec:std:iec:60050
       ref_type: domain
 ----
 
@@ -390,10 +757,21 @@ The `ref_type: domain` distinguishes domain references from other
 === Subject Area Hierarchy
 
 The `SubjectAreaConcepts` module creates area and section concepts that
-form a two-level hierarchy:
+form a two-level hierarchy with symmetric `broader`/`narrower` linkages
+at the `ManagedConcept#related` level:
 
-* **Area concepts** (e.g. `area-103`) — have domain reference to themselves,
-  and `narrower` relations to their sections
-* **Section concepts** (e.g. `section-103-01`) — have domain references to
-  both parent area and themselves, a `broader` relation to the parent area,
-  and `ConceptData#domain` pointing to the parent area
+* **Area concepts** (e.g. `area-103`) — domain reference to themselves,
+  `narrower` relations to their sections
+* **Section concepts** (e.g. `section-103-01`) — domain references to
+  both parent area and themselves, `broader` relation to parent area,
+  `narrower` relations to child IEV concepts (added by `Exporter`)
+* **Regular IEV concepts** (e.g. `103-01-02`) — `broader` relation to
+  their section concept (added by `Exporter`)
+
+All hierarchy `RelatedConcept` entries set both `content` (string, for
+YAML serialization) and `ref` (`Citation` with `source: "IEV"` and `id`,
+for RDF transformation via glossarist's gloss ontology).
+
+Separately, `domains` (classification via `ConceptReference.domain(...)`)
+and `ConceptData#domain` (per-localization string) remain for
+classification/filtering — distinct from hierarchy.

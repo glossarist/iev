@@ -39,49 +39,59 @@ module Iev
         "section-#{code}"
       end
 
-      # --- Query API (reads from bundled data) ---
+      # --- Query API (returns typed objects) ---
 
       # Return all subject areas with their sections.
-      # @return [Array<Hash>] each hash has "code", "title", "sections"
+      # @return [Array<SubjectArea>]
       def all
-        data["areas"]
+        @typed_areas ||= raw_data["areas"].map { |h| build_area(h) }
       end
 
-      # Find a single subject area by its numeric code.
+      # Find a single subject area by its numeric code. O(1) indexed.
       # @param code [String, Integer] e.g. "102" or 102
-      # @return [Hash, nil]
+      # @return [SubjectArea, nil]
       def find_area(code)
-        all.find { |a| a["code"] == code.to_s }
+        area_index[code.to_s]
       end
 
       # Return all sections for a given area code.
       # @param code [String, Integer] area code, e.g. "102"
-      # @return [Array<Hash>] each hash has "code", "title"
+      # @return [Array<Section>]
       def sections_for(code)
-        area = find_area(code)
-        area ? area["sections"] : []
+        find_area(code)&.sections || []
       end
 
-      # Find a single section by its section code.
+      # Find a single section by its section code. O(1) indexed.
       # @param section_code [String] e.g. "102-01"
-      # @return [Hash, nil]
+      # @return [Section, nil]
       def find_section(section_code)
-        sc = section_code.to_s
-        all.each do |area|
-          found = area["sections"]&.find { |s| s["code"] == sc }
-          return found if found
-        end
-        nil
+        section_index[section_code.to_s]
       end
 
       # Return the parent area for a given section code.
       # @param section_code [String] e.g. "102-01"
-      # @return [Hash, nil]
+      # @return [SubjectArea, nil]
       def area_for_section(section_code)
-        sc = section_code.to_s
-        all.find do |area|
-          area["sections"]&.any? { |s| s["code"] == sc }
-        end
+        sec = find_section(section_code)
+        sec ? find_area(sec.area_code) : nil
+      end
+
+      # --- Navigation from IEV reference ---
+
+      # Find the subject area for any IEV reference.
+      # @param ievref [String] e.g. "103-01-02"
+      # @return [SubjectArea, nil]
+      def area_for(ievref)
+        code = IevCode.new(ievref)
+        find_area(code.area_code)
+      end
+
+      # Find the section for any IEV reference.
+      # @param ievref [String] e.g. "103-01-02"
+      # @return [Section, nil]
+      def section_for(ievref)
+        code = IevCode.new(ievref)
+        code.section_code ? find_section(code.section_code) : nil
       end
 
       # --- Fetching (network, writes to bundled data file) ---
@@ -164,16 +174,47 @@ module Iev
         sections.uniq { |s| s["code"] }
       end
 
+      # Clear cached typed objects (useful after fetch updates raw data).
+      def reload!
+        @typed_areas = nil
+        @area_index = nil
+        @section_index = nil
+        @raw_data = nil
+      end
+
       private
 
-      def data
-        @data ||= begin
+      def build_area(hash)
+        area_code = hash["code"]
+        sections = (hash["sections"] || []).map do |s|
+          Section.new(code: s["code"], title: s["title"], area_code: area_code)
+        end
+
+        SubjectArea.new(
+          code: area_code,
+          title: hash["title"],
+          sections: sections,
+        )
+      end
+
+      def raw_data
+        @raw_data ||= begin
           path = File.exist?(DATA_FILE) ? DATA_FILE : nil
           if path
             YAML.safe_load(File.read(path, encoding: "utf-8")) || { "areas" => [] }
           else
             { "areas" => [] }
           end
+        end
+      end
+
+      def area_index
+        @area_index ||= all.each_with_object({}) { |a, h| h[a.code] = a }
+      end
+
+      def section_index
+        @section_index ||= all.each_with_object({}) do |area, h|
+          area.sections.each { |s| h[s.code] = s }
         end
       end
 
