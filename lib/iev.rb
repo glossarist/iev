@@ -29,11 +29,14 @@ module Iev
   autoload :DataSource, "iev/data_source"
   autoload :DbWriter, "iev/db_writer"
   autoload :Exporter, "iev/exporter"
+  autoload :IevCode, "iev/iev_code"
   autoload :Iso639Code, "iev/iso_639_code"
   autoload :Profiler, "iev/profiler"
   autoload :RelatonDb, "iev/relaton_db"
   autoload :Scraper, "iev/scraper"
+  autoload :Section, "iev/section"
   autoload :SourceParser, "iev/source_parser"
+  autoload :SubjectArea, "iev/subject_area"
   autoload :SubjectAreas, "iev/subject_areas"
   autoload :SubjectAreaConcepts, "iev/subject_area_concepts"
   autoload :SupersessionParser, "iev/supersession_parser"
@@ -84,36 +87,43 @@ module Iev
   end
 
   # Return all IEV subject areas with their sections (from bundled data).
-  # @return [Array<Hash>]
+  # @return [Array<SubjectArea>]
   def self.subject_areas
     SubjectAreas.all
   end
 
   # Find a subject area by code.
   # @param code [String, Integer] e.g. "102"
-  # @return [Hash, nil]
+  # @return [SubjectArea, nil]
   def self.find_subject_area(code)
     SubjectAreas.find_area(code)
   end
 
   # Find a section by its section code.
   # @param section_code [String] e.g. "102-01"
-  # @return [Hash, nil]
+  # @return [Section, nil]
   def self.find_section(section_code)
     SubjectAreas.find_section(section_code)
   end
 
   # Return sections for a given area code.
   # @param code [String, Integer] e.g. "102"
-  # @return [Array<Hash>]
+  # @return [Array<Section>]
   def self.sections_for(code)
     SubjectAreas.sections_for(code)
   end
 
   # Return the parent subject area for a given section code.
   # @param section_code [String] e.g. "102-01"
-  # @return [Hash, nil]
+  # @return [SubjectArea, nil]
   def self.area_for_section(section_code)
     SubjectAreas.area_for_section(section_code)
+  end
+
+  # Parse an IEV code into its structural components.
+  # @param code [String] e.g. "103-01-02"
+  # @return [IevCode, nil] nil if the code is blank
+  def self.parse_code(code)
+    IevCode.parse(code)
   end
 end

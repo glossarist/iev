@@ -55,6 +55,7 @@ module Iev
       dataset = load_dataset
       collection = build_collection(dataset)
       add_subject_area_concepts(collection) if @include_areas
+      build_section_narrower_relations(collection) if @include_areas
       save_collection(collection)
       elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
 
@@ -85,7 +86,7 @@ module Iev
 
       exts = (XLSX_EXTENSIONS + SQLITE_EXTENSIONS).join(", ")
       raise ArgumentError,
-        "Unsupported format: #{input_path.extname}. Supported: #{exts}"
+            "Unsupported format: #{input_path.extname}. Supported: #{exts}"
     end
 
     def input_format
@@ -141,11 +142,16 @@ module Iev
 
         concept = concept_index[term.id] ||= begin
           c = Glossarist::ManagedConcept.new(data: { "id" => term.id })
+          c.uuid = term.id
           c.data.domains = domain_references_for(term.id)
+          add_section_broader(c, term.id)
           collection.store(c)
           c
         end
         concept.add_l10n(term)
+
+        promote_supersession(concept, term)
+        set_managed_status(concept, term)
       end
 
       collection
@@ -167,14 +173,95 @@ module Iev
       collection.sum { |c| c.localized_concepts.count }
     end
 
-    def domain_references_for(ievref)
-      parts = ievref.to_s.split("-")
-      return [] unless parts.length >= 2
+    IEV_SOURCE = "urn:iec:std:iec:60050"
 
-      [
-        SubjectAreas.area_uri(parts[0]),
-        SubjectAreas.section_uri(parts[0..1].join("-")),
-      ].map { |id| Glossarist::ConceptReference.domain(id) }
+    def domain_references_for(ievref)
+      code = IevCode.new(ievref.to_s)
+      refs = []
+      if code.area_code
+        refs << Glossarist::ConceptReference.new(
+          concept_id: code.area_uri,
+          source: IEV_SOURCE,
+          ref_type: "domain",
+        )
+      end
+      if code.section_code
+        refs << Glossarist::ConceptReference.new(
+          concept_id: code.section_uri,
+          source: IEV_SOURCE,
+          ref_type: "domain",
+        )
+      end
+      refs
+    end
+
+    def add_section_broader(concept, ievref)
+      code = IevCode.new(ievref.to_s)
+      return unless code.section_uri
+
+      concept.related ||= []
+      return if concept.related.any? do |r|
+        r.type == "broader" && r.ref&.id == code.section_uri
+      end
+
+      concept.related << Glossarist::RelatedConcept.new(
+        type: "broader",
+        content: code.section_uri,
+        ref: Glossarist::Citation.new(source: "IEV", id: code.section_uri),
+      )
+    end
+
+    def build_section_narrower_relations(collection)
+      mc_index = collection.each_with_object({}) do |c, h|
+        h[c.data&.id] = c if c.data&.id
+      end
+
+      section_children = {}
+      mc_index.each_key do |concept_id|
+        code = IevCode.new(concept_id)
+        next unless code.section_uri
+
+        (section_children[code.section_uri] ||= []) << concept_id
+      end
+
+      section_children.each do |section_uri, child_ids|
+        section_mc = mc_index[section_uri]
+        next unless section_mc
+
+        narrower = child_ids.sort.map do |child_id|
+          Glossarist::RelatedConcept.new(
+            type: "narrower",
+            content: child_id,
+            ref: Glossarist::Citation.new(source: "IEV", id: child_id),
+          )
+        end
+
+        section_mc.related ||= []
+        section_mc.related.concat(narrower)
+      end
+    end
+
+    # Promote supersedes relations from localized ConceptData to managed level.
+    # Supersession is language-independent (REPLACES column is per-concept).
+    def promote_supersession(concept, term)
+      related = term.data&.related
+      return unless related&.any?
+
+      concept.related ||= []
+      related.each do |r|
+        next if concept.related.any? { |er| er.type == r.type && er.ref&.id == r.ref&.id }
+
+        concept.related << r
+      end
+      term.data.related = nil
+    end
+
+    # Derive managed concept status from the localization's entry_status.
+    def set_managed_status(concept, term)
+      return if concept.status
+
+      status = term.entry_status
+      concept.status = status if status && !status.empty?
     end
   end
 end
