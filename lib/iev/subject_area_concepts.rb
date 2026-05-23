@@ -129,7 +129,7 @@ module Iev
         Glossarist::RelatedConcept.new(
           type: "broader",
           content: target_uri,
-          ref: Glossarist::Citation.new(source: "IEV", id: target_uri),
+          ref: Glossarist::ConceptRef.new(source: "IEV", id: target_uri),
         )
       end
 
@@ -137,7 +137,7 @@ module Iev
         Glossarist::RelatedConcept.new(
           type: "narrower",
           content: target_uri,
-          ref: Glossarist::Citation.new(source: "IEV", id: target_uri),
+          ref: Glossarist::ConceptRef.new(source: "IEV", id: target_uri),
         )
       end
     end

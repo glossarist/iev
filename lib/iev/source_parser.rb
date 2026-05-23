@@ -82,7 +82,7 @@ module Iev
       clause = extract_source_clause(clean_ref)
 
       origin = Glossarist::Citation.new(
-        ref: source_ref,
+        ref: Glossarist::Citation::Ref.new(source: source_ref),
         locality: build_locality(clause),
         link: obtain_source_link(source_ref),
         original: Iev::Converter.mathml_to_asciimath(

@@ -18,11 +18,11 @@ RSpec.describe "Iev" do
         concepts_dir = File.join(dir, "concepts")
         expect(concepts_dir).to(satisfy { |p| File.directory? p })
 
-        concept_files = Dir["#{concepts_dir}/concept/*.yaml"]
+        concept_files = Dir["#{concepts_dir}/*.yaml"]
         expect(concept_files).not_to be_empty
 
-        concept1 = find_concept_by_identifier(concept_files, "103-01-01")
-        concept2 = find_concept_by_identifier(concept_files, "103-01-02")
+        concept1, docs1 = find_concept_by_identifier(concept_files, "103-01-01")
+        concept2, docs2 = find_concept_by_identifier(concept_files, "103-01-02")
 
         # Concept 1: basic structure
         expect(concept1["data"]["identifier"]).to eq("103-01-01")
@@ -34,7 +34,7 @@ RSpec.describe "Iev" do
           include("concept_id" => "section-103-01", "ref_type" => "domain"),
         )
 
-        localized_eng = load_localized(concepts_dir, concept1, "eng")
+        localized_eng = find_localized_in_docs(docs1, "eng")
         expect(localized_eng["data"]["domain"]).to eq("section-103-01")
         expect(localized_eng["data"]["terms"].first["designation"]).to eq("function")
         expect(localized_eng["data"]["language_code"]).to eq("eng")
@@ -47,7 +47,7 @@ RSpec.describe "Iev" do
           include("concept_id" => "section-103-01", "ref_type" => "domain"),
         )
 
-        localized_kor = load_localized(concepts_dir, concept2, "kor")
+        localized_kor = find_localized_in_docs(docs2, "kor")
         expect(localized_kor["data"]["domain"]).to eq("section-103-01")
         expect(localized_kor["data"]["terms"].first["designation"]).to eq("범함수")
         expect(localized_kor["data"]["language_code"]).to eq("kor")
@@ -61,17 +61,14 @@ RSpec.describe "Iev" do
 
   def find_concept_by_identifier(concept_files, identifier)
     concept_files.each do |f|
-      data = YAML.load_file(f)
-      return data if data.dig("data", "identifier") == identifier
+      docs = YAML.load_stream(File.read(f, encoding: "utf-8"))
+      mc = docs.first
+      return [mc, docs] if mc.dig("data", "identifier") == identifier
     end
     raise "Concept #{identifier} not found in #{concept_files.length} files"
   end
 
-  def load_localized(concepts_dir, concept_data, lang)
-    uuid = concept_data.dig("data", "localized_concepts", lang)
-    raise "No #{lang} localization" unless uuid
-
-    path = File.join(concepts_dir, "localized_concept", "#{uuid}.yaml")
-    YAML.load_file(path)
+  def find_localized_in_docs(docs, lang)
+    docs.find { |d| d.dig("data", "language_code") == lang }
   end
 end
