@@ -13,34 +13,33 @@ RSpec.describe Iev::SupersessionParser do
     described_class.new(attributes_str)
   end
 
-  def expect_supersession(id:, version:)
+  def expect_supersession(id:)
     relation = subject.supersessions.first
     expect(relation).to be_a(Glossarist::RelatedConcept)
     expect(relation.type).to eq("supersedes")
-    expect(relation.ref).to be_a(Glossarist::Citation)
+    expect(relation.ref).to be_a(Glossarist::ConceptRef)
     expect(relation.ref.source).to eq("IEV")
     expect(relation.ref.id).to eq(id)
-    expect(relation.ref.version).to eq(version)
   end
 
   example "731-03-24:1991-10-01" do
-    expect_supersession(id: "731-03-24", version: "1991-10-01")
+    expect_supersession(id: "731-03-24")
   end
 
   example "731-03-24:1991-10" do
-    expect_supersession(id: "731-03-24", version: "1991-10")
+    expect_supersession(id: "731-03-24")
   end
 
   example "731-03-24:1991" do
-    expect_supersession(id: "731-03-24", version: "1991")
+    expect_supersession(id: "731-03-24")
   end
 
   example "optional IEV prefix", string: "IEV 731-03-24:1991" do
-    expect_supersession(id: "731-03-24", version: "1991")
+    expect_supersession(id: "731-03-24")
   end
 
   example "spaces around colon", string: "731-03-24 : 1991" do
-    expect_supersession(id: "731-03-24", version: "1991")
+    expect_supersession(id: "731-03-24")
   end
 
   example "empty entry", string: " " do

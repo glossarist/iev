@@ -166,7 +166,7 @@ module Iev
     def save_collection(collection)
       concepts_dir = output_dir.expand_path.join("concepts")
       FileUtils.mkdir_p(concepts_dir)
-      collection.save_to_files(concepts_dir.to_s)
+      collection.save_grouped_concepts_to_files(concepts_dir.to_s)
     end
 
     def localized_count(collection)
@@ -207,7 +207,7 @@ module Iev
       concept.related << Glossarist::RelatedConcept.new(
         type: "broader",
         content: code.section_uri,
-        ref: Glossarist::Citation.new(source: "IEV", id: code.section_uri),
+        ref: Glossarist::ConceptRef.new(source: "IEV", id: code.section_uri),
       )
     end
 
@@ -232,7 +232,7 @@ module Iev
           Glossarist::RelatedConcept.new(
             type: "narrower",
             content: child_id,
-            ref: Glossarist::Citation.new(source: "IEV", id: child_id),
+            ref: Glossarist::ConceptRef.new(source: "IEV", id: child_id),
           )
         end
 

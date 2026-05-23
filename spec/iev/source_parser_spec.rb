@@ -68,7 +68,8 @@ RSpec.describe Iev::SourceParser do
     expect(source.modification).to eq('math element "stem:[L]"')
 
     expect(source.origin).to be_a(Glossarist::Citation)
-    expect(source.origin.text).to eq("IEC 62302:2007")
+    expect(source.origin.ref).to be_a(Glossarist::Citation::Ref)
+    expect(source.origin.ref.source).to eq("IEC 62302:2007")
     expect(source.origin.locality).to be_a(Glossarist::Locality)
     expect(source.origin.locality.type).to eq("clause")
     expect(source.origin.locality.reference_from).to eq("3.2")

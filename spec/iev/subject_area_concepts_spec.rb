@@ -71,7 +71,7 @@ RSpec.describe Iev::SubjectAreaConcepts do
 
     it "sets ref on narrower relations for RDF transform" do
       area_concept.related.each do |rel|
-        expect(rel.ref).to be_a(Glossarist::Citation)
+        expect(rel.ref).to be_a(Glossarist::ConceptRef)
         expect(rel.ref.source).to eq("IEV")
         expect(rel.ref.id).to eq(rel.content)
       end
@@ -122,7 +122,7 @@ RSpec.describe Iev::SubjectAreaConcepts do
 
     it "sets ref on broader relation for RDF transform" do
       rel = section_concept.related.first
-      expect(rel.ref).to be_a(Glossarist::Citation)
+      expect(rel.ref).to be_a(Glossarist::ConceptRef)
       expect(rel.ref.source).to eq("IEV")
       expect(rel.ref.id).to eq("area-103")
     end

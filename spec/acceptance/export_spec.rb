@@ -16,7 +16,7 @@ RSpec.describe "Iev" do
         concepts_dir = File.join(dir, "concepts")
         expect(concepts_dir).to(satisfy { |p| File.directory? p })
 
-        concept_files = Dir["#{concepts_dir}/concept/*.yaml"]
+        concept_files = Dir["#{concepts_dir}/*.yaml"]
         expect(concept_files).not_to be_empty
 
         concept1 = find_concept_by_identifier(concept_files, "103-01-01")
@@ -26,7 +26,7 @@ RSpec.describe "Iev" do
           include("concept_id" => "section-103-01", "ref_type" => "domain"),
         )
 
-        localized_eng = load_localized(concepts_dir, concept1, "eng")
+        localized_eng = find_localized_in_grouped(concept_files, "103-01-01", "eng")
         expect(localized_eng["data"]["domain"]).to eq("section-103-01")
         expect(localized_eng["data"]["terms"].first["designation"]).to eq("function")
         expect(localized_eng["data"]["entry_status"]).to eq("valid")
@@ -43,7 +43,7 @@ RSpec.describe "Iev" do
         concepts_dir = File.join(dir, "concepts")
         expect(concepts_dir).to(satisfy { |p| File.directory? p })
 
-        concept_files = Dir["#{concepts_dir}/concept/*.yaml"]
+        concept_files = Dir["#{concepts_dir}/*.yaml"]
         expect(concept_files).not_to be_empty
 
         concept1 = find_concept_by_identifier(concept_files, "103-01-01")
@@ -53,7 +53,7 @@ RSpec.describe "Iev" do
           include("concept_id" => "section-103-01", "ref_type" => "domain"),
         )
 
-        localized_eng = load_localized(concepts_dir, concept1, "eng")
+        localized_eng = find_localized_in_grouped(concept_files, "103-01-01", "eng")
         expect(localized_eng["data"]["domain"]).to eq("section-103-01")
         expect(localized_eng["data"]["terms"].first["designation"]).to eq("function")
 
@@ -82,7 +82,7 @@ RSpec.describe "Iev" do
         collection = Iev::Exporter.new(sample_db, output_dir: dir).export
 
         expect(collection).to be_a(Glossarist::ManagedConceptCollection)
-        expect(Dir[File.join(dir, "concepts", "concept", "*.yaml")]).not_to be_empty
+        expect(Dir[File.join(dir, "concepts", "*.yaml")]).not_to be_empty
       end
     end
   end
@@ -91,17 +91,22 @@ RSpec.describe "Iev" do
 
   def find_concept_by_identifier(concept_files, identifier)
     concept_files.each do |f|
-      data = YAML.load_file(f)
-      return data if data.dig("data", "identifier") == identifier
+      docs = YAML.load_stream(File.read(f, encoding: "utf-8"))
+      mc = docs.first
+      return mc if mc.dig("data", "identifier") == identifier
     end
     raise "Concept #{identifier} not found in #{concept_files.length} files"
   end
 
-  def load_localized(concepts_dir, concept_data, lang)
-    uuid = concept_data.dig("data", "localized_concepts", lang)
-    raise "No #{lang} localization" unless uuid
+  def find_localized_in_grouped(concept_files, identifier, lang)
+    concept_files.each do |f|
+      docs = YAML.load_stream(File.read(f, encoding: "utf-8"))
+      mc = docs.first
+      next unless mc.dig("data", "identifier") == identifier
 
-    path = File.join(concepts_dir, "localized_concept", "#{uuid}.yaml")
-    YAML.load_file(path)
+      lc = docs.find { |d| d.dig("data", "language_code") == lang }
+      return lc if lc
+    end
+    raise "No #{lang} localization for #{identifier}"
   end
 end

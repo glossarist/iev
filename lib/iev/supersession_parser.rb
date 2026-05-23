@@ -54,10 +54,9 @@ module Iev
     def relation_from_match(match_data)
       Glossarist::RelatedConcept.new(
         type: "supersedes",
-        ref: Glossarist::Citation.new(
+        ref: Glossarist::ConceptRef.new(
           source: "IEV",
           id: match_data[:ref],
-          version: match_data[:version],
         ),
       )
     end

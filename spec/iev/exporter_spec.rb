@@ -32,10 +32,11 @@ RSpec.describe Iev::Exporter do
         described_class.new(sample_db, output_dir: dir).export
 
         concepts_dir = File.join(dir, "concepts")
-        concept_files = Dir["#{concepts_dir}/concept/*.yaml"]
+        concept_files = Dir["#{concepts_dir}/*.yaml"]
         concept1 = concept_files.each do |f|
-          data = YAML.load_file(f)
-          break data if data.dig("data", "identifier") == "103-01-01"
+          docs = YAML.load_stream(File.read(f, encoding: "utf-8"))
+          mc = docs.first
+          break mc if mc.dig("data", "identifier") == "103-01-01"
         end
 
         domains = concept1["data"]["domains"]
@@ -66,7 +67,7 @@ RSpec.describe Iev::Exporter do
 
         section_ref = broader.find { |r| r.content == "section-103-01" }
         expect(section_ref).not_to be_nil
-        expect(section_ref.ref).to be_a(Glossarist::Citation)
+        expect(section_ref.ref).to be_a(Glossarist::ConceptRef)
         expect(section_ref.ref.source).to eq("IEV")
         expect(section_ref.ref.id).to eq("section-103-01")
       end
@@ -97,7 +98,7 @@ RSpec.describe Iev::Exporter do
         narrower = section.related&.select { |r| r.type == "narrower" }
 
         narrower.each do |rel|
-          expect(rel.ref).to be_a(Glossarist::Citation)
+          expect(rel.ref).to be_a(Glossarist::ConceptRef)
           expect(rel.ref.source).to eq("IEV")
           expect(rel.ref.id).to eq(rel.content)
         end
