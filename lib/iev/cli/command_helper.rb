@@ -111,8 +111,7 @@ module Iev
 
         definition = entry["definition"]
         if definition
-          content = definition.is_a?(String) ? definition : definition
-          cd.definition = [Glossarist::DetailedDefinition.new(content: content)]
+          cd.definition = [Glossarist::DetailedDefinition.new(content: definition)]
         end
 
         l10n = Glossarist::LocalizedConcept.new

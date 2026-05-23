@@ -16,5 +16,4 @@ gem "simplecov"
 gemspec
 
 # TODO: remove once glossarist 2.7.0 is released with gloss ontology transform
-gem "glossarist", git: "https://github.com/glossarist/glossarist-ruby.git",
-                 branch: "main"
+gem "glossarist", path: "../glossarist-ruby"
