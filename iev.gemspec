@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = Gem::Requirement.new(">= 3.2.0")
 
   spec.add_dependency "creek", "~> 2.6"
-  spec.add_dependency "glossarist", ">= 2.3.0"
+  spec.add_dependency "glossarist", "~> 2.6"
   spec.add_dependency "ferrum", "~> 0.15"
   spec.add_dependency "nokogiri", "~> 1.19"
   spec.add_dependency "plurimath"

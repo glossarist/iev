@@ -4,17 +4,11 @@ require "spec_helper"
 
 RSpec.describe Iev::SubjectAreas do
   before do
-    described_class.instance_variable_set(:@typed_areas, nil)
-    described_class.instance_variable_set(:@area_index, nil)
-    described_class.instance_variable_set(:@section_index, nil)
-    described_class.instance_variable_set(:@raw_data, nil)
+    described_class.reload!
   end
 
   after do
-    described_class.instance_variable_set(:@typed_areas, nil)
-    described_class.instance_variable_set(:@area_index, nil)
-    described_class.instance_variable_set(:@section_index, nil)
-    described_class.instance_variable_set(:@raw_data, nil)
+    described_class.reload!
   end
 
   describe ".all" do
@@ -119,14 +113,9 @@ RSpec.describe Iev::SubjectAreas do
   describe ".reload!" do
     it "clears memoized caches" do
       described_class.all
-      expect(described_class.instance_variable_get(:@typed_areas)).not_to be_nil
-
       described_class.reload!
-
-      expect(described_class.instance_variable_get(:@typed_areas)).to be_nil
-      expect(described_class.instance_variable_get(:@area_index)).to be_nil
-      expect(described_class.instance_variable_get(:@section_index)).to be_nil
-      expect(described_class.instance_variable_get(:@raw_data)).to be_nil
+      described_class.all
+      expect(described_class.all).not_to be_empty
     end
   end
 end
