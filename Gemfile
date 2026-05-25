@@ -14,6 +14,3 @@ gem "rubocop-rspec"
 gem "simplecov"
 
 gemspec
-
-# TODO: remove once glossarist 2.7.0 is released with gloss ontology transform
-gem "glossarist", path: "../glossarist-ruby"
