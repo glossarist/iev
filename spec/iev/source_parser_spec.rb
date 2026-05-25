@@ -69,11 +69,46 @@ RSpec.describe Iev::SourceParser do
 
     expect(source.origin).to be_a(Glossarist::Citation)
     expect(source.origin.ref).to be_a(Glossarist::Citation::Ref)
-    expect(source.origin.ref.source).to eq("IEC 62302:2007")
+    expect(source.origin.ref.source).to eq("IEC")
+    expect(source.origin.ref.id).to eq("62302:2007")
     expect(source.origin.locality).to be_a(Glossarist::Locality)
     expect(source.origin.locality.type).to eq("clause")
     expect(source.origin.locality.reference_from).to eq("3.2")
     expect(source.origin.link).to eq("https://webstore.iec.ch/publication/6790")
     expect(source.origin.original).to eq('IEC 62302:2007, 3.2, modified – math element "stem:[L]"')
+  end
+
+  describe "#split_ref" do
+    let(:parser) { described_class.new("IEC 1:2000, 1", "IEV") }
+
+    {
+      "IEC 62302:2007" => ["IEC", "62302:2007"],
+      "IEC 60050-121" => ["IEC", "60050-121"],
+      "IEC 60050-121:2003" => ["IEC", "60050-121:2003"],
+      "ISO 1087-1:2000" => ["ISO", "1087-1:2000"],
+      "ISO 9000" => ["ISO", "9000"],
+      "ISO/IEC 2382:2015" => ["ISO/IEC", "2382:2015"],
+      "ISO/IEC Guide 2" => ["ISO/IEC Guide", "2"],
+      "ISO/IEC/IEEE 24765:2010" => ["ISO/IEC/IEEE", "24765:2010"],
+      "ISO/TS 14812:2022" => ["ISO/TS", "14812:2022"],
+      "ISO/TR 9593-4:1992" => ["ISO/TR", "9593-4:1992"],
+      "IEC/IEEE 80005-1:2019" => ["IEC/IEEE", "80005-1:2019"],
+      "IEC CISPR 16-1:2003" => ["IEC CISPR", "16-1:2003"],
+      "IEC Guide 115" => ["IEC Guide", "115"],
+      "IAEA 4" => ["IAEA", "4"],
+      "IEV" => ["IEV", nil],
+      "JCGM VIM" => ["JCGM", "VIM"],
+      "ITU-T Recommendation F.791 (11/2015)" => ["ITU-T Recommendation", "F.791 (11/2015)"],
+      "ITU-T Recommendation F.791" => ["ITU-T Recommendation", "F.791"],
+      "ITU-R Recommendation 592" => ["ITU-R Recommendation", "592"],
+      "ITU-R RR" => ["ITU-R", "RR"],
+    }.each do |input, (expected_source, expected_id)|
+      expected_id ||= nil
+      it "splits #{input.inspect} into source=#{expected_source.inspect} id=#{expected_id.inspect}" do
+        source, id = parser.send(:split_ref, input)
+        expect(source).to eq(expected_source)
+        expect(id).to eq(expected_id)
+      end
+    end
   end
 end

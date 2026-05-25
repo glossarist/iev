@@ -79,10 +79,11 @@ module Iev
       relationship = extract_source_relationship(raw_ref)
       clean_ref = normalize_ref_string(raw_ref)
       source_ref = extract_source_ref(clean_ref)
+      ref_source, ref_id = split_ref(source_ref)
       clause = extract_source_clause(clean_ref)
 
       origin = Glossarist::Citation.new(
-        ref: Glossarist::Citation::Ref.new(source: source_ref),
+        ref: Glossarist::Citation::Ref.new(source: ref_source, id: ref_id),
         locality: build_locality(clause),
         link: obtain_source_link(source_ref),
         original: Iev::Converter.mathml_to_asciimath(
@@ -349,6 +350,52 @@ module Iev
         type: "clause",
         reference_from: clause,
       )
+    end
+
+    # Splits a normalized bibliographic reference into [source, id] for
+    # structured Citation::Ref construction.  The full string is still
+    # passed to Relaton for link resolution — only the Citation::Ref
+    # model receives the split form.
+    #
+    #   "IEC 62302:2007"           → ["IEC",          "62302:2007"]
+    #   "ISO/IEC 2382:2015"        → ["ISO/IEC",      "2382:2015"]
+    #   "ISO/TS 14812:2022"        → ["ISO/TS",       "14812:2022"]
+    #   "IEC CISPR 16-1:2003"      → ["IEC CISPR",    "16-1:2003"]
+    #   "ITU-T Recommendation F.791 (11/2015)" → ["ITU-T Recommendation", "F.791 (11/2015)"]
+    #   "IEV"                      → ["IEV",          nil]
+    def split_ref(full_ref)
+      case full_ref
+      when /\A(ISO\/IEC\/IEEE)\s+(.+)/
+        [$1, $2]
+      when /\A(ISO\/IEC\s+Guide)\s+(.+)/
+        [$1, $2]
+      when /\A(ISO\/IEC)\s+(.+)/
+        [$1, $2]
+      when /\A(IEC\/IEEE)\s+(.+)/
+        [$1, $2]
+      when %r{\A((?:ISO|IEC)/(?:PAS|TR|TS))\s+(.+)}
+        [$1, $2]
+      when /\A(IEC\s+CISPR)\s+(.+)/
+        [$1, $2]
+      when /\A(ITU-T\s+Recommendation)\s+(.+)/
+        [$1, $2]
+      when /\A(ITU-R\s+Recommendation)\s+(.+)/
+        [$1, $2]
+      when /\A(ITU-R)\s+(.+)/
+        [$1, $2]
+      when /\A((?:ISO|IEC)\s+Guide)\s+(.+)/
+        [$1, $2]
+      when /\A(ISO|IEC|IAEA)\s+(.+)/
+        [$1, $2]
+      when /\AIEV\z/
+        ["IEV", nil]
+      when /\A(JCGM)\s+(VIM)\z/
+        [$1, $2]
+      when /\ABBIPM/
+        ["BIPM", "SI Brochure"]
+      else
+        [full_ref, nil]
+      end
     end
 
     # Uses Relaton to obtain link for given source ref.
