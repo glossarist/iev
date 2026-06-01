@@ -6,7 +6,10 @@ require "iev/scraper"
 require "iev/scraper/page_parser"
 
 RSpec.describe Iev::Scraper::PageParser do
-  let(:html_fixture) { File.read(File.expand_path("../../examples/103_01_02.html", __dir__), encoding: "utf-8") }
+  let(:html_fixture) do
+    File.read(File.expand_path("../../examples/103_01_02.html", __dir__),
+              encoding: "utf-8")
+  end
   let(:doc) { Nokogiri::HTML(html_fixture) }
   let(:parser) { described_class.new(doc, "103-01-02") }
 
@@ -67,7 +70,10 @@ RSpec.describe Iev::Scraper::PageParser do
   end
 
   context "with 111-11-11 fixture" do
-    let(:html_fixture) { File.read(File.expand_path("../../examples/111_11_11.html", __dir__), encoding: "utf-8") }
+    let(:html_fixture) do
+      File.read(File.expand_path("../../examples/111_11_11.html", __dir__),
+                encoding: "utf-8")
+    end
     let(:parser) { described_class.new(doc, "111-11-11") }
 
     it "extracts the concept" do

@@ -12,6 +12,7 @@ module Iev
   #   SourceParser.new(cell_data_string).parsed_sources
   class SourceParser
     include Utilities
+
     using DataConversions
 
     # When false, obtain_source_link skips Relaton network calls.
@@ -112,13 +113,13 @@ module Iev
       # IEC 62313:2009, 3.6, modifié
 
       str
-        .gsub(/CEI/, "IEC")
-        .gsub(/Guide IEC/, "IEC Guide")
+        .gsub("CEI", "IEC")
+        .gsub("Guide IEC", "IEC Guide")
         .gsub(%r{Guide ISO/IEC}, "ISO/IEC Guide")
-        .gsub(/VEI/, "IEV")
-        .gsub(/UIT/, "ITU")
-        .gsub(/IUT-R/, "ITU-R")
-        .gsub(/UTI-R/, "ITU-R")
+        .gsub("VEI", "IEV")
+        .gsub("UIT", "ITU")
+        .gsub("IUT-R", "ITU-R")
+        .gsub("UTI-R", "ITU-R")
         .gsub(/Recomm[ea]ndation ITU-T/, "ITU-T Recommendation")
         .gsub(/ITU-T (\w.\d{3}):(\d{4})/, 'ITU-T Recommendation \1 (\2)')
         .gsub(/ITU-R Rec. (\d+)/, 'ITU-R Recommendation \1')
@@ -290,17 +291,15 @@ module Iev
       ].map do |regex, _rule|
         # TODO: Rubocop complains about unused rule -- need to make sure
         # that no one forgot about something.
-        res = []
         # puts "str is '#{str}'"
         # puts "regex is '#{regex.to_s}'"
-        str.scan(regex).each do |result|
+        str.scan(regex).map do |result|
           # puts "result is #{result.first}"
-          res << {
+          {
             index: $LAST_MATCH_INFO.offset(0)[0],
             clause: result.first.strip,
           }
         end
-        res
         # sort by index and also the length of match
       end.flatten.sort_by { |hash| [hash[:index], -hash[:clause].length] }
 

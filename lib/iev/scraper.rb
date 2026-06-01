@@ -14,7 +14,8 @@ module Iev
     # Fetch the Electropedia page HTML for a given IEV code.
     # Returns a Nokogiri document.
     def fetch_page(code)
-      html = ScraperBrowser.fetch("#{BASE_URL}#{code}", browser_opts: @browser_opts)
+      html = ScraperBrowser.fetch("#{BASE_URL}#{code}",
+                                  browser_opts: @browser_opts)
       return nil unless html
 
       Nokogiri::HTML(html)

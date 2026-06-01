@@ -36,7 +36,7 @@ module Iev
       rescue StandardError
         raise unless curr_attempt <= attempts
 
-        sleep(2**curr_attempt * 0.1)
+        sleep((2**curr_attempt) * 0.1)
         curr_attempt += 1
         retry
       end

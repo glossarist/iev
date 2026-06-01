@@ -55,7 +55,8 @@ RSpec.describe Iev::TermBuilder do
     # #160, #161: Note/example extraction with numbering artifacts
     it "extracts notes from definition with 'Note N to entry:' pattern" do
       definition = "some definition<p>Note 1 to entry: first note<p>Note 2 to entry: second note"
-      builder = described_class.new({ IEVREF: "103-01-02", DEFINITION: definition })
+      builder = described_class.new({ IEVREF: "103-01-02",
+                                      DEFINITION: definition })
       builder.split_definition
       notes = builder.extract_notes
       expect(notes.length).to eq(2)
@@ -63,7 +64,8 @@ RSpec.describe Iev::TermBuilder do
 
     it "extracts examples from definition with 'EXAMPLE' pattern" do
       definition = "some definition<p>EXAMPLE an example here"
-      builder = described_class.new({ IEVREF: "103-01-02", DEFINITION: definition })
+      builder = described_class.new({ IEVREF: "103-01-02",
+                                      DEFINITION: definition })
       builder.split_definition
       examples = builder.extract_examples
       expect(examples.length).to eq(1)
@@ -72,7 +74,8 @@ RSpec.describe Iev::TermBuilder do
     # #11: <NOTE/> pattern
     it "handles <NOTE/> pattern" do
       definition = "some definition<p><NOTE/>1 – first note<p><NOTE/>2 – second note"
-      builder = described_class.new({ IEVREF: "103-01-02", DEFINITION: definition })
+      builder = described_class.new({ IEVREF: "103-01-02",
+                                      DEFINITION: definition })
       builder.split_definition
       notes = builder.extract_notes
       expect(notes.length).to eq(2)
@@ -80,7 +83,8 @@ RSpec.describe Iev::TermBuilder do
 
     it "handles NOTE pattern" do
       definition = "some definition<p>NOTE 1 - a note<p>NOTE 2 - another note"
-      builder = described_class.new({ IEVREF: "103-01-02", DEFINITION: definition })
+      builder = described_class.new({ IEVREF: "103-01-02",
+                                      DEFINITION: definition })
       builder.split_definition
       notes = builder.extract_notes
       expect(notes.length).to eq(2)

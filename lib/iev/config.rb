@@ -9,7 +9,7 @@ module Iev
     attr_accessor :data_path, :cache_dir, :remote_base_url
 
     def initialize
-      @data_path = ENV["IEV_DATA_PATH"]
+      @data_path = ENV.fetch("IEV_DATA_PATH", nil)
       @cache_dir = ENV["IEV_CACHE_DIR"] || File.join(Dir.tmpdir, "iev-cache")
       @remote_base_url = DEFAULT_REMOTE_BASE_URL
     end

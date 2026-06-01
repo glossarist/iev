@@ -22,7 +22,7 @@ require "sequel"
 require "thor"
 require_relative "../lib/iev/cli"
 
-Dir["./spec/support/**/*.rb"].sort.each { |file| require file }
+Dir["./spec/support/**/*.rb"].each { |file| require file }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

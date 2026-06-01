@@ -6,7 +6,8 @@
 module Iev
   # @todo This needs to be rewritten.
   class Iso639Code
-    COUNTRY_CODES = YAML.safe_load(IO.read(File.join(__dir__, "iso_639_2.yaml")), permitted_classes: [Symbol]).freeze
+    COUNTRY_CODES = YAML.safe_load_file(File.join(__dir__,
+                                                  "iso_639_2.yaml"), permitted_classes: [Symbol]).freeze
     # rubocop:disable Style/MutableConstant
     THREE_CHAR_MEMO = {} # Memoization cache, must be mutable
     # rubocop:enable Style/MutableConstant

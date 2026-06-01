@@ -69,7 +69,7 @@ RSpec.describe Iev::Utilities do
     # CodeQL fix: unquoted href with space (IEV data: href=IEV 102-01-10)
     context "when href has unquoted value with space" do
       it "preserves the full IEV code including space" do
-        text = 'See <a href=IEV 102-01-10>IEV 102-01-10</a>'
+        text = "See <a href=IEV 102-01-10>IEV 102-01-10</a>"
 
         expect(subject.parse_anchor_tag(text, "103"))
           .to eq("See {{IEV 102-01-10, urn:iec:std:iec:60050-102-01-10}}")
@@ -98,8 +98,8 @@ RSpec.describe Iev::Utilities do
     context "when text contains SIMG figure references" do
       it "converts SIMG with two figures" do
         text = '<simg type="negative"/$file/103-01-02en.gif>' \
-               '<p><b> Figure  1  –  Description 1 </b></p>' \
-               '<p><b> Figure  2  –  Description 2 </b></p>'
+               "<p><b> Figure  1  –  Description 1 </b></p>" \
+               "<p><b> Figure  2  –  Description 2 </b></p>"
 
         result = subject.parse_anchor_tag(text, "103")
         expect(result).to start_with("image::/assets/images/parts/103/103-01-02en.gif[")
@@ -109,7 +109,7 @@ RSpec.describe Iev::Utilities do
 
       it "converts SIMG with single figure" do
         text = '<simg type="negative"/$file/103-01-02en.gif>' \
-               '<p><b> Figure  1  –  Description </b></p>'
+               "<p><b> Figure  1  –  Description </b></p>"
 
         result = subject.parse_anchor_tag(text, "103")
         expect(result).to start_with("image::/assets/images/parts/103/103-01-02en.gif[")
