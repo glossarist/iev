@@ -144,6 +144,7 @@ module Iev
           c = Glossarist::ManagedConcept.new(data: { "id" => term.id })
           c.uuid = term.id
           c.data.domains = domain_references_for(term.id)
+          c.data.tags = tags_for(term.id)
           add_section_broader(c, term.id)
           collection.store(c)
           c
@@ -193,6 +194,16 @@ module Iev
         )
       end
       refs
+    end
+
+    def tags_for(ievref)
+      code = IevCode.new(ievref.to_s)
+      tags = []
+      area = SubjectAreas.find_area(code.area_code)
+      tags << area.title if area
+      section = code.section_code && SubjectAreas.find_section(code.section_code)
+      tags << section.title if section
+      tags
     end
 
     def add_section_broader(concept, ievref)
@@ -249,7 +260,9 @@ module Iev
 
       concept.related ||= []
       related.each do |r|
-        next if concept.related.any? { |er| er.type == r.type && er.ref&.id == r.ref&.id }
+        next if concept.related.any? do |er|
+          er.type == r.type && er.ref&.id == r.ref&.id
+        end
 
         concept.related << r
       end
