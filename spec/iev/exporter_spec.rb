@@ -106,6 +106,38 @@ RSpec.describe Iev::Exporter do
     end
   end
 
+  describe "tags" do
+    it "assigns area and section titles as tags" do
+      Dir.mktmpdir("iev-test") do |dir|
+        collection = described_class.new(sample_db, output_dir: dir).export
+
+        concept = collection.find { |c| c.data.id == "103-01-01" }
+        expect(concept).not_to be_nil
+
+        tags = concept.data.tags
+        expect(tags).to include("Mathematics - Functions")
+        expect(tags).to include("General concepts")
+      end
+    end
+
+    it "serializes tags to YAML" do
+      Dir.mktmpdir("iev-test") do |dir|
+        described_class.new(sample_db, output_dir: dir).export
+
+        concepts_dir = File.join(dir, "concepts")
+        concept_files = Dir["#{concepts_dir}/*.yaml"]
+        concept1 = concept_files.each do |f|
+          docs = YAML.load_stream(File.read(f, encoding: "utf-8"))
+          mc = docs.first
+          break mc if mc.dig("data", "identifier") == "103-01-01"
+        end
+
+        tags = concept1["data"]["tags"]
+        expect(tags).to include("Mathematics - Functions", "General concepts")
+      end
+    end
+  end
+
   describe "broader/narrower symmetry" do
     it "every concept broader has matching section narrower" do
       Dir.mktmpdir("iev-test") do |dir|
@@ -125,7 +157,7 @@ RSpec.describe Iev::Exporter do
           expect(section_narrower_ids).to(
             include("103-01-01"),
             "section-103-01 narrower should include 103-01-01 " \
-            "(concept has broader → #{broader_id})"
+            "(concept has broader → #{broader_id})",
           )
         end
       end

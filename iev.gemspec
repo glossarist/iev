@@ -22,14 +22,15 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = Gem::Requirement.new(">= 3.2.0")
 
   spec.add_dependency "creek", "~> 2.6"
-  spec.add_dependency "glossarist", "~> 2.6", ">= 2.6.7"
   spec.add_dependency "ferrum", "~> 0.15"
+  spec.add_dependency "glossarist", ">= 2.8.1"
+  spec.add_dependency "lutaml-model", "~> 0.8.0"
   spec.add_dependency "nokogiri", "~> 1.19"
   spec.add_dependency "plurimath"
-  spec.add_dependency "lutaml-model", "~> 0.8.0"
   spec.add_dependency "relaton", ">= 2.0.0", "< 3"
   spec.add_dependency "sequel", "~> 5.40"
   spec.add_dependency "sqlite3", "~> 1.7"
   spec.add_dependency "thor", "~> 1.0"
   spec.add_dependency "unitsml"
+  spec.metadata["rubygems_mfa_required"] = "true"
 end

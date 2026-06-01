@@ -86,6 +86,10 @@ RSpec.describe Iev::SubjectAreaConcepts do
       l10n = area_concept.localization("eng")
       expect(l10n.data.review_decision_event).to eq("published")
     end
+
+    it "has tags with the area title" do
+      expect(area_concept.data.tags).to eq(["Mathematics - Functions"])
+    end
   end
 
   describe "section concept structure" do
@@ -130,6 +134,12 @@ RSpec.describe Iev::SubjectAreaConcepts do
     it "has domain on ConceptData pointing to parent area" do
       l10n = section_concept.localization("eng")
       expect(l10n.data.domain).to eq("area-103")
+    end
+
+    it "has tags with area and section titles" do
+      expect(section_concept.data.tags).to eq(
+        ["Mathematics - Functions", "General functions"],
+      )
     end
   end
 

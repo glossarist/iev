@@ -582,6 +582,10 @@ of columns during export:
 | Derived from `IEVREF`
 | The IEVREF pattern `AAA-BB-CC` is split. Creates two `ConceptReference` objects with `ref_type: "domain"` and `source: "urn:iec:std:iec:60050"` (IEC URN per IEC URN specification): `area-AAA` and `section-AAA-BB`. For example, `103-01-02` produces `area-103` + `section-103-01`.
 
+| `ManagedConceptData#tags`
+| Derived from `IEVREF`
+| Plain string tags for grouping and filtering. Derived from the IEV subject area hierarchy: includes the area title (e.g. `"Mathematics - Functions"`) and section title (e.g. `"General concepts"`).
+
 | `LocalizedConcept#classification`
 | `SYNONYM1STATUS`
 | Maps localized classification values: Chinese/Russian/Spanish `"admitido"` to `"admitted"`, various forms of `"preferred"` similarly; other values lowercased as-is.
@@ -749,6 +753,9 @@ data:
     - concept_id: section-103-01
       source: urn:iec:std:iec:60050
       ref_type: domain
+  tags:
+    - "Mathematics - Functions"
+    - "General concepts"
 ----
 
 The `ref_type: domain` distinguishes domain references from other

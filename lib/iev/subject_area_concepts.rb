@@ -56,6 +56,7 @@ module Iev
           data: Glossarist::ManagedConceptData.new(
             id: id,
             domains: [domain_ref(id)],
+            tags: [area.title],
           ),
         )
         mc.uuid = id
@@ -77,6 +78,7 @@ module Iev
               domain_ref(area.uri),
               domain_ref(id),
             ],
+            tags: [area.title, section.title],
           ),
         )
         mc.uuid = id
