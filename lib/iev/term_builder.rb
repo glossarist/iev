@@ -7,6 +7,7 @@ module Iev
   class TermBuilder
     include Cli::Ui
     include Utilities
+
     using DataConversions
 
     def initialize(data)
@@ -142,7 +143,7 @@ module Iev
             Note&nbsp;\d+\sto\sentry: |
             Note\s*\d+\sto\sthe\sentry: |
             Note\sto\sentry\s*\d+: |
-            Note\s*\d+?\sà\sl['']article: |
+            Note\s*\d+?\sà\sl'article: |
             <NOTE/?>?\s*\d?\s+[–-]\s* |
             NOTE(?:\s+-)?\s* |
             Note\s+\d+\s[–-]\s* |

@@ -68,7 +68,7 @@ module Iev
       extract_usage_info(curr_str)
       extract_prefix(curr_str)
 
-      return unless /\p{Word}/.match?(curr_str)
+      nil unless /\p{Word}/.match?(curr_str)
 
       # Term attributes could not be parsed completely
     end

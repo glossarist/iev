@@ -26,7 +26,8 @@ RSpec.describe "Iev" do
           include("concept_id" => "section-103-01", "ref_type" => "domain"),
         )
 
-        localized_eng = find_localized_in_grouped(concept_files, "103-01-01", "eng")
+        localized_eng = find_localized_in_grouped(concept_files, "103-01-01",
+                                                  "eng")
         expect(localized_eng["data"]["domain"]).to eq("section-103-01")
         expect(localized_eng["data"]["terms"].first["designation"]).to eq("function")
         expect(localized_eng["data"]["entry_status"]).to eq("valid")
@@ -53,7 +54,8 @@ RSpec.describe "Iev" do
           include("concept_id" => "section-103-01", "ref_type" => "domain"),
         )
 
-        localized_eng = find_localized_in_grouped(concept_files, "103-01-01", "eng")
+        localized_eng = find_localized_in_grouped(concept_files, "103-01-01",
+                                                  "eng")
         expect(localized_eng["data"]["domain"]).to eq("section-103-01")
         expect(localized_eng["data"]["terms"].first["designation"]).to eq("function")
 

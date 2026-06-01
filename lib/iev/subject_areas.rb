@@ -44,7 +44,7 @@ module Iev
       # Return all subject areas with their sections.
       # @return [Array<SubjectArea>]
       def all
-        @typed_areas ||= raw_data["areas"].map { |h| build_area(h) }
+        @all ||= raw_data["areas"].map { |h| build_area(h) }
       end
 
       # Find a single subject area by its numeric code. O(1) indexed.
@@ -105,7 +105,7 @@ module Iev
         puts "Found #{fresh_areas.length} areas (#{areas.length} cached)" if $stdout.tty?
 
         # Merge: keep existing sections, add new areas
-        existing = areas.each_with_object({}) { |a, h| h[a["code"]] = a }
+        existing = areas.to_h { |a| [a["code"], a] }
         fresh_areas.each do |fa|
           existing[fa["code"]] ||= fa
         end
@@ -119,13 +119,13 @@ module Iev
             area["fetched"] = true
           rescue FetchError
             area["sections"] ||= []
-            warn "IEV: Skipping area #{area["code"]} due to WAF"
+            warn "IEV: Skipping area #{area['code']} due to WAF"
           end
 
-          puts "[#{i + 1}/#{areas.length}] #{area["code"]}: #{area["title"]} — #{area["sections"].length} sections" if $stdout.tty?
+          puts "[#{i + 1}/#{areas.length}] #{area['code']}: #{area['title']} — #{area['sections'].length} sections" if $stdout.tty?
 
           # Save progress every 10 areas so partial results survive WAF failures
-          if (i + 1) % 10 == 0
+          if ((i + 1) % 10).zero?
             write_cache("subject_areas.yaml", { "areas" => areas })
           end
 
@@ -201,7 +201,8 @@ module Iev
         @raw_data ||= begin
           path = File.exist?(DATA_FILE) ? DATA_FILE : nil
           if path
-            YAML.safe_load(File.read(path, encoding: "utf-8")) || { "areas" => [] }
+            YAML.safe_load(File.read(path,
+                                     encoding: "utf-8")) || { "areas" => [] }
           else
             { "areas" => [] }
           end
@@ -209,7 +210,7 @@ module Iev
       end
 
       def area_index
-        @area_index ||= all.each_with_object({}) { |a, h| h[a.code] = a }
+        @area_index ||= all.to_h { |a| [a.code, a] }
       end
 
       def section_index

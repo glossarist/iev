@@ -11,7 +11,7 @@ RSpec.describe "Iev" do
 
   describe "xlsx2db" do
     it "imports XLSX document to database" do
-      FileUtils.rm_rf(tmp_db_dir) if Dir.exist?(tmp_db_dir)
+      FileUtils.rm_rf(tmp_db_dir)
 
       Dir.mkdir tmp_db_dir
 

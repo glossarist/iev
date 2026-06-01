@@ -27,7 +27,7 @@ RSpec.describe "Iev" do
         # Concept 1: basic structure
         expect(concept1["data"]["identifier"]).to eq("103-01-01")
         expect(concept1["data"]["localized_concepts"].keys).to contain_exactly(
-          "ara", "deu", "eng", "fra", "jpn", "kor", "pol", "por", "zho",
+          "ara", "deu", "eng", "fra", "jpn", "kor", "pol", "por", "zho"
         )
         expect(concept1["data"]["domains"]).to include(
           include("concept_id" => "area-103", "ref_type" => "domain"),

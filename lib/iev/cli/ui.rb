@@ -12,12 +12,12 @@ module Iev
     module Ui
       module_function
 
-      def debug(*args)
-        Helper.cli_out(:debug, *args)
+      def debug(*)
+        Helper.cli_out(:debug, *)
       end
 
-      def warn(*args)
-        Helper.cli_out(:warn, *args)
+      def warn(*)
+        Helper.cli_out(:warn, *)
       end
 
       # Prints progress message which will be replaced on next call.
@@ -52,7 +52,7 @@ module Iev
 
         def cli_out(level, *args)
           topic = args[0].is_a?(Symbol) ? args.shift : nil
-          message = args.map(&:to_s).join(" ").chomp
+          message = args.join(" ").chomp
           ui_tag = Thread.current[:iev_ui_tag]
 
           return unless should_out?(level, topic)

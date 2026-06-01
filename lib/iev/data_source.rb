@@ -63,7 +63,8 @@ module Iev
         path = File.join(data_path, "concept-#{code}.yaml")
         return nil unless File.exist?(path)
 
-        YAML.safe_load(File.read(path, encoding: "utf-8"), permitted_classes: [Date, Time])
+        YAML.safe_load(File.read(path, encoding: "utf-8"),
+                       permitted_classes: [Date, Time])
       end
 
       def from_remote(code)
@@ -101,7 +102,8 @@ module Iev
         cache_path = cache_file_path(filename)
         return nil unless File.exist?(cache_path)
 
-        YAML.safe_load(File.read(cache_path, encoding: "utf-8"), permitted_classes: [Date, Time])
+        YAML.safe_load(File.read(cache_path, encoding: "utf-8"),
+                       permitted_classes: [Date, Time])
       end
 
       def write_cache(filename, data)

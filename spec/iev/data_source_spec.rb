@@ -99,7 +99,7 @@ RSpec.describe Iev::Config do
   it "has sensible defaults" do
     config = described_class.new
     expect(config.remote_base_url).to include("glossarist-data-iev")
-    expect(config.data_path).to eq(ENV["IEV_DATA_PATH"])
+    expect(config.data_path).to eq(ENV.fetch("IEV_DATA_PATH", nil))
   end
 
   it "allows configuration via block" do

@@ -6,6 +6,7 @@
 module Iev
   class DbWriter
     include Cli::Ui
+
     using DataConversions
 
     attr_reader :db

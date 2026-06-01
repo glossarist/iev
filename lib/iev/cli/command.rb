@@ -142,14 +142,15 @@ module Iev
         summary
       end
 
-      desc "subject_areas", "Fetch IEV subject areas and sections from Electropedia."
+      desc "subject_areas",
+           "Fetch IEV subject areas and sections from Electropedia."
       option :output, desc: "Output YAML file (default: stdout)", aliases: :o
       option :refresh, type: :boolean, default: false,
                        desc: "Force re-fetch even if cached"
       def subject_areas
         if options[:refresh]
           cache_path = File.join(Iev.config.cache_dir, "subject_areas.yaml")
-          FileUtils.rm_f(cache_path) if File.exist?(cache_path)
+          FileUtils.rm_f(cache_path)
         end
 
         result = Iev::SubjectAreas.fetch
