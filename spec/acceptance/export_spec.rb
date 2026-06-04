@@ -22,8 +22,8 @@ RSpec.describe "Iev" do
         concept1 = find_concept_by_identifier(concept_files, "103-01-01")
         expect(concept1["data"]["identifier"]).to eq("103-01-01")
         expect(concept1["data"]["domains"]).to include(
-          include("concept_id" => "area-103", "ref_type" => "domain"),
-          include("concept_id" => "section-103-01", "ref_type" => "domain"),
+          
+          include("concept_id" => "section-103-01", "ref_type" => "section"),
         )
 
         localized_eng = find_localized_in_grouped(concept_files, "103-01-01",
@@ -50,8 +50,8 @@ RSpec.describe "Iev" do
         concept1 = find_concept_by_identifier(concept_files, "103-01-01")
         expect(concept1["data"]["identifier"]).to eq("103-01-01")
         expect(concept1["data"]["domains"]).to include(
-          include("concept_id" => "area-103", "ref_type" => "domain"),
-          include("concept_id" => "section-103-01", "ref_type" => "domain"),
+          
+          include("concept_id" => "section-103-01", "ref_type" => "section"),
         )
 
         localized_eng = find_localized_in_grouped(concept_files, "103-01-01",

@@ -18,11 +18,11 @@ RSpec.describe Iev::Exporter do
         expect(domains).to all(be_a(Glossarist::ConceptReference))
 
         domain_ids = domains.map(&:concept_id)
-        expect(domain_ids).to include("area-103", "section-103-01")
+        expect(domain_ids).to include("section-103-01")
 
         domains.each do |d|
           expect(d.source).to eq("urn:iec:std:iec:60050")
-          expect(d.ref_type).to eq("domain")
+          expect(d.ref_type).to eq("section")
         end
       end
     end
@@ -41,14 +41,14 @@ RSpec.describe Iev::Exporter do
 
         domains = concept1["data"]["domains"]
         expect(domains).to be_an(Array)
-        expect(domains.length).to eq(2)
+        expect(domains.length).to eq(1)
 
         domain_ids = domains.map { |d| d["concept_id"] }
-        expect(domain_ids).to include("area-103", "section-103-01")
+        expect(domain_ids).to include("section-103-01")
 
         domains.each do |d|
           expect(d["source"]).to eq("urn:iec:std:iec:60050")
-          expect(d["ref_type"]).to eq("domain")
+          expect(d["ref_type"]).to eq("section")
         end
       end
     end
@@ -163,4 +163,39 @@ RSpec.describe Iev::Exporter do
       end
     end
   end
+  describe "register.yaml generation" do
+    it "writes register.yaml with hierarchical sections" do
+      Dir.mktmpdir("iev-test") do |dir|
+        described_class.new(sample_db, output_dir: dir).export
+
+        register_path = File.join(dir, "register.yaml")
+        expect(File.exist?(register_path)).to be true
+
+        register = YAML.safe_load(File.read(register_path, encoding: "utf-8"))
+        expect(register["schema_type"]).to eq("glossarist")
+        expect(register["id"]).to eq("iev")
+        expect(register["urn"]).to eq("urn:iec:std:iec:60050")
+        expect(register["ordering"]).to eq("systematic")
+
+        sections = register["sections"]
+        expect(sections).to be_an(Array)
+        expect(sections.length).to be > 0
+
+        # Find area 103
+        area_103 = sections.find { |s| s["id"] == "103" }
+        expect(area_103).not_to be_nil
+        expect(area_103["names"]["eng"]).to eq("Mathematics - Functions")
+
+        # Area 103 should have child sections
+        children = area_103["children"]
+        expect(children).to be_an(Array)
+        expect(children.length).to be > 0
+
+        section_103_01 = children.find { |s| s["id"] == "103-01" }
+        expect(section_103_01).not_to be_nil
+        expect(section_103_01["names"]["eng"]).to eq("General concepts")
+      end
+    end
+  end
+
 end

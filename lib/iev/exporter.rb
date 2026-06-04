@@ -57,6 +57,7 @@ module Iev
       add_subject_area_concepts(collection) if @include_areas
       build_section_narrower_relations(collection) if @include_areas
       save_collection(collection)
+      save_register
       elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
 
       @stats = {
@@ -170,6 +171,50 @@ module Iev
       collection.save_grouped_concepts_to_files(concepts_dir.to_s)
     end
 
+    def save_register
+      areas = SubjectAreas.all
+      sections = areas.sort_by { |a| a.code.to_i }.map do |area|
+        section_node = {
+          "id" => area.code,
+          "names" => { "eng" => area.title },
+        }
+        if area.sections.any?
+          section_node["children"] = area.sections.sort_by { |s|
+            s.code.split("-").map(&:to_i)
+          }.map { |sec|
+            {
+              "id" => sec.code,
+              "names" => { "eng" => sec.title },
+            }
+          }
+        end
+        section_node
+      end
+
+      register = {
+        "schema_type" => "glossarist",
+        "schema_version" => "3",
+        "id" => "iev",
+        "ref" => "IEC 60050:2011",
+        "year" => 2011,
+        "urn" => IEV_SOURCE,
+        "urnAliases" => ["#{IEV_SOURCE}*"],
+        "status" => "current",
+        "owner" => "IEC",
+        "sourceRepo" => "https://github.com/glossarist/iev-data",
+        "tags" => %w[electrotechnical vocabulary iec],
+        "languages" => %w[eng fra],
+        "languageOrder" => %w[eng fra],
+        "ordering" => "systematic",
+        "sections" => sections,
+      }
+
+      register_path = output_dir.expand_path.join("register.yaml")
+      FileUtils.mkdir_p(register_path.dirname)
+      File.write(register_path, YAML.dump(register), encoding: "utf-8")
+      puts "Written register.yaml with #{sections.length} areas" if $stdout.tty?
+    end
+
     def localized_count(collection)
       collection.sum { |c| c.localized_concepts.count }
     end
@@ -179,18 +224,17 @@ module Iev
     def domain_references_for(ievref)
       code = IevCode.new(ievref.to_s)
       refs = []
-      if code.area_code
-        refs << Glossarist::ConceptReference.new(
-          concept_id: code.area_uri,
-          source: IEV_SOURCE,
-          ref_type: "domain",
-        )
-      end
       if code.section_code
         refs << Glossarist::ConceptReference.new(
           concept_id: code.section_uri,
           source: IEV_SOURCE,
-          ref_type: "domain",
+          ref_type: "section",
+        )
+      elsif code.area_code
+        refs << Glossarist::ConceptReference.new(
+          concept_id: code.area_uri,
+          source: IEV_SOURCE,
+          ref_type: "section",
         )
       end
       refs

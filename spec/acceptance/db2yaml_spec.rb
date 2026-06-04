@@ -30,8 +30,7 @@ RSpec.describe "Iev" do
           "ara", "deu", "eng", "fra", "jpn", "kor", "pol", "por", "zho"
         )
         expect(concept1["data"]["domains"]).to include(
-          include("concept_id" => "area-103", "ref_type" => "domain"),
-          include("concept_id" => "section-103-01", "ref_type" => "domain"),
+          include("concept_id" => "section-103-01", "ref_type" => "section"),
         )
 
         localized_eng = find_localized_in_docs(docs1, "eng")
@@ -43,8 +42,7 @@ RSpec.describe "Iev" do
         # Concept 2: basic structure
         expect(concept2["data"]["identifier"]).to eq("103-01-02")
         expect(concept2["data"]["domains"]).to include(
-          include("concept_id" => "area-103", "ref_type" => "domain"),
-          include("concept_id" => "section-103-01", "ref_type" => "domain"),
+          include("concept_id" => "section-103-01", "ref_type" => "section"),
         )
 
         localized_kor = find_localized_in_docs(docs2, "kor")
