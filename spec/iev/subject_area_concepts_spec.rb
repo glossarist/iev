@@ -56,6 +56,10 @@ RSpec.describe Iev::SubjectAreaConcepts do
       expect(d.ref_type).to eq("domain")
     end
 
+    it "has schema_version set to 3" do
+      expect(area_concept.schema_version).to eq("3")
+    end
+
     it "has an English localization with the area title" do
       l10n = area_concept.localization("eng")
       expect(l10n).not_to be_nil
@@ -101,14 +105,27 @@ RSpec.describe Iev::SubjectAreaConcepts do
       collection.find { |c| c.data.id == "section-103-01" }
     end
 
-    it "has domain references with IEC URN source" do
-      domain_ids = section_concept.data.domains.map(&:concept_id)
-      expect(domain_ids).to eq(%w[area-103 section-103-01])
-      section_concept.data.domains.each do |d|
-        expect(d.source).to eq("urn:iec:std:iec:60050")
-        expect(d.ref_type).to eq("domain")
-        expect(d).to be_a(Glossarist::ConceptReference)
-      end
+    it "has domain and section references with correct ref_types" do
+      domains = section_concept.data.domains
+      expect(domains.length).to eq(2)
+
+      # Domain ref: thematic area classification
+      area_ref = domains.find { |d| d.concept_id == "area-103" }
+      expect(area_ref).not_to be_nil
+      expect(area_ref.source).to eq("urn:iec:std:iec:60050")
+      expect(area_ref.ref_type).to eq("domain")
+
+      # Section ref: structural section membership
+      section_ref = domains.find { |d| d.concept_id == "section-103-01" }
+      expect(section_ref).not_to be_nil
+      expect(section_ref.source).to eq("urn:iec:std:iec:60050")
+      expect(section_ref.ref_type).to eq("section")
+
+      domains.each { |d| expect(d).to be_a(Glossarist::ConceptReference) }
+    end
+
+    it "has schema_version set to 3" do
+      expect(section_concept.schema_version).to eq("3")
     end
 
     it "has an English localization with the section title" do
@@ -131,9 +148,9 @@ RSpec.describe Iev::SubjectAreaConcepts do
       expect(rel.ref.id).to eq("area-103")
     end
 
-    it "has domain on ConceptData pointing to parent area" do
+    it "has ConceptData#domain as the parent area title text" do
       l10n = section_concept.localization("eng")
-      expect(l10n.data.domain).to eq("area-103")
+      expect(l10n.data.domain).to eq("Mathematics - Functions")
     end
 
     it "has tags with area and section titles" do

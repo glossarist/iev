@@ -90,4 +90,34 @@ RSpec.describe Iev::TermBuilder do
       expect(notes.length).to eq(2)
     end
   end
+
+  describe "#extract_domain" do
+    it "returns section title when section exists" do
+      # Area 103, Section 103-01 = "General concepts" (from bundled data)
+      builder = described_class.new({ IEVREF: "103-01-02" })
+      expect(builder.extract_domain).to eq("General concepts")
+    end
+
+    it "returns area title as fallback when section not found" do
+      # Area 103 exists but section 103-99 does not
+      builder = described_class.new({ IEVREF: "103-99-01" })
+      expect(builder.extract_domain).to eq("Mathematics - Functions")
+    end
+
+    it "returns nil when term_id is nil" do
+      builder = described_class.new({})
+      expect(builder.extract_domain).to be_nil
+    end
+
+    it "returns nil for a completely unknown area" do
+      builder = described_class.new({ IEVREF: "999-01-01" })
+      expect(builder.extract_domain).to be_nil
+    end
+
+    it "returns nil gracefully on unexpected errors" do
+      builder = described_class.new({ IEVREF: "103-01-02" })
+      allow(Iev).to receive(:find_section).and_raise(NoMethodError, "boom")
+      expect(builder.extract_domain).to be_nil
+    end
+  end
 end

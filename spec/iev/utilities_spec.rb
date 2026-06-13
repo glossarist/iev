@@ -15,14 +15,14 @@ RSpec.describe Iev::Utilities do
         text = 'See <a href="IEV121-02-02">121-02-02</a>'
 
         expect(subject.parse_anchor_tag(text, "IEV"))
-          .to eq("See {{121-02-02, urn:iec:std:iec:60050-121-02-02}}")
+          .to eq("See {{urn:iec:std:iec:60050-121-02-02, 121-02-02}}")
       end
 
       it "converts the a tag with quotes to asciidoc format" do
         text = "See <a href=IEV121-02-03>121-02-03</a>"
 
         expect(subject.parse_anchor_tag(text, "IEV"))
-          .to eq("See {{121-02-03, urn:iec:std:iec:60050-121-02-03}}")
+          .to eq("See {{urn:iec:std:iec:60050-121-02-03, 121-02-03}}")
       end
     end
 
@@ -31,14 +31,14 @@ RSpec.describe Iev::Utilities do
         text = 'See <a href="IEV121-02-02">No end tag'
 
         expect(subject.parse_anchor_tag(text, "IEV"))
-          .to eq("See {{No end tag, urn:iec:std:iec:60050-121-02-02}}")
+          .to eq("See {{urn:iec:std:iec:60050-121-02-02, No end tag}}")
       end
 
       it "converts the a tag with quotes to asciidoc format" do
         text = "See <a href=IEV121-02-03>No end tag"
 
         expect(subject.parse_anchor_tag(text, "IEV"))
-          .to eq("See {{No end tag, urn:iec:std:iec:60050-121-02-03}}")
+          .to eq("See {{urn:iec:std:iec:60050-121-02-03, No end tag}}")
       end
     end
 
@@ -48,21 +48,21 @@ RSpec.describe Iev::Utilities do
         text = 'See <a href="IEV702-07-781">IEV 702-07-781</a>'
 
         expect(subject.parse_anchor_tag(text, "IEV"))
-          .to eq("See {{IEV 702-07-781, urn:iec:std:iec:60050-702-07-781}}")
+          .to eq("See {{urn:iec:std:iec:60050-702-07-781, IEV 702-07-781}}")
       end
 
       it "converts IEV link with multiline content" do
         text = "See <a href=\"IEV702-07-781\">IEV\n702-07-781</a> for the noun"
 
         expect(subject.parse_anchor_tag(text, "IEV"))
-          .to eq("See {{IEV\n702-07-781, urn:iec:std:iec:60050-702-07-781}} for the noun")
+          .to eq("See {{urn:iec:std:iec:60050-702-07-781, IEV\n702-07-781}} for the noun")
       end
 
       it "converts href without IEV prefix and 3-2-3 code" do
         text = '<a href="103-05-02">adjective</a>'
 
         expect(subject.parse_anchor_tag(text, "IEV"))
-          .to eq("{{adjective, urn:iec:std:iec:60050-103-05-02}}")
+          .to eq("{{urn:iec:std:iec:60050-103-05-02, adjective}}")
       end
     end
 
@@ -72,7 +72,7 @@ RSpec.describe Iev::Utilities do
         text = "See <a href=IEV 102-01-10>IEV 102-01-10</a>"
 
         expect(subject.parse_anchor_tag(text, "103"))
-          .to eq("See {{IEV 102-01-10, urn:iec:std:iec:60050-102-01-10}}")
+          .to eq("See {{urn:iec:std:iec:60050-102-01-10, IEV 102-01-10}}")
       end
     end
 
