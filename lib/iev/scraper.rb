@@ -4,6 +4,9 @@ require "nokogiri"
 
 module Iev
   class Scraper
+    autoload :Browser, "iev/scraper/browser"
+    autoload :PageParser, "iev/scraper/page_parser"
+
     BASE_URL = "https://www.electropedia.org/iev/iev.nsf/" \
                "display?openform&ievref="
 
@@ -14,8 +17,8 @@ module Iev
     # Fetch the Electropedia page HTML for a given IEV code.
     # Returns a Nokogiri document.
     def fetch_page(code)
-      html = ScraperBrowser.fetch("#{BASE_URL}#{code}",
-                                  browser_opts: @browser_opts)
+      html = Browser.fetch("#{BASE_URL}#{code}",
+                           browser_opts: @browser_opts)
       return nil unless html
 
       Nokogiri::HTML(html)
@@ -31,6 +34,3 @@ module Iev
     end
   end
 end
-
-require_relative "scraper/browser"
-require_relative "scraper/page_parser"

@@ -3,7 +3,6 @@
 require "yaml"
 require "nokogiri"
 require "fileutils"
-require "iev/config"
 
 module Iev
   module SubjectAreas
@@ -234,10 +233,8 @@ module Iev
       end
 
       def fetch_page_with_retry(url, retries: MAX_RETRIES)
-        require "iev/scraper/browser"
-
         retries.times do |attempt|
-          html = ScraperBrowser.fetch(url)
+          html = Scraper::Browser.fetch(url)
           raise FetchError, "Failed to fetch #{url}" unless html
 
           unless captcha_page?(html)
