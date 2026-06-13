@@ -27,15 +27,23 @@ This is a Ruby gem (`iev`) for working with the International Electrotechnical V
 
 ### Key Modules
 
-- `TermBuilder` — the core converter that turns a spreadsheet row into a `Glossarist::LocalizedConcept`. Handles definition splitting (notes/examples extraction), term designation parsing, and source parsing.
+- `TermBuilder` — the core converter that turns a spreadsheet row into a `Glossarist::LocalizedConcept`. Handles definition splitting (notes/examples extraction), term designation parsing, and source parsing. Sets `ConceptData#domain` to section/area title text (not URI).
 - `SourceParser` — parses the SOURCE column from IEV exports, normalizing references (CEI→IEC, UIT→ITU, etc.) and extracting ref/clause/relationship using extensive regex matching.
-- `TermAttrsParser` — parses the TERMATTRIBUTE field (gender, plurality, part of speech, geographical area, abbreviations).
+- `TermAttrsParser` — parses the TERMATTRIBUTE field (gender, plurality, part of speech, geographical area, usage_info).
 - `SupersessionParser` — parses the REPLACES field for deprecated term relationships.
 - `SubjectAreas` — manages the IEV subject area/section hierarchy. Bundled `data/subject_areas.yaml` contains the area/section tree. URI scheme: `area-{code}` and `section-{code}`.
-- `SubjectAreaConcepts` — builds area and section hierarchy concepts with `ConceptReference.domain()` objects in `ManagedConceptData#domains`, `broader`/`narrower` relations, and `ConceptData#domain` references.
-- `Exporter` — full export pipeline (Excel/SQLite → Glossarist YAML). Assigns domain `ConceptReference` objects via `domain_references_for`.
+- `SubjectAreaConcepts` — builds area and section hierarchy concepts. Uses `ConceptReference` with proper `ref_type` per `ConceptReferenceType`: `"domain"` for thematic area classification, `"section"` for structural section membership. Sets `ConceptData#domain` to area title text.
+- `Exporter` — full export pipeline (Excel/SQLite → Glossarist YAML). Assigns domain and section `ConceptReference` objects via `domain_references_for`. Uses `Glossarist::DatasetRegister` model for `register.yaml`. Sets `schema_version: "3"` on all exported concepts.
 - `Converter::MathmlToAsciimath` — converts MathML markup to AsciiMath using Plurimath.
-- `Utilities` — HTML processing: converts IEV cross-references (`<a href=IEV...>`) to `{{term, IEV:code}}` format, handles figures, images, bold tags, and newline normalization.
+- `Utilities` — HTML processing: converts IEV cross-references (`<a href=IEV...>`) to `{{URN, term}}` format (ID first, display text last), handles figures, images, bold tags, and newline normalization.
+
+### Domain/Section Model
+
+Per the concept model's `ConceptReferenceType`:
+- `"domain"` — thematic/subject-area classification (area level, e.g. "103")
+- `"section"` — structural section membership (section level, e.g. "103-01")
+
+Each concept's `ManagedConceptData#domains` contains both refs. `ConceptData#domain` (a `LocalizedString`) holds the section/area title text. The `ManagedConcept#related` array holds `broader`/`narrower` relationships for the hierarchy tree.
 
 ### Configuration
 
@@ -47,7 +55,11 @@ This is a Ruby gem (`iev`) for working with the International Electrotechnical V
 ## Key Conventions
 
 - Ruby >= 3.1.0 required
+- All constants live under `Iev::` namespace (e.g. `Iev::IEV_SOURCE`, not top-level `IEV_SOURCE`)
+- `Iev.config` / `Iev.configure` / `Iev.reset_config!` are defined directly in `lib/iev.rb` — they must be available at load time without triggering autoload
 - `plurimath` and `unitsml` are optional runtime dependencies — loaded with `rescue LoadError`, so the `DataSource`/`Db` APIs work without them
 - The IEV Excel export format is specific to IEC-internal use; column structure is documented in README.adoc
 - Language codes: the spreadsheet uses ISO 639-1 (2-char like "en"), internally converted to ISO 639-2/3 (3-char like "eng") via `Iso639Code` and `DataConversions`
 - `DataConversions` is a refinement (`using DataConversions`) that adds `.sanitize` and `.decode_html` methods to String
+- `IevCode` is the single source of truth for IEV code decomposition — always use it instead of manual `split("-")` parsing
+- Schema version 3: all exported concepts use `schema_version: "3"`, which supports `annotations`, V3 concept sources, and structured references
