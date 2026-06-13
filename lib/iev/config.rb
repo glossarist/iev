@@ -14,18 +14,4 @@ module Iev
       @remote_base_url = DEFAULT_REMOTE_BASE_URL
     end
   end
-
-  class << self
-    def config
-      @config ||= Config.new
-    end
-
-    def configure
-      yield(config) if block_given?
-    end
-
-    def reset_config!
-      @config = nil
-    end
-  end
 end

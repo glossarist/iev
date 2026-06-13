@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
 require "iev/version"
-require "iev/config"
-require "iev/data_source"
-
-require "yaml"
 
 # plurimath and unitsml both depend on mml, which has a transitive
 # dependency version mismatch with lutaml-model in some environments.
-# Load them when available; the DataSource APIs work without them.
+# Load them when available; the DataSource/Db APIs work without them.
 begin
   require "plurimath"
 rescue LoadError
@@ -22,6 +18,9 @@ rescue LoadError
 end
 
 module Iev
+  # IEV dataset URN — single source of truth for all concept references.
+  IEV_SOURCE = "urn:iec:std:iec:60050"
+
   autoload :Cli, "iev/cli"
   autoload :Config, "iev/config"
   autoload :Converter, "iev/converter"
@@ -44,6 +43,26 @@ module Iev
   autoload :TermBuilder, "iev/term_builder"
   autoload :Utilities, "iev/utilities"
 
+  # --- Configuration ---
+
+  # @return [Config]
+  def self.config
+    @config ||= Config.new
+  end
+
+  # Yield the config object for initialization.
+  # @yield [Config]
+  def self.configure
+    yield(config) if block_given?
+  end
+
+  # Reset config (useful in tests).
+  def self.reset_config!
+    @config = nil
+  end
+
+  # --- Data fetching ---
+
   # Fetch term designation from IEV data.
   #
   # @param [String] code for example "103-01-02"
@@ -51,7 +70,6 @@ module Iev
   #
   # @return [String, nil] if found then term,
   #   if code or language not found then nil.
-  #
   def self.get(code, lang)
     DataSource.fetch_term_designation(code, lang)
   rescue DataSource::NotFoundError
@@ -77,6 +95,8 @@ module Iev
     DataSource.fetch_term(code, lang)
   end
 
+  # --- Scraping ---
+
   # Scrape concept data from Electropedia for a given IEV code.
   # Uses Ferrum (headless Chrome) to handle AWS WAF challenge.
   #
@@ -85,6 +105,8 @@ module Iev
   def self.scrape_concept(code)
     Scraper.new.fetch_concept(code)
   end
+
+  # --- Subject area / section queries ---
 
   # Return all IEV subject areas with their sections (from bundled data).
   # @return [Array<SubjectArea>]
