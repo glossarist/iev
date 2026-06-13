@@ -5,6 +5,10 @@ module Iev
     IMAGE_PATH_PREFIX = "image::/assets/images/parts"
     IEV_CODE_RE = /\A(IEV)?\s*(\d{2,3}-\d{2,3}-\d{2,3})\z/
 
+    # Pattern matching an anchor's inner text that is just an IEV code
+    # (not a meaningful term designation).
+    IEV_CODE_TEXT_RE = /\A\s*IEV\s*\d{2,3}-\d{2,3}-\d{2,3}\s*\z/
+
     # SIMG/Figure patterns — custom IEV XML, pre-processed before Nokogiri.
     # Uses [^>] and [^<] instead of . to avoid polynomial backtracking.
     SIMG_PATH_REGEX = /<simg [^>]*\/\$file\/([\d\-\w.]+)>/
@@ -134,12 +138,36 @@ module Iev
 
       if href.match?(IEV_CODE_RE)
         iev_code = href.sub(/\AIEV\s*/, "")
-        "{{#{inner}, urn:iec:std:iec:60050-#{iev_code}}}"
+        display = render_term_for(inner, iev_code)
+        "{{urn:iec:std:iec:60050-#{iev_code}, #{display}}}"
       elsif !href.empty?
         "#{href}[#{inner}]"
       else
         inner
       end
+    end
+
+    # Resolve the display (render) text for an IEV cross-reference.
+    #
+    # When the anchor text is already a meaningful term (e.g. "adjective"),
+    # use it directly. When it's just a bare IEV code (e.g. "IEV 102-01-10"),
+    # try to look up the actual term designation via DataSource.
+    #
+    # @param inner_text [String] the anchor element's inner text
+    # @param iev_code [String] the extracted numeric IEV code (e.g. "102-01-10")
+    # @return [String] the term designation to use as render text
+    def render_term_for(inner_text, iev_code)
+      stripped = inner_text.strip
+      return stripped unless iev_code_only?(stripped)
+
+      Iev.get(iev_code, "en") || stripped
+    rescue StandardError
+      stripped
+    end
+
+    # True when the anchor text is just a raw IEV code, not a term designation.
+    def iev_code_only?(text)
+      text.match?(IEV_CODE_TEXT_RE)
     end
   end
 end
