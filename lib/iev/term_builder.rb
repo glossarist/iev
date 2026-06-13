@@ -103,18 +103,22 @@ module Iev
     end
 
     # Derives the domain (subject area section) from the IEVREF identifier.
-    # IEVREF format: "AAA-BB-CC" where AAA = area, AAA-BB = section.
-    # Returns a URI reference to the section concept (e.g. "section-103-01").
+    #
+    # Returns the section or area title text as a localized string.
+    # Per the concept model, ConceptData#domain is a LocalizedString
+    # (the domain name), not a URI. Structural membership is expressed
+    # via ManagedConceptData#domains[] with ConceptReference objects.
     def extract_domain
       return nil unless term_id
 
-      section_code = term_id.split("-")[0..1].join("-")
-      section = Iev.find_section(section_code)
-      return SubjectAreas.section_uri(section_code) if section
+      code = IevCode.new(term_id)
+      section = Iev.find_section(code.section_code) if code.section_code
+      return section.title if section
 
-      area_code = term_id.split("-")[0]
-      SubjectAreas.area_uri(area_code)
-    rescue StandardError
+      area = Iev.find_subject_area(code.area_code)
+      area&.title
+    rescue StandardError => e
+      warn "IEV: extract_domain failed for #{term_id}: #{e.message}"
       nil
     end
 
