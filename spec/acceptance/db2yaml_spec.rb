@@ -29,12 +29,15 @@ RSpec.describe "Iev" do
         expect(concept1["data"]["localized_concepts"].keys).to contain_exactly(
           "ara", "deu", "eng", "fra", "jpn", "kor", "pol", "por", "zho"
         )
+        # domains[] includes both "domain" (area) and "section" refs
         expect(concept1["data"]["domains"]).to include(
+          include("concept_id" => "area-103", "ref_type" => "domain"),
           include("concept_id" => "section-103-01", "ref_type" => "section"),
         )
 
         localized_eng = find_localized_in_docs(docs1, "eng")
-        expect(localized_eng["data"]["domain"]).to eq("section-103-01")
+        # ConceptData#domain is a localized string (section title), not a URI
+        expect(localized_eng["data"]["domain"]).to eq("General concepts")
         expect(localized_eng["data"]["terms"].first["designation"]).to eq("function")
         expect(localized_eng["data"]["language_code"]).to eq("eng")
         expect(localized_eng["data"]["entry_status"]).to eq("valid")
@@ -42,11 +45,12 @@ RSpec.describe "Iev" do
         # Concept 2: basic structure
         expect(concept2["data"]["identifier"]).to eq("103-01-02")
         expect(concept2["data"]["domains"]).to include(
+          include("concept_id" => "area-103", "ref_type" => "domain"),
           include("concept_id" => "section-103-01", "ref_type" => "section"),
         )
 
         localized_kor = find_localized_in_docs(docs2, "kor")
-        expect(localized_kor["data"]["domain"]).to eq("section-103-01")
+        expect(localized_kor["data"]["domain"]).to eq("General concepts")
         expect(localized_kor["data"]["terms"].first["designation"]).to eq("범함수")
         expect(localized_kor["data"]["language_code"]).to eq("kor")
 
