@@ -15,13 +15,11 @@ module Iev
   #     (added by Exporter)
   #
   # Classification (separate from hierarchy):
-  #   - Each concept's ManagedConceptData#domains includes area and
-  #     section ConceptReferences
-  #   - Each concept's ConceptData#domain references its section URI
+  #   - Each concept's ManagedConceptData#domains includes domain and
+  #     section ConceptReferences (per ConceptReferenceType)
   #   - Each section concept's ConceptData#domain references parent area
+  #     title text (a LocalizedString, not a URI)
   module SubjectAreaConcepts
-    IEV_SOURCE = "urn:iec:std:iec:60050"
-
     class << self
       # Build all area and section concepts and add them to the collection.
       #
@@ -41,14 +39,6 @@ module Iev
 
       private
 
-      def domain_ref(concept_id)
-        Glossarist::ConceptReference.new(
-          concept_id: concept_id,
-          source: IEV_SOURCE,
-          ref_type: "domain",
-        )
-      end
-
       def build_area_concept(area)
         id = area.uri
 
@@ -60,9 +50,12 @@ module Iev
           ),
         )
         mc.uuid = id
+        mc.schema_version = "3"
 
-        mc.add_localization(build_localization(id, area.title, "eng"))
-        mc.related = area.sections.map { |s| build_narrower_relation(s.uri) }
+        mc.add_localization(
+          build_localization(id, build_concept_data(id, area.title, "eng")),
+        )
+        mc.related = area.sections.map { |s| narrower_relation(s.uri) }
         mc.related = nil if mc.related.empty?
 
         mc
@@ -76,19 +69,22 @@ module Iev
             id: id,
             domains: [
               domain_ref(area.uri),
-              domain_ref(id),
+              section_ref(id),
             ],
             tags: [area.title, section.title],
           ),
         )
         mc.uuid = id
+        mc.schema_version = "3"
 
         cd = build_concept_data(id, section.title, "eng")
-        cd.domain = area.uri
+        # ConceptData#domain is a LocalizedString — use the area title text,
+        # not a URI. The structural relationship is expressed via domains[]
+        # and related[].
+        cd.domain = area.title
 
-        mc.add_localization(build_localization_from_data(id, cd))
-
-        mc.related = [build_broader_relation(area.uri)]
+        mc.add_localization(build_localization(id, cd))
+        mc.related = [broader_relation(area.uri)]
 
         mc
       end
@@ -107,18 +103,7 @@ module Iev
         )
       end
 
-      def build_localization(id, title, lang_code)
-        cd = build_concept_data(id, title, lang_code)
-
-        l10n = Glossarist::LocalizedConcept.new
-        l10n.data = cd
-        l10n.id = id
-        l10n.entry_status = "valid"
-        l10n.data.review_decision_event = "published"
-        l10n
-      end
-
-      def build_localization_from_data(id, concept_data)
+      def build_localization(id, concept_data)
         l10n = Glossarist::LocalizedConcept.new
         l10n.data = concept_data
         l10n.id = id
@@ -127,7 +112,23 @@ module Iev
         l10n
       end
 
-      def build_broader_relation(target_uri)
+      # --- ConceptReference factory methods ---
+
+      def domain_ref(concept_id)
+        ref = Glossarist::ConceptReference.domain(concept_id)
+        ref.source = IEV_SOURCE
+        ref
+      end
+
+      def section_ref(concept_id)
+        ref = Glossarist::ConceptReference.section(concept_id)
+        ref.source = IEV_SOURCE
+        ref
+      end
+
+      # --- RelatedConcept factory methods ---
+
+      def broader_relation(target_uri)
         Glossarist::RelatedConcept.new(
           type: "broader",
           content: target_uri,
@@ -135,7 +136,7 @@ module Iev
         )
       end
 
-      def build_narrower_relation(target_uri)
+      def narrower_relation(target_uri)
         Glossarist::RelatedConcept.new(
           type: "narrower",
           content: target_uri,

@@ -141,12 +141,16 @@ module Iev
         term = TermBuilder.build_from(row)
         next unless term
 
+        # Parse IevCode once per concept — used by all helpers below.
+        code = IevCode.new(term.id)
+
         concept = concept_index[term.id] ||= begin
           c = Glossarist::ManagedConcept.new(data: { "id" => term.id })
           c.uuid = term.id
-          c.data.domains = domain_references_for(term.id)
-          c.data.tags = tags_for(term.id)
-          add_section_broader(c, term.id)
+          c.schema_version = "3"
+          c.data.domains = domain_references_for(code)
+          c.data.tags = tags_for(code)
+          add_section_broader(c, code)
           collection.store(c)
           c
         end
@@ -173,75 +177,84 @@ module Iev
 
     def save_register
       areas = SubjectAreas.all
-      sections = areas.sort_by { |a| a.code.to_i }.map do |area|
-        section_node = {
-          "id" => area.code,
-          "names" => { "eng" => area.title },
-        }
-        if area.sections.any?
-          section_node["children"] = area.sections.sort_by { |s|
-            s.code.split("-").map(&:to_i)
-          }.map { |sec|
-            {
-              "id" => sec.code,
-              "names" => { "eng" => sec.title },
-            }
-          }
-        end
-        section_node
-      end
+      sections = build_section_tree(areas)
 
-      register = {
-        "schema_type" => "glossarist",
-        "schema_version" => "3",
-        "id" => "iev",
-        "ref" => "IEC 60050:2011",
-        "year" => 2011,
-        "urn" => IEV_SOURCE,
-        "urnAliases" => ["#{IEV_SOURCE}*"],
-        "status" => "current",
-        "owner" => "IEC",
-        "sourceRepo" => "https://github.com/glossarist/iev-data",
-        "tags" => %w[electrotechnical vocabulary iec],
-        "languages" => %w[eng fra],
-        "languageOrder" => %w[eng fra],
-        "ordering" => "systematic",
-        "sections" => sections,
-      }
+      register = Glossarist::DatasetRegister.new(
+        schema_type: "glossarist",
+        schema_version: "3",
+        id: "iev",
+        ref: "IEC 60050:2011",
+        year: 2011,
+        urn: IEV_SOURCE,
+        urn_aliases: ["#{IEV_SOURCE}*"],
+        status: "current",
+        owner: "IEC",
+        source_repo: "https://github.com/glossarist/iev-data",
+        tags: %w[electrotechnical vocabulary iec],
+        languages: %w[eng fra],
+        language_order: %w[eng fra],
+        ordering: "systematic",
+        sections: sections,
+      )
 
       register_path = output_dir.expand_path.join("register.yaml")
       FileUtils.mkdir_p(register_path.dirname)
-      File.write(register_path, YAML.dump(register), encoding: "utf-8")
+      File.write(register_path, register.to_yaml, encoding: "utf-8")
       puts "Written register.yaml with #{sections.length} areas" if $stdout.tty?
+    end
+
+    def build_section_tree(areas)
+      areas.sort_by { |a| a.code.to_i }.map do |area|
+        children = area.sections.sort_by do |s|
+          s.code.split("-").map(&:to_i)
+        end.map do |sec|
+          Glossarist::Section.new(
+            id: sec.code,
+            names: { "eng" => sec.title },
+          )
+        end
+
+        Glossarist::Section.new(
+          id: area.code,
+          names: { "eng" => area.title },
+          children: children.empty? ? nil : children,
+        )
+      end
     end
 
     def localized_count(collection)
       collection.sum { |c| c.localized_concepts.count }
     end
 
-    IEV_SOURCE = "urn:iec:std:iec:60050"
-
-    def domain_references_for(ievref)
-      code = IevCode.new(ievref.to_s)
+    # Build domain ConceptReferences for a concept.
+    #
+    # Per the concept model, ConceptReferenceType distinguishes:
+    #   - "domain"  → thematic/subject-area classification (area level)
+    #   - "section" → structural section membership (section level)
+    #
+    # Every concept gets both: a "domain" ref to its area and a "section"
+    # ref to its section. Concepts with only an area code (no section)
+    # get only a "domain" ref.
+    #
+    # @param code [IevCode] pre-parsed IEV code
+    # @return [Array<Glossarist::ConceptReference>]
+    def domain_references_for(code)
       refs = []
+
+      # Domain reference: thematic classification at the area level
+      refs << domain_ref(code.area_uri)
+
+      # Section reference: structural membership in the section
       if code.section_code
-        refs << Glossarist::ConceptReference.new(
-          concept_id: code.section_uri,
-          source: IEV_SOURCE,
-          ref_type: "section",
-        )
-      elsif code.area_code
-        refs << Glossarist::ConceptReference.new(
-          concept_id: code.area_uri,
-          source: IEV_SOURCE,
-          ref_type: "section",
-        )
+        refs << section_ref(code.section_uri)
       end
+
       refs
     end
 
-    def tags_for(ievref)
-      code = IevCode.new(ievref.to_s)
+    # @param code [IevCode] pre-parsed IEV code
+    # @return [Array<String>]
+    def tags_for(code)
       tags = []
       area = SubjectAreas.find_area(code.area_code)
       tags << area.title if area
@@ -250,8 +263,9 @@ module Iev
       tags
     end
 
-    def add_section_broader(concept, ievref)
-      code = IevCode.new(ievref.to_s)
+    # @param concept [Glossarist::ManagedConcept]
+    # @param code [IevCode] pre-parsed IEV code
+    def add_section_broader(concept, code)
       return unless code.section_uri
 
       concept.related ||= []
@@ -319,6 +333,20 @@ module Iev
 
       status = term.entry_status
       concept.status = status if status && !status.empty?
+    end
+
+    # --- ConceptReference factory helpers ---
+
+    def domain_ref(concept_id)
+      ref = Glossarist::ConceptReference.domain(concept_id)
+      ref.source = IEV_SOURCE
+      ref
+    end
+
+    def section_ref(concept_id)
+      ref = Glossarist::ConceptReference.section(concept_id)
+      ref.source = IEV_SOURCE
+      ref
     end
   end
 end
