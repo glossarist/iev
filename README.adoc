@@ -228,7 +228,7 @@ There are these data types inside the term attribute field. Make sure you split 
 We need to parse out all NOTEs and EXAMPLEs and normalize them.
 
 For all `This links to <a href=IEV112-01-01>quantity</a>`, we parse them and replace with:
-`This links to {{quantity, IEV:112-01-01}}`.
+`This links to {{IEV:112-01-01, quantity}}`.
 
 e.g.
 
@@ -300,9 +300,9 @@ notes:
 
 [source,yaml]
 ----
-definition: {{quantity, IEV:112-01-01}} which keeps the same value under particular circumstances, or which results from theoretical considerations
+definition: {{IEV:112-01-01, quantity}} which keeps the same value under particular circumstances, or which results from theoretical considerations
 examples:
-  - {{time constant, IEV:103-05-26}}, equilibrium constant for a chemical reaction, {{fundamental physical constant, IEV:112-03-09}}.
+  - {{IEV:103-05-26, time constant}}, equilibrium constant for a chemical reaction, {{IEV:112-03-09, fundamental physical constant}}.
 ----
 
 
