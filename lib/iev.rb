@@ -21,6 +21,7 @@ module Iev
   # IEV dataset URN — single source of truth for all concept references.
   IEV_SOURCE = "urn:iec:std:iec:60050"
 
+  autoload :BibliographyBuilder, "iev/bibliography_builder"
   autoload :Cli, "iev/cli"
   autoload :Config, "iev/config"
   autoload :Converter, "iev/converter"
@@ -28,6 +29,7 @@ module Iev
   autoload :DataSource, "iev/data_source"
   autoload :DbWriter, "iev/db_writer"
   autoload :Exporter, "iev/exporter"
+  autoload :FigureBuilder, "iev/figure_builder"
   autoload :IevCode, "iev/iev_code"
   autoload :Iso639Code, "iev/iso_639_code"
   autoload :Profiler, "iev/profiler"
