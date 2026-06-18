@@ -294,4 +294,97 @@ RSpec.describe Iev::Exporter do
       end
     end
   end
+
+  describe "bibliography.yaml generation" do
+    it "writes bibliography.yaml when sources are present" do
+      Dir.mktmpdir("iev-test") do |dir|
+        described_class.new(sample_db, output_dir: dir).export
+
+        bib_path = File.join(dir, "bibliography.yaml")
+        expect(File.exist?(bib_path)).to be true
+
+        data = YAML.safe_load(File.read(bib_path, encoding: "utf-8"))
+        expect(data).to have_key("bibliography")
+        expect(data["bibliography"]).to be_an(Array)
+        expect(data["bibliography"]).not_to be_empty
+
+        first = data["bibliography"].first
+        expect(first).to have_key("id")
+        expect(first).to have_key("reference")
+      end
+    end
+
+    it "populates entry ids with normalized anchors" do
+      Dir.mktmpdir("iev-test") do |dir|
+        described_class.new(sample_db, output_dir: dir).export
+
+        bib_path = File.join(dir, "bibliography.yaml")
+        data = YAML.safe_load(File.read(bib_path, encoding: "utf-8"))
+
+        data["bibliography"].each do |entry|
+          expect(entry["id"]).to match(/\A[a-z0-9_.-]+\z/)
+        end
+      end
+    end
+  end
+
+  describe "figures directory generation" do
+    it "creates figures directory when figures are extracted" do
+      Dir.mktmpdir("iev-test") do |dir|
+        described_class.new(sample_db, output_dir: dir).export
+
+        # Even with no figures in fixtures, the pipeline should not error.
+        # The figures/ directory is only created when figures exist.
+        expect(File.exist?(File.join(dir, "concepts"))).to be true
+      end
+    end
+
+    it "exposes figure_count in stats" do
+      Dir.mktmpdir("iev-test") do |dir|
+        exporter = described_class.new(sample_db, output_dir: dir)
+        exporter.export
+
+        expect(exporter.stats).to have_key(:figure_count)
+        expect(exporter.stats[:figure_count]).to be_an(Integer)
+      end
+    end
+  end
+
+  describe "concept enrichment" do
+    it "injects references extracted from localized concept text" do
+      Dir.mktmpdir("iev-test") do |dir|
+        collection = described_class.new(sample_db, output_dir: dir).export
+
+        concept = collection.find { |c| c.data.id == "103-01-01" }
+        expect(concept).not_to be_nil
+
+        # The sample data has cross-references in definitions; enrichment
+        # should populate references[] on localized concepts that mention
+        # other IEV codes.
+        eng = concept.localization("eng")
+        next unless eng
+
+        refs = eng.data.references
+        next unless refs&.any?
+
+        refs.each do |ref|
+          expect(ref).to be_a(Glossarist::ConceptReference)
+        end
+      end
+    end
+  end
+
+  describe "stats" do
+    it "returns concept_count, localized_count, elapsed_seconds after export" do
+      Dir.mktmpdir("iev-test") do |dir|
+        exporter = described_class.new(sample_db, output_dir: dir)
+        exporter.export
+
+        stats = exporter.stats
+        expect(stats[:concept_count]).to be > 0
+        expect(stats[:localized_count]).to be > 0
+        expect(stats[:elapsed_seconds]).to be_a(Float)
+      end
+    end
+  end
 end

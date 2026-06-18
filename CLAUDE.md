@@ -33,7 +33,9 @@ This is a Ruby gem (`iev`) for working with the International Electrotechnical V
 - `SupersessionParser` — parses the REPLACES field for deprecated term relationships.
 - `SubjectAreas` — manages the IEV subject area/section hierarchy. Bundled `data/subject_areas.yaml` contains the area/section tree. URI scheme: `area-{code}` and `section-{code}`.
 - `SubjectAreaConcepts` — builds area and section hierarchy concepts. Uses `ConceptReference` with proper `ref_type` per `ConceptReferenceType`: `"domain"` for thematic area classification, `"section"` for structural section membership. Sets `ConceptData#domain` to area title text.
-- `Exporter` — full export pipeline (Excel/SQLite → Glossarist YAML). Assigns domain and section `ConceptReference` objects via `domain_references_for`. Uses `Glossarist::DatasetRegister` model for `register.yaml`. Sets `schema_version: "3"` on all exported concepts.
+- `Exporter` — full export pipeline (Excel/SQLite → Glossarist YAML). Assigns domain and section `ConceptReference` objects via `domain_references_for`. Uses `Glossarist::DatasetRegister` model for `register.yaml`. Sets `schema_version: "3"` on all exported concepts. Pipeline order: build → subject areas → section relations → figure extraction → reference enrichment → save concepts → save figures → save bibliography → save register.
+- `FigureBuilder` — destructive extraction pass that hoists AsciiDoc image macros (emitted from SIMG tags by `Utilities`) into dataset-shared `Glossarist::Figure` entities. Rewrites inline text to `{{fig:id, display}}` mentions and adds `FigureReference` entries to `ManagedConceptData#figures`. One Figure entity per unique image file; captions merge across languages.
+- `BibliographyBuilder` — collects unique `(source, id)` pairs from every concept's sources (localized and managed) into a `Glossarist::BibliographyData`. Entry ids are normalized with the same rules as `Glossarist::Validation::BibliographyIndex` so consumers can resolve anchors.
 - `Converter::MathmlToAsciimath` — converts MathML markup to AsciiMath using Plurimath.
 - `Utilities` — HTML processing: converts IEV cross-references (`<a href=IEV...>`) to `{{URN, term}}` format (ID first, display text last), handles figures, images, bold tags, and newline normalization.
 
@@ -44,6 +46,14 @@ Per the concept model's `ConceptReferenceType`:
 - `"section"` — structural section membership (section level, e.g. "103-01")
 
 Each concept's `ManagedConceptData#domains` contains both refs. `ConceptData#domain` (a `LocalizedString`) holds the section/area title text. The `ManagedConcept#related` array holds `broader`/`narrower` relationships for the hierarchy tree.
+
+### V3 Output Artifacts
+
+An export produces these files alongside the concepts/ directory:
+- `register.yaml` — `Glossarist::DatasetRegister` with section tree, languages, owner, URN.
+- `bibliography.yaml` — single `bibliography:` key wrapping an array of `BibliographyEntry` objects. Entry `id` is the normalized anchor that `Glossarist::Validation::BibliographyIndex` will resolve against.
+- `figures/{fig-id}.yaml` — one `Glossarist::Figure` per unique image. Each concept carries a `FigureReference` on `ManagedConceptData#figures` and an inline `{{fig:id, display}}` mention in the text where the figure appeared.
+- References on localized concepts are populated by `Glossarist::ConceptEnricher#inject_references`, which scans text for `{{urn:...}}`, `<<xref>>`, and `image::` patterns.
 
 ### Configuration
 

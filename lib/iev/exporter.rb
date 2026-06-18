@@ -56,13 +56,18 @@ module Iev
       collection = build_collection(dataset)
       add_subject_area_concepts(collection) if @include_areas
       build_section_narrower_relations(collection) if @include_areas
+      figures = FigureBuilder.extract!(collection)
+      enrich_references(collection)
       save_collection(collection)
+      save_figures(figures)
+      save_bibliography(BibliographyBuilder.build(collection))
       save_register
       elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
 
       @stats = {
         concept_count: collection.count,
         localized_count: localized_count(collection),
+        figure_count: figures.length,
         elapsed_seconds: elapsed,
       }
       collection
@@ -173,6 +178,34 @@ module Iev
       concepts_dir = output_dir.expand_path.join("concepts")
       FileUtils.mkdir_p(concepts_dir)
       collection.save_grouped_concepts_to_files(concepts_dir.to_s)
+    end
+
+    def save_figures(figures)
+      return if figures.empty?
+
+      figures_dir = output_dir.expand_path.join("figures")
+      FileUtils.mkdir_p(figures_dir)
+      figures.each do |figure|
+        path = figures_dir.join("#{figure.id}.yaml")
+        File.write(path, figure.to_yaml, encoding: "utf-8")
+      end
+      puts "Written #{figures.length} figures to figures/" if $stdout.tty?
+    end
+
+    def save_bibliography(bibliography)
+      return if bibliography.entries.empty?
+
+      path = output_dir.expand_path.join("bibliography.yaml")
+      FileUtils.mkdir_p(path.dirname)
+      File.write(path, bibliography.to_yaml, encoding: "utf-8")
+      count = bibliography.entries.length
+      puts "Written bibliography.yaml with #{count} entries" if $stdout.tty?
+    end
+
+    def enrich_references(collection)
+      return if collection.none?
+
+      Glossarist::ConceptEnricher.new.inject_references(collection.to_a)
     end
 
     def save_register
