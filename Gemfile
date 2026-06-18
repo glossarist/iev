@@ -3,11 +3,12 @@
 source "https://rubygems.org"
 
 # Use local glossarist-ruby when available for development.
-# Otherwise falls back to released gem (requires >= 2.8.2 for tags support).
+# Otherwise falls back to released gem (requires >= 2.8.15 for
+# BibliographyData, Figure/NonVerbRep, and ConceptEnricher support).
 if File.directory?(File.expand_path("../glossarist-ruby", __dir__))
   gem "glossarist", path: "../glossarist-ruby"
 else
-  gem "glossarist", ">= 2.8.2"
+  gem "glossarist", ">= 2.8.15"
 end
 
 gem "benchmark"
