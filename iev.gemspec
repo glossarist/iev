@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "creek", "~> 2.6"
   spec.add_dependency "ferrum", "~> 0.15"
-  spec.add_dependency "glossarist", ">= 2.8.2"
+  spec.add_dependency "glossarist", ">= 2.8.15"
   spec.add_dependency "lutaml-model", "~> 0.8.0"
   spec.add_dependency "nokogiri", "~> 1.19"
   spec.add_dependency "plurimath"
