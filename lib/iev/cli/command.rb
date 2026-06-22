@@ -200,7 +200,7 @@ module Iev
                       default: Iev::Fetcher::Mirror::DEFAULT_JITTER,
                       desc: "±fraction of delay to randomize each sleep"
       option :source, desc: "Where to fetch from",
-                      enum: %w[archive live], default: "archive"
+                      enum: %w[archive live manual], default: "archive"
       option :cdx,
              desc: "Path to CDX index JSON (required for --source archive)"
       def mirror
@@ -294,6 +294,7 @@ module Iev
       def build_mirror_source
         case options[:source]
         when "live" then Iev::Scraper::Browser::Session.new
+        when "manual" then Iev::Fetcher::ManualSolver.new
         else Iev::Fetcher::Source::Archive.new
         end
       end
