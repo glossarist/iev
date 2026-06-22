@@ -15,6 +15,7 @@ module Iev
     autoload :Scope,            "iev/fetcher/scope"
     autoload :SectionIndex,     "iev/fetcher/section_index"
     autoload :SequentialProbe,  "iev/fetcher/sequential_probe"
+    autoload :Source,           "iev/fetcher/source"
     autoload :Waf,              "iev/fetcher/waf"
   end
 end
