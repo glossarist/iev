@@ -187,8 +187,98 @@ module Iev
         exit 1
       end
 
+      desc "mirror", "Mirror Electropedia concept pages to local cache"
+      option :area,    desc: "Only fetch this subject area (e.g. 102)"
+      option :section, desc: "Only fetch this section (e.g. 102-01)"
+      option :limit, type: :numeric,
+                     desc: "Cap on concepts fetched this run"
+      option :refresh, type: :boolean, default: false,
+                       desc: "Re-fetch cached pages"
+      option :delay, type: :numeric, default: Iev::Fetcher::Mirror::FETCH_DELAY,
+                     desc: "Seconds between fetches (mean)"
+      option :jitter, type: :numeric,
+                      default: Iev::Fetcher::Mirror::DEFAULT_JITTER,
+                      desc: "±fraction of delay to randomize each sleep"
+      def mirror
+        scope = build_fetch_scope
+        mirror = Iev::Fetcher::Mirror.new(
+          scope: scope,
+          options: Iev::Fetcher::Mirror::Options.new(**mirror_options),
+        )
+        mirror.run
+        info "Mirror complete: #{mirror.fetched} concepts fetched."
+      rescue Iev::Fetcher::Waf::Error => e
+        error "WAF: #{e.message}"
+        exit 1
+      end
+
+      desc "reparse", "Parse cached HTML into Glossarist YAML concept files"
+      option :output, aliases: :o,
+                      default: File.join(Dir.pwd, "concepts"),
+                      desc: "Output directory"
+      option :area,    desc: "Only emit concepts in this area"
+      option :section, desc: "Only emit concepts in this section"
+      def reparse
+        scope = build_fetch_scope
+        concepts_dir = build_reparse_dir(options[:output])
+        collection = Glossarist::ManagedConceptCollection.new
+        each_cached_concept(scope) { |c, raw| collection.store(c) if raw }
+        collection.save_grouped_concepts_to_files(concepts_dir.to_s)
+        info "Reparsed #{collection.count} concepts into #{concepts_dir}."
+      end
+
       def self.exit_on_failure?
         true
+      end
+
+      private
+
+      def build_fetch_scope
+        if options[:section]
+          Iev::Fetcher::Scope.for_section(options[:section])
+        elsif options[:area]
+          Iev::Fetcher::Scope.for_area(options[:area])
+        else
+          Iev::Fetcher::Scope.all
+        end
+      end
+
+      def mirror_options
+        {
+          limit: options[:limit],
+          refresh: options[:refresh],
+          delay: options[:delay],
+          jitter: options[:jitter],
+          on_progress: method(:mirror_progress),
+        }
+      end
+
+      def build_reparse_dir(output)
+        concepts_dir = Pathname.new(output).expand_path.join("concepts")
+        FileUtils.mkdir_p(concepts_dir)
+        concepts_dir
+      end
+
+      def each_cached_concept(scope)
+        store = Iev::Fetcher::PageStore.new
+        store.each_concept(scope: scope).each do |code, html|
+          doc = Nokogiri::HTML(html)
+          raw = Iev::Scraper::PageParser.new(doc, code).parse
+          yield build_concept_from_raw(code, raw), raw if raw
+        end
+      end
+
+      def mirror_progress(_section_idx, _total_sections, _code, status)
+        marker = case status
+                 when :ok then "+"
+                 when :skipped then "."
+                 when :not_found, :invalid then "?"
+                 when :waf_blocked then "x"
+                 when :section_done then "\n"
+                 else " "
+                 end
+        $stdout.write(marker)
+        $stdout.flush
       end
     end
   end
