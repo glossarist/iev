@@ -36,23 +36,28 @@ module Iev
       # @param scope [Scope] sections to mirror.
       # @param store [PageStore] injectable; defaults to a fresh PageStore.
       # @param fetcher [#fetch(url)] injectable; defaults to nil, in which
-      #   case Mirror opens one Iev::Scraper::Browser::Session per run and
-      #   reuses it for every fetch. AWS WAF's challenge cookie then
-      #   persists across requests, raising the per-fetch success rate
-      #   from ~60% (fresh browser each time) to ~100%.
+      #   case Mirror opens one Source::Archive per run. Callers wanting
+      #   the live Ferrum+Session path pass an Iev::Scraper::Browser::Session.
       # @param validator [#valid?(html, code)] injectable; defaults to
       #   ConceptValidator.
       # @param options [Options] run-tuning knobs (limit, refresh, delay,
       #   on_progress callback).
+      # @param probe_factory [#call(section:, fetcher:, store:, validator:,
+      #   refresh:)] injectable; defaults to a SequentialProbe factory.
+      #   CLI passes an ArchiveProbe factory bound to a CdxIndex when
+      #   --source archive is used, so iteration respects archive.org's
+      #   actual coverage rather than assuming contiguous codes.
       def initialize(scope:, store: PageStore.new,
                      fetcher: nil,
                      validator: ConceptValidator.new,
-                     options: Options.new)
+                     options: Options.new,
+                     probe_factory: nil)
         @scope = scope
         @store = store
         @fetcher = fetcher
         @validator = validator
         @options = options
+        @probe_factory = probe_factory || method(:default_probe_factory)
         @fetched = 0
       end
 
@@ -89,13 +94,18 @@ module Iev
       end
 
       def build_probe(section)
-        probe_options = SequentialProbe::Options.new(
-          store: @store, refresh: @options.refresh,
-        )
+        @probe_factory.call(section: section, fetcher: @fetcher,
+                            store: @store, validator: @validator,
+                            refresh: @options.refresh)
+      end
+
+      def default_probe_factory(section:, fetcher:, store:, validator:,
+                                refresh:)
+        opts = SequentialProbe::Options.new(store: store, refresh: refresh)
         SequentialProbe.new(section.code,
-                            fetcher: @fetcher,
-                            validator: @validator,
-                            options: probe_options)
+                            fetcher: fetcher,
+                            validator: validator,
+                            options: opts)
       end
 
       def record_concept(code, html, status)

@@ -201,14 +201,18 @@ module Iev
                       desc: "±fraction of delay to randomize each sleep"
       option :source, desc: "Where to fetch from",
                       enum: %w[archive live], default: "archive"
+      option :cdx,
+             desc: "Path to CDX index JSON (required for --source archive)"
       def mirror
         scope = build_fetch_scope
         source = build_mirror_source
+        probe_factory = build_probe_factory
         begin
           mirror = Iev::Fetcher::Mirror.new(
             scope: scope,
             fetcher: source,
             options: Iev::Fetcher::Mirror::Options.new(**mirror_options),
+            probe_factory: probe_factory,
           )
           mirror.run
           info "Mirror complete: #{mirror.fetched} concepts fetched."
@@ -218,6 +222,32 @@ module Iev
         ensure
           source&.quit
         end
+      end
+
+      desc "cdx_refresh",
+           "Fetch CDX index of Electropedia snapshots from archive.org"
+      option :output, aliases: :o,
+                      desc: "Output JSON path",
+                      default: File.join(Dir.pwd, "tmp", "cdx_display.json")
+      option :from, desc: "Earliest snapshot timestamp YYYYMMDD",
+                    default: "20250101"
+      def cdx_refresh
+        url = "https://web.archive.org/cdx/search/cdx?" \
+              "url=electropedia.org/iev/iev.nsf/display&" \
+              "matchType=prefix&" \
+              "from=#{options[:from]}&" \
+              "output=json&" \
+              "fl=original,timestamp&" \
+              "limit=1000000"
+        info "Fetching CDX index from archive.org..."
+        FileUtils.mkdir_p(File.dirname(options[:output]))
+        system("curl", "-sS", url, "-o", options[:output]) or
+          raise "curl failed"
+        rows = JSON.parse(File.read(options[:output], encoding: "utf-8"))
+        info "Saved #{rows.length - 1} CDX rows to #{options[:output]}."
+      rescue JSON::ParserError => e
+        error "Failed to parse CDX response: #{e.message}"
+        exit 1
       end
 
       desc "reparse", "Parse cached HTML into Glossarist YAML concept files"
@@ -265,6 +295,38 @@ module Iev
         case options[:source]
         when "live" then Iev::Scraper::Browser::Session.new
         else Iev::Fetcher::Source::Archive.new
+        end
+      end
+
+      # Returns a probe_factory lambda. For --source archive, loads the
+      # CDX index and builds ArchiveProbe factories (gap-aware). For
+      # --source live, returns nil so Mirror falls back to its default
+      # SequentialProbe factory.
+      def build_probe_factory
+        return nil unless options[:source] == "archive"
+
+        cdx_path = options[:cdx] ||
+          ENV["IEV_CDX_PATH"] ||
+          File.join(Dir.pwd, "tmp", "cdx_display.json")
+        unless File.exist?(cdx_path)
+          error "CDX index not found at #{cdx_path}."
+          error "Run `iev cdx_refresh` first."
+          exit 1
+        end
+
+        cdx = Iev::Fetcher::CdxIndex.load(cdx_path)
+        info "Loaded CDX index: #{cdx.total_codes} codes across " \
+             "#{cdx.sections.length} sections."
+
+        lambda do |section:, fetcher:, store:, validator:, refresh:|
+          codes = cdx.codes_for_section(section.code)
+          opts = Iev::Fetcher::ArchiveProbe::Options.new(store: store,
+                                                         refresh: refresh)
+          Iev::Fetcher::ArchiveProbe.new(section.code,
+                                         codes: codes,
+                                         fetcher: fetcher,
+                                         validator: validator,
+                                         options: opts)
         end
       end
 

@@ -8,14 +8,16 @@ module Iev
   # Iev::Scraper::Browser and Iev::Scraper::PageParser for the actual page
   # work; this namespace adds orchestration, caching, and resumability.
   module Fetcher
+    autoload :ArchiveProbe,    "iev/fetcher/archive_probe"
+    autoload :CdxIndex,        "iev/fetcher/cdx_index"
     autoload :ConceptValidator, "iev/fetcher/concept_validator"
-    autoload :ManualSolver,     "iev/fetcher/manual_solver"
-    autoload :Mirror,           "iev/fetcher/mirror"
-    autoload :PageStore,        "iev/fetcher/page_store"
-    autoload :Scope,            "iev/fetcher/scope"
-    autoload :SectionIndex,     "iev/fetcher/section_index"
-    autoload :SequentialProbe,  "iev/fetcher/sequential_probe"
-    autoload :Source,           "iev/fetcher/source"
-    autoload :Waf,              "iev/fetcher/waf"
+    autoload :ManualSolver,    "iev/fetcher/manual_solver"
+    autoload :Mirror,          "iev/fetcher/mirror"
+    autoload :PageStore,       "iev/fetcher/page_store"
+    autoload :Scope,           "iev/fetcher/scope"
+    autoload :SectionIndex,    "iev/fetcher/section_index"
+    autoload :SequentialProbe, "iev/fetcher/sequential_probe"
+    autoload :Source,          "iev/fetcher/source"
+    autoload :Waf,             "iev/fetcher/waf"
   end
 end
