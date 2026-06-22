@@ -59,13 +59,13 @@ module Iev
       attr_reader :fetched
 
       def run
-        own_session = @fetcher.nil?
-        @fetcher = Iev::Scraper::Browser::Session.new if own_session
+        own_fetcher = @fetcher.nil?
+        @fetcher = Source::Archive.new if own_fetcher
         begin
           each_section_with_progress
           self
         ensure
-          @fetcher.quit if own_session
+          @fetcher.quit if own_fetcher
         end
       end
 

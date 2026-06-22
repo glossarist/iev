@@ -199,17 +199,25 @@ module Iev
       option :jitter, type: :numeric,
                       default: Iev::Fetcher::Mirror::DEFAULT_JITTER,
                       desc: "±fraction of delay to randomize each sleep"
+      option :source, desc: "Where to fetch from",
+                      enum: %w[archive live], default: "archive"
       def mirror
         scope = build_fetch_scope
-        mirror = Iev::Fetcher::Mirror.new(
-          scope: scope,
-          options: Iev::Fetcher::Mirror::Options.new(**mirror_options),
-        )
-        mirror.run
-        info "Mirror complete: #{mirror.fetched} concepts fetched."
-      rescue Iev::Fetcher::Waf::Error => e
-        error "WAF: #{e.message}"
-        exit 1
+        source = build_mirror_source
+        begin
+          mirror = Iev::Fetcher::Mirror.new(
+            scope: scope,
+            fetcher: source,
+            options: Iev::Fetcher::Mirror::Options.new(**mirror_options),
+          )
+          mirror.run
+          info "Mirror complete: #{mirror.fetched} concepts fetched."
+        rescue Iev::Fetcher::Waf::Error => e
+          error "WAF: #{e.message}"
+          exit 1
+        ensure
+          source&.quit
+        end
       end
 
       desc "reparse", "Parse cached HTML into Glossarist YAML concept files"
@@ -251,6 +259,13 @@ module Iev
           jitter: options[:jitter],
           on_progress: method(:mirror_progress),
         }
+      end
+
+      def build_mirror_source
+        case options[:source]
+        when "live" then Iev::Scraper::Browser::Session.new
+        else Iev::Fetcher::Source::Archive.new
+        end
       end
 
       def build_reparse_dir(output)
