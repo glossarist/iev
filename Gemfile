@@ -14,6 +14,7 @@ end
 gem "benchmark"
 gem "canon"
 gem "openssl"
+gem "playwright-ruby-client", require: false
 gem "rake"
 gem "rspec"
 gem "rubocop"
