@@ -36,7 +36,7 @@ RSpec.describe Iev::Fetcher::Source::Archive do
 
   let(:id_snapshot_url) do
     base = "https://electropedia.org/iev/iev.nsf/display?openform&ievref=102-05-18"
-    "http://web.archive.org/web/#{snapshot_timestamp}id_/#{base}"
+    "https://web.archive.org/web/#{snapshot_timestamp}id_/#{base}"
   end
 
   let(:good_html) { "x" * (Iev::Fetcher::Waf::MIN_PAGE_SIZE + 1) }

@@ -108,9 +108,14 @@ module Iev
         # Injects the `id_` modifier after the timestamp so Wayback
         # returns the original bytes rather than its toolbar-wrapped
         # variant. E.g. /web/20251118.../ -> /web/20251118...id_/
+        #
+        # Also force HTTPS: the availability API returns HTTP URLs but
+        # archive.org refuses port 80 connections, so an HTTP snapshot
+        # URL fails with "Connection refused".
         def snapshot_id_url(snapshot)
           ts = snapshot["timestamp"]
-          snapshot["url"].sub("/web/#{ts}/", "/web/#{ts}id_/")
+          url = snapshot["url"].sub("/web/#{ts}/", "/web/#{ts}id_/")
+          url.sub(/\Ahttp:/, "https:")
         end
       end
     end
