@@ -3,6 +3,12 @@
 require "spec_helper"
 require "iev/fetcher"
 require "iev/fetcher/scope"
+require "iev/fetcher/cdx_index"
+
+# Minimal stand-in for CdxIndex — real Ruby class, not a double.
+FakeCdx = Struct.new(:section_codes) do
+  def sections = section_codes
+end
 
 RSpec.describe Iev::Fetcher::Scope do
   describe ".all" do
@@ -10,6 +16,33 @@ RSpec.describe Iev::Fetcher::Scope do
       scope = described_class.all
       expect(scope.sections).not_to be_empty
       expect(scope.sections).to all(be_a(Iev::Section))
+    end
+  end
+
+  describe ".from_cdx" do
+    it "builds a section per CDX section code" do
+      cdx = FakeCdx.new(["102-01", "102-05", "103-01"])
+      scope = described_class.from_cdx(cdx)
+
+      expect(scope.sections.map(&:code)).to contain_exactly("102-01",
+                                                            "102-05",
+                                                            "103-01")
+    end
+
+    it "derives area_code from the section code" do
+      cdx = FakeCdx.new(["102-05"])
+      scope = described_class.from_cdx(cdx)
+
+      expect(scope.sections.first.area_code).to eq("102")
+    end
+
+    it "synthesizes sections CDX has but yaml does not" do
+      real_cdx = Iev::Fetcher::CdxIndex.load("tmp/cdx_display.json")
+      scope = described_class.from_cdx(real_cdx)
+      yaml_scope = described_class.all
+
+      cdx_only = scope.sections.map(&:code) - yaml_scope.sections.map(&:code)
+      expect(cdx_only).not_to be_empty
     end
   end
 

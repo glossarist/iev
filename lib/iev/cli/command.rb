@@ -204,9 +204,10 @@ module Iev
       option :cdx,
              desc: "Path to CDX index JSON (required for --source archive)"
       def mirror
-        scope = build_fetch_scope
+        cdx = load_cdx_index
+        scope = build_fetch_scope(cdx: cdx)
         source = build_mirror_source
-        probe_factory = build_probe_factory
+        probe_factory = build_probe_factory(cdx: cdx)
         begin
           mirror = Iev::Fetcher::Mirror.new(
             scope: scope,
@@ -257,7 +258,8 @@ module Iev
       option :area,    desc: "Only emit concepts in this area"
       option :section, desc: "Only emit concepts in this section"
       def reparse
-        scope = build_fetch_scope
+        cdx = load_cdx_index
+        scope = build_fetch_scope(cdx: cdx)
         concepts_dir = build_reparse_dir(options[:output])
         collection = Glossarist::ManagedConceptCollection.new
         each_cached_concept(scope) { |c, raw| collection.store(c) if raw }
@@ -271,14 +273,24 @@ module Iev
 
       private
 
-      def build_fetch_scope
+      def build_fetch_scope(cdx: nil)
         if options[:section]
           Iev::Fetcher::Scope.for_section(options[:section])
         elsif options[:area]
-          Iev::Fetcher::Scope.for_area(options[:area])
+          scope_for_area(options[:area], cdx: cdx)
         else
-          Iev::Fetcher::Scope.all
+          cdx ? Iev::Fetcher::Scope.from_cdx(cdx) : Iev::Fetcher::Scope.all
         end
+      end
+
+      def scope_for_area(area_code, cdx:)
+        return Iev::Fetcher::Scope.for_area(area_code) unless cdx
+
+        scope = Iev::Fetcher::Scope.from_cdx(cdx)
+        sections = scope.sections.select do |s|
+          s.area_code == area_code.to_s
+        end
+        Iev::Fetcher::Scope.new(sections: sections)
       end
 
       def mirror_options
@@ -299,25 +311,12 @@ module Iev
         end
       end
 
-      # Returns a probe_factory lambda. For --source archive, loads the
-      # CDX index and builds ArchiveProbe factories (gap-aware). For
-      # --source live, returns nil so Mirror falls back to its default
+      # Returns a probe_factory lambda. For --source archive, uses the
+      # pre-loaded CDX index and builds ArchiveProbe factories (gap-aware).
+      # For --source live, returns nil so Mirror falls back to its default
       # SequentialProbe factory.
-      def build_probe_factory
-        return nil unless options[:source] == "archive"
-
-        cdx_path = options[:cdx] ||
-          ENV["IEV_CDX_PATH"] ||
-          File.join(Dir.pwd, "tmp", "cdx_display.json")
-        unless File.exist?(cdx_path)
-          error "CDX index not found at #{cdx_path}."
-          error "Run `iev cdx_refresh` first."
-          exit 1
-        end
-
-        cdx = Iev::Fetcher::CdxIndex.load(cdx_path)
-        info "Loaded CDX index: #{cdx.total_codes} codes across " \
-             "#{cdx.sections.length} sections."
+      def build_probe_factory(cdx:)
+        return nil unless options[:source] == "archive" && cdx
 
         lambda do |section:, fetcher:, store:, validator:, refresh:|
           codes = cdx.codes_for_section(section.code)
@@ -329,6 +328,26 @@ module Iev
                                          validator: validator,
                                          options: opts)
         end
+      end
+
+      # Loads the CDX index if --cdx is set (or --source archive is used
+      # with a default path). Returns nil if no CDX is configured so the
+      # caller can fall back to yaml-based Scope and SequentialProbe.
+      def load_cdx_index
+        return nil unless options[:source] == "archive" || options[:cdx]
+
+        cdx_path = options[:cdx] || ENV["IEV_CDX_PATH"] ||
+                   File.join(Dir.pwd, "tmp", "cdx_display.json")
+        unless File.exist?(cdx_path)
+          error "CDX index not found at #{cdx_path}."
+          error "Run `iev cdx_refresh` first."
+          exit 1
+        end
+
+        cdx = Iev::Fetcher::CdxIndex.load(cdx_path)
+        info "Loaded CDX index: #{cdx.total_codes} codes across " \
+             "#{cdx.sections.length} sections."
+        cdx
       end
 
       def build_reparse_dir(output)

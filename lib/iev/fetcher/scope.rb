@@ -19,6 +19,21 @@ module Iev
         new(sections: SubjectAreas.all.flat_map(&:sections))
       end
 
+      # All sections present in a CDX index. Use this when --cdx is the
+      # authoritative source (yaml refresh is WAF-blocked, so SubjectAreas
+      # is missing ~158 newer sections that archive.org has snapshots for).
+      # Section titles and area_codes are synthesized from the code since
+      # CDX only carries URLs.
+      # @param cdx [Iev::Fetcher::CdxIndex]
+      # @return [Scope]
+      def self.from_cdx(cdx)
+        sections = cdx.sections.map do |code|
+          area_code = code.split("-").first.to_s
+          Section.new(code: code, title: "", area_code: area_code)
+        end
+        new(sections: sections)
+      end
+
       # All sections within one subject area.
       # @param code [String, Integer] e.g. "103"
       # @return [Scope]
