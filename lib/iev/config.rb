@@ -6,10 +6,13 @@ module Iev
   class Config
     DEFAULT_REMOTE_BASE_URL = "https://raw.githubusercontent.com/glossarist/glossarist-data-iev/main/concepts"
 
-    # Default mirror cache lives inside the repo's tmp/ directory (gitignored)
-    # rather than Dir.tmpdir. macOS purges /var/folders/.../T/ aggressively —
-    # a 19-hour mirror run lost 6,905 fetched pages to that cleanup.
-    DEFAULT_PAGES_DIR = File.expand_path("../../tmp/pages", __dir__)
+    # Default mirror cache lives OUTSIDE the repo, at <repo-parent>/iev-data-latest,
+    # which is itself a private git repo (glossarist/iev-data-latest) so the
+    # raw HTML snapshots are versioned and shareable. This keeps the cache
+    # outside repo operations (rm -rf, branch switches), persists across
+    # reboots (so Dir.tmpdir is wrong — macOS purges it), and survives
+    # accidental deletion of the iev working tree.
+    DEFAULT_PAGES_DIR = File.expand_path("../../../iev-data-latest", __dir__)
 
     attr_accessor :data_path, :cache_dir, :remote_base_url, :pages_dir
 
