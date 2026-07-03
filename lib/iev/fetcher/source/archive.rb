@@ -20,8 +20,8 @@ module Iev
       class Archive
         AVAILABILITY_API = "https://archive.org/wayback/available?url=%<url>s"
         DEFAULT_MIN_TIMESTAMP = "20250101"
-        DEFAULT_OPEN_TIMEOUT = 30
-        DEFAULT_READ_TIMEOUT = 30
+        DEFAULT_OPEN_TIMEOUT = 10
+        DEFAULT_READ_TIMEOUT = 15
 
         # Wraps Net::HTTP so the parser logic above stays pure and
         # injectable for specs. Real Ruby class — not a double.
