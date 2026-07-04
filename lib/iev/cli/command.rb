@@ -311,12 +311,14 @@ module Iev
         end
       end
 
-      # Returns a probe_factory lambda. For --source archive, uses the
-      # pre-loaded CDX index and builds ArchiveProbe factories (gap-aware).
-      # For --source live, returns nil so Mirror falls back to its default
-      # SequentialProbe factory.
+      # Returns a probe_factory lambda. Whenever --cdx is provided, uses
+      # ArchiveProbe (gap-aware: iterates the known CDX code list, silently
+      # skips nil fetches rather than treating them as end-of-section).
+      # The class is misnamed for historical reasons — it isn't archive-
+      # specific. Without --cdx, returns nil so Mirror falls back to its
+      # default SequentialProbe factory.
       def build_probe_factory(cdx:)
-        return nil unless options[:source] == "archive" && cdx
+        return nil unless cdx
 
         lambda do |section:, fetcher:, store:, validator:, refresh:|
           codes = cdx.codes_for_section(section.code)
