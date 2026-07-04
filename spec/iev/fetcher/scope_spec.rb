@@ -65,9 +65,10 @@ RSpec.describe Iev::Fetcher::Scope do
       expect(scope.sections.map(&:code)).to eq(["103-01"])
     end
 
-    it "raises ArgumentError for an unknown section" do
-      expect { described_class.for_section("999-99") }
-        .to raise_error(ArgumentError, /Unknown section: 999-99/)
+    it "synthesizes a Section record for CDX-only codes not in yaml" do
+      scope = described_class.for_section("999-99")
+      expect(scope.sections.map(&:code)).to eq(["999-99"])
+      expect(scope.sections.first.area_code).to eq("999")
     end
   end
 
