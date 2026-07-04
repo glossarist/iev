@@ -41,14 +41,15 @@ module Iev
         new(sections: SubjectAreas.sections_for(code))
       end
 
-      # A single section.
+      # A single section. Looks up yaml first; falls back to synthesizing
+      # a Section record from the code (titles blank, area_code from the
+      # first dash-component) so CDX-only sections like 101-11 work.
       # @param code [String] e.g. "103-01"
       # @return [Scope]
-      # @raise [ArgumentError] if the section code is unknown.
       def self.for_section(code)
-        section = SubjectAreas.find_section(code)
-        raise ArgumentError, "Unknown section: #{code}" unless section
-
+        section = SubjectAreas.find_section(code) ||
+                  Section.new(code: code.to_s, title: "",
+                              area_code: code.to_s.split("-").first.to_s)
         new(sections: [section])
       end
 
