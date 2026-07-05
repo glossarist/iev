@@ -127,6 +127,12 @@ module Iev
       # request, subsequent requests reuse the token and succeed at
       # near-100% rate. The Mirror creates one Session per run and
       # shares it across all SequentialProbe iterations.
+      #
+      # Chrome leaks ~1MB per page load (mostly V8 heap that doesn't get
+      # GC'd between navigations). After ~1000 fetches the process is at
+      # ~1GB and the OOM risk climbs sharply. #restart quits the browser
+      # and starts a fresh one with a new cookie jar; the WAF challenge
+      # will need to be cleared again on the next fetch.
       class Session
         def initialize
           @browser = Ferrum::Browser.new(
@@ -154,6 +160,14 @@ module Iev
           else
             html
           end
+        end
+
+        # Quit the current browser and start a fresh one. The WAF cookie
+        # is lost, so the next fetch will go through the challenge cycle
+        # again. Call this after N fetches to bound Ferrum's memory growth.
+        def restart
+          quit
+          initialize
         end
 
         def quit

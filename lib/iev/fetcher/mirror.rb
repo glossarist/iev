@@ -17,6 +17,13 @@ module Iev
     class Mirror
       FETCH_DELAY = 5
       DEFAULT_JITTER = 0.4
+      # Restart the fetcher every N successful fetches to bound memory
+      # growth. Ferrum's headless Chrome leaks ~1MB per page navigation
+      # (V8 heap that doesn't GC cleanly); without restart, the process
+      # hits ~1GB after ~1000 fetches and OOM risk climbs sharply.
+      # Only affects fetchers that respond to #restart (currently
+      # Browser::Session). Archive::Transport and ManualSolver ignore it.
+      FETCHER_RESTART_INTERVAL = 500
 
       # Run-tuning knobs for Mirror. Kept as a value object so the Mirror
       # constructor stays under the parameter-list limit and callers can
@@ -113,6 +120,7 @@ module Iev
         when :ok
           @store.put_concept(code, html)
           @fetched += 1
+          maybe_restart_fetcher
         when :skipped, :waf_blocked
           # skipped: already in store. waf_blocked: probe already recorded
           # the failure via PageStore#mark_failed.
@@ -126,6 +134,15 @@ module Iev
 
       def throttle
         sleep delay_with_jitter
+      end
+
+      def maybe_restart_fetcher
+        return unless @fetched % FETCHER_RESTART_INTERVAL == 0
+        return unless @fetcher.respond_to?(:restart)
+
+        warn "IEV: Restarting fetcher at #{@fetched} fetches " \
+             "(#{FETCHER_RESTART_INTERVAL}-page interval)."
+        @fetcher.restart
       end
 
       def delay_with_jitter
