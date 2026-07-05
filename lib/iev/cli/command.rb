@@ -258,7 +258,7 @@ module Iev
       option :area,    desc: "Only emit concepts in this area"
       option :section, desc: "Only emit concepts in this section"
       def reparse
-        cdx = load_cdx_index
+        cdx = load_cdx_index_for_reparse
         scope = build_fetch_scope(cdx: cdx)
         concepts_dir = build_reparse_dir(options[:output])
         collection = Glossarist::ManagedConceptCollection.new
@@ -332,9 +332,23 @@ module Iev
         end
       end
 
-      # Loads the CDX index if --cdx is set (or --source archive is used
-      # with a default path). Returns nil if no CDX is configured so the
-      # caller can fall back to yaml-based Scope and SequentialProbe.
+      # Like load_cdx_index but never errors and never requires --source.
+      # Used by reparse, which should silently use yaml Scope if no CDX
+      # is around (so reparse still works in repos that don't do mirroring).
+      def load_cdx_index_for_reparse
+        cdx_path = options[:cdx] || ENV["IEV_CDX_PATH"] ||
+                   File.join(Dir.pwd, "tmp", "cdx_display.json")
+        return nil unless File.exist?(cdx_path)
+
+        info "Loading CDX index from #{cdx_path} for reparse scope."
+        Iev::Fetcher::CdxIndex.load(cdx_path)
+      end
+
+      # Loads the CDX index. Fires whenever --cdx is set, --source archive
+      # is used, OR the default cdx_display.json file exists at the expected
+      # path. The last fallback is important for reparse, which doesn't take
+      # --source — without it, reparse silently uses yaml-only Scope and
+      # skips 158 CDX-only sections (~1,900 cached pages).
       def load_cdx_index
         return nil unless options[:source] == "archive" || options[:cdx]
 
