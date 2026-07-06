@@ -148,11 +148,18 @@ module Iev
           @browser.go_to(url)
           @browser.network.wait_for_idle(timeout: 15)
           reject_blocked(url, @browser.body)
+        rescue Ferrum::DeadBrowserError, Ferrum::NoSuchPageError,
+               Ferrum::NoSuchTargetError => e
+          # Chrome process or page/tab has crashed. Restart once, retry
+          # once. If the restart itself fails, surface as nil so the
+          # probe silently skips and the run continues.
+          if restart
+            retry
+          else
+            warn "IEV: Browser crashed, restart failed: #{e.message}"
+            nil
+          end
         rescue Ferrum::BrowserError => e
-          # "Browser is dead" / "given window is closed" — the underlying
-          # Chrome process has crashed. Restart once, retry once. If the
-          # restart itself fails, surface as a regular fetch failure (nil)
-          # so the probe silently skips and the run continues.
           if fetch_dead?(e.message) && restart
             retry
           else
