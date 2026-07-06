@@ -148,9 +148,26 @@ module Iev
           @browser.go_to(url)
           @browser.network.wait_for_idle(timeout: 15)
           reject_blocked(url, @browser.body)
-        rescue Ferrum::Error, Ferrum::BrowserError => e
+        rescue Ferrum::BrowserError => e
+          # "Browser is dead" / "given window is closed" — the underlying
+          # Chrome process has crashed. Restart once, retry once. If the
+          # restart itself fails, surface as a regular fetch failure (nil)
+          # so the probe silently skips and the run continues.
+          if fetch_dead?(e.message) && restart
+            retry
+          else
+            warn "IEV: Browser error fetching #{url}: #{e.message}"
+            nil
+          end
+        rescue Ferrum::Error => e
           warn "IEV: Browser error fetching #{url}: #{e.message}"
           nil
+        end
+
+        def fetch_dead?(message)
+          message.include?("Browser is dead") ||
+            message.include?("given window is closed") ||
+            message.include?("Target closed")
         end
 
         def reject_blocked(url, html)
@@ -164,10 +181,16 @@ module Iev
 
         # Quit the current browser and start a fresh one. The WAF cookie
         # is lost, so the next fetch will go through the challenge cycle
-        # again. Call this after N fetches to bound Ferrum's memory growth.
+        # again. Call this after N fetches to bound Ferrum's memory growth,
+        # or rely on #fetch to call it automatically when Chrome dies.
+        # Returns true on success, false if the new browser fails to start.
         def restart
           quit
           initialize
+          true
+        rescue StandardError => e
+          warn "IEV: Session restart failed: #{e.message}"
+          false
         end
 
         def quit
