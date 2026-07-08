@@ -52,10 +52,9 @@ module IevLiveWithSolver
   # fetcher contract: #fetch(url) -> String | nil, plus #restart and #quit.
   class SolverSession
     PAGE_TIMEOUT_MS = 30_000
-    POST_LOAD_MS = 500
     WAF_MAX_RETRIES = 5
-    WAF_RELOAD_WAIT_MS = 5_000
     FETCHES_PER_PLAYWRIGHT_SESSION = 500
+    SILENT_CHALLENGE_SETTLE_S = 10
 
     def initialize(solver: WafflePunch::CaptchaSolver.new,
                    ferrum_session: Iev::Scraper::Browser::Session.new)
@@ -116,8 +115,7 @@ module IevLiveWithSolver
       attempts = 0
       while attempts < WAF_MAX_RETRIES
         page.goto(url, timeout: PAGE_TIMEOUT_MS, waitUntil: "domcontentloaded")
-        page.wait_for_timeout(POST_LOAD_MS)
-        html = page.content
+        html = wait_for_settle(page)
 
         return html unless challenge?(html)
         return html unless @solver.captcha_intro?(html)
@@ -141,6 +139,23 @@ module IevLiveWithSolver
       page&.close
     end
 
+    # WAF serves a silent JS challenge first. Playwright (a real browser)
+    # can clear it, but the JS takes a few seconds to execute and redirect.
+    # Poll until the page settles into one of three terminal states:
+    # real content, interactive CAPTCHA, or timeout.
+    def wait_for_settle(page, timeout_s: SILENT_CHALLENGE_SETTLE_S)
+      deadline = Time.now + timeout_s
+      html = page.content
+      while Time.now < deadline
+        return html unless challenge?(html)
+        return html if @solver.captcha_intro?(html)
+
+        sleep 0.5
+        html = page.content
+      end
+      html
+    end
+
     def new_playwright_page
       playwright_context.new_page
     end
@@ -148,12 +163,11 @@ module IevLiveWithSolver
     def playwright_context
       return @pw_context if @pw_context
 
-      prof = Iev::Scraper::Browser.profile_for_host
       @pw_context = playwright_browser.new_context(
-        userAgent: prof[:user_agent],
+        userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " \
+                   "AppleWebKit/537.36 (KHTML, like Gecko) " \
+                   "Chrome/131.0.0.0 Safari/537.36",
         locale: "en-US",
-        extraHTTPHeaders: Iev::Scraper::Browser.static_headers
-                          .merge(Iev::Scraper::Browser.headers_from_profile(prof)),
         viewport: { width: 1366, height: 768 },
       )
     end
