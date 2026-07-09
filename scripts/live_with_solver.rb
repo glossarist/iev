@@ -135,8 +135,20 @@ module IevLiveWithSolver
         attempts += 1
       end
       nil
+    rescue StandardError => e
+      warn "IEV: Playwright fetch failed: #{e.message}"
+      reset_playwright
+      nil
     ensure
       page&.close
+    end
+
+    def reset_playwright
+      @pw_context = nil
+      @pw_browser&.close rescue nil
+      @playwright&.stop rescue nil
+      @pw_browser = nil
+      @playwright = nil
     end
 
     # WAF serves a silent JS challenge first. Playwright (a real browser)
@@ -145,15 +157,21 @@ module IevLiveWithSolver
     # real content, interactive CAPTCHA, or timeout.
     def wait_for_settle(page, timeout_s: SILENT_CHALLENGE_SETTLE_S)
       deadline = Time.now + timeout_s
-      html = page.content
+      html = safe_content(page)
       while Time.now < deadline
         return html unless challenge?(html)
         return html if @solver.captcha_intro?(html)
 
         sleep 0.5
-        html = page.content
+        html = safe_content(page)
       end
       html
+    end
+
+    def safe_content(page)
+      page.content
+    rescue Playwright::Error
+      ""
     end
 
     def new_playwright_page
