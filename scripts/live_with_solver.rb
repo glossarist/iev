@@ -140,7 +140,7 @@ module IevLiveWithSolver
       reset_playwright
       nil
     ensure
-      page&.close
+      page&.close rescue nil
     end
 
     def reset_playwright
