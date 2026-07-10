@@ -1,73 +1,57 @@
-# 01 — Reconciler design
+# 01 — Architecture & autoloads
 
-## Goal
+## Audit of current approach (scripts/reconcile.rb)
 
-Design the reconciliation pipeline that merges `iev-data/termbase.yaml`
-(historical, ~2020, 22,228 concepts) with the live HTML mirror
-(`iev-data-latest/pages/`, 17,473 concepts) and outputs a single
-Glossarist V3 dataset with full lifecycle history.
+Problems:
+1. **Monolithic** — 400-line script, module of static methods, no classes
+2. **Not model-driven** — builds raw Hashes instead of Glossarist model objects
+3. **No field-level diff** — knows THAT content changed, not WHAT changed
+4. **No before/after values** — loses the historical content
+5. **No machine-readable change log** — no way to audit changes
+6. **No specs**
+7. **Not MECE** — merge, diff, serialize all mixed together
+8. **Not autoloaded** — everything in a script file
 
-## Architecture
+## New architecture
 
 ```
-termbase.yaml ─┐
-               ├─→ Reconciler ─→ ManagedConceptCollection ─→ concepts/*.yaml
-live HTML ─────┘    (per code)      (V3 schema)
+lib/iev/reconciler.rb                      module + autoloads
+lib/iev/reconciler/change.rb               field-level change (field, lang, old, new)
+lib/iev/reconciler/change_set.rb           collection of Change per concept
+lib/iev/reconciler/status_mapper.rb        termbase status -> V3 ConceptStatus
+lib/iev/reconciler/termbase_loader.rb      termbase.yaml -> {code => ManagedConcept}
+lib/iev/reconciler/live_loader.rb          HTML pages -> {code => ManagedConcept}
+lib/iev/reconciler/content_differ.rb       diff two ManagedConcepts -> ChangeSet
+lib/iev/reconciler/concept_merger.rb       merge termbase + live -> ReconciledConcept
+lib/iev/reconciler/reconciled_concept.rb   ManagedConcept + ChangeSet + source
+lib/iev/reconciler/report.rb               dataset-level change reporting
+lib/iev/reconciler/pipeline.rb             orchestration
 ```
 
-One orchestrator class: `Iev::Reconciler`. It loads both sources, walks
-the union of all codes, and for each code produces a
-`ManagedConcept` (V3) with:
+Each class has ONE responsibility (MECE). The Pipeline composes them.
 
-- **Status + dates** from termbase (date_accepted, date_amended, review
-  dates, entry_status).
-- **Current content** (designations, definitions, notes, examples,
-  sources) from live HTML when available; otherwise from termbase.
-- **Diff detection**: if live content differs from termbase content,
-  append a `ConceptDate(type: amended, date: <mirror date>)` to record
-  that a change occurred between the last termbase snapshot and the
-  mirror date.
-- **Retirement**: codes in termbase but absent from the live mirror are
-  marked `status: retired` with `ConceptDate(type: retired)`.
-- **New concepts**: codes in the live mirror but absent from termbase
-  get `ConceptDate(type: accepted)` from the HTML publication date.
+## History reporting
 
-## Output schema (Glossarist V3)
+Three layers:
 
-Each concept becomes a `ManagedConcept` file:
+1. **Model-level** — `ManagedConcept#dates` (accepted/amended/retired),
+   `ManagedConcept#status` (valid/draft/superseded/retired),
+   `ManagedConcept#related` (supersedes/superseded_by).
 
-```yaml
----
-schema_version: "3"
-identifier: "102-01-01"
-status: valid          # draft | notValid | valid | superseded | retired
-dates:
-  - type: accepted
-    date: "2008-08-01"
-  - type: amended
-    date: "2008-08-01"
-localized_concepts:
-  eng:
-    language: eng
-    designations:
-      - type: expression
-        normative_status: preferred
-        designation: equality
-    definition: "..."
-    sources:
-      - type: authoritative
-        status: identical
-        origin: { ... }
-data:
-  domain: "Mathematics - General concepts and linear algebra"
-  ...
-related:
-  - type: supersedes
-    ref: IEV:102-01-00
-```
+2. **Concept-level annotations** — Each amended concept gets a
+   `ConceptData#annotations` entry describing what field changed, with
+   before/after text.
+
+3. **Dataset-level report** — Summary statistics + machine-readable
+   change log written to `report/`:
+   - `summary.yaml` — aggregate counts by change type, section, language
+   - `changes.csv` — one row per field-level change
+   - `retired.yaml` — concepts retired since termbase snapshot
+   - `new_concepts.yaml` — concepts added since termbase snapshot
 
 ## Checklist
 
-- [x] Design the Reconciler architecture
-- [x] Define the output schema mapping
-- [x] Implement the pipeline (tasks 02–07)
+- [x] Audit current approach
+- [x] Design new architecture
+- [x] Create lib/iev/reconciler.rb with autoloads
+- [x] Register in lib/iev.rb
