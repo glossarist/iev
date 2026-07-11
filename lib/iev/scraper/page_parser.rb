@@ -65,15 +65,34 @@ module Iev
 
       def localized_concepts
         result = {}
-        lang_sections.each do |lang, term_row, def_row|
+        lang_sections.each do |lang, area, term_row, def_row|
           term = extract_term(term_row)
           next unless term
 
-          entry = { "term" => term }
+          entry = result[lang] || { "terms" => [] }
+          term_entry = { "designation" => term }
+          term_entry["geographical_area"] = area if area
+          entry["terms"] << term_entry
+
           definition = extract_definition(def_row)
-          entry["definition"] = definition if definition
+          entry["definition"] = definition if definition && !entry.key?("definition")
 
           result[lang] = entry
+        end
+
+        # Convert terms array to single "term" field for backward compat
+        # when there's only one term and no area
+        result.each_value do |entry|
+          terms = entry.delete("terms")
+          if terms.size == 1 && !terms.first["geographical_area"]
+            entry["term"] = terms.first["designation"]
+          else
+            entry["term"] = terms.map { |t| t["designation"] }.join("\n")
+            entry["term_areas"] = terms.each_with_object({}) do |t, h|
+              area = t["geographical_area"]
+              h[t["designation"]] = area if area
+            end
+          end
         end
         result
       end
@@ -86,11 +105,27 @@ module Iev
           lang = extract_lang(row)
           next unless lang
 
+          area = extract_area(row)
           def_row = find_definition_row(rows, idx + 1)
-          sections << [lang, row, def_row]
+          sections << [lang, area, row, def_row]
         end
 
         sections
+      end
+
+      def extract_area(row)
+        tds = row.css("td")
+        return nil if tds.length < 2
+
+        area_cell = tds[1]
+        font = area_cell.at_css("font[color='#800080']")
+        return nil unless font
+
+        text = font.text.strip.downcase
+        return nil if text.empty?
+        return nil if text.match?(/\A(nl|be|nb|nn|br|pt|fr|de|us|gb|ch|at|ca|au|nz)\z/i) == false
+
+        text
       end
 
       def content_rows
@@ -112,6 +147,8 @@ module Iev
         return nil if tds.length < 3
 
         content_td = tds[2]
+        return nil if area_marker_cell?(content_td)
+
         bold = content_td.at_css("b")
 
         html = if bold
@@ -122,6 +159,14 @@ module Iev
         return nil if html.empty?
 
         enrich(html)
+      end
+
+      # True when the cell contains only a geographical-area marker font
+      # tag (e.g. <font color="#800080">nb</font>), not a real term.
+      def area_marker_cell?(cell)
+        font = cell.at_css("font[color='#800080']")
+        return false unless font
+        cell.at_css("b").nil? && cell.text.strip == font.text.strip && font.text.strip.length <= 3
       end
 
       def extract_definition(row)

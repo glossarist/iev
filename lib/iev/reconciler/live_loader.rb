@@ -66,17 +66,13 @@ module Iev
         cdata.entry_status = "valid"
 
         term = lc_data["term"].to_s
+        areas = lc_data["term_areas"] || {}
         cdata.terms = if term.empty?
                         []
                       else
-                        parsed = TermMarkerParser.parse(term)
-                        expr = Glossarist::Designation::Expression.new(
-                          designation: parsed.designation,
-                          normative_status: "preferred",
-                        )
-                        expr.gender = parsed.gender if parsed.gender
-                        expr.plurality = parsed.plurality if parsed.plurality
-                        [expr]
+                        TermMarkerParser.parse_multiple(term).map do |parsed|
+                          build_expression(parsed, areas[parsed.designation])
+                        end
                       end
 
         definition = lc_data["definition"]
@@ -93,6 +89,19 @@ module Iev
         lc.id = code
         lc.data = cdata
         lc
+      end
+
+      def build_expression(parsed, area = nil)
+        expr = Glossarist::Designation::Expression.new(
+          designation: parsed.designation,
+          normative_status: "preferred",
+        )
+        expr.geographical_area = area if area
+        grammar = Glossarist::Designation::GrammarInfo.new
+        grammar.gender = parsed.genders if parsed.genders&.any?
+        grammar.number = parsed.numbers if parsed.numbers&.any?
+        expr.grammar_info = [grammar] if grammar.gender&.any? || grammar.number&.any?
+        expr
       end
 
       NOTE_RE = /^(Note\s+\d+\s+to\s+entry:.*)$/i

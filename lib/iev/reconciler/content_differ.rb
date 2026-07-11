@@ -149,9 +149,13 @@ module Iev
       def normalize(str)
         return "" unless str
         str
+          .to_s
+          .unicode_normalize(:nfc)
           .gsub(/<[^>]+>/, "")
+          .gsub(/[ ​﻿­]/, "")
+          .gsub(/[""″‴„‟‚‛]/, '"')
+          .gsub(/[''‚‛]/, "'")
           .gsub(/\s+/, " ")
-          .gsub(/["""']/, "'")
           .strip
           .downcase
       end

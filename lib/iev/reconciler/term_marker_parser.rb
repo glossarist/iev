@@ -3,42 +3,89 @@
 module Iev
   module Reconciler
     # Extracts grammatical gender and plurality markers that are inline
-    # in Electropedia's live HTML term text (e.g. "Gleichheit, f" or
-    # "једнакост, ж јд") and separates them from the designation.
+    # in Electropedia's live HTML term text and separates them from the
+    # designation. Supports multiple markers (e.g. German "LED-Package, f, n"
+    # means the word can be feminine OR neuter).
     #
-    # This mirrors how the termbase stores the same data: designation
-    # without markers, gender and plurality in separate fields.
+    # Maps short marker codes to concept-model GrammarGender/GrammarNumber
+    # enum values:
+    #   f → feminine, m → masculine, n → neuter
+    #   ж → feminine, м → masculine, с → neuter (Serbian Cyrillic)
+    #   јд → singular, мн → plural (Serbian Cyrillic)
     #
-    # Pattern examples:
-    #   "Gleichheit, f"       → designation: "Gleichheit", gender: "f"
-    #   "ensemble, m"         → designation: "ensemble", gender: "m"
-    #   "једнакост, ж јд"     → designation: "једнакост", gender: "ж", plurality: "јд"
-    #   "przestrzeń, m"       → designation: "przestrzeń", gender: "m"
+    # Also splits multi-designation cells (terms separated by newlines from
+    # <br> tags) into separate entries via parse_multiple.
     class TermMarkerParser
-      WESTERN_GENDER_RE = /,\s*([fmn])\s*\z/
-      SERBIAN_GENDER_PLURAL_RE = /,\s*([жмс])\s+(јд|мн)\s*\z/
+      GENDER_MAP = {
+        "f" => "feminine", "m" => "masculine", "n" => "neuter",
+        "ж" => "feminine", "м" => "masculine", "с" => "neuter",
+      }.freeze
 
-      Result = Struct.new(:designation, :gender, :plurality, keyword_init: true)
+      NUMBER_MAP = {
+        "јд" => "singular", "мн" => "plural",
+      }.freeze
+
+      # Serbian pattern: ", ж јд" or ", м мн" — gender + number separated by space
+      SERBIAN_RE = /,\s*([жмс])\s+(јд|мн)\s*\z/
+
+      # Western pattern: ", f" or ", f, n" — comma-separated single-char markers
+      WESTERN_RE = /,\s*([fmn])\s*\z/
+
+      Result = Struct.new(:designation, :genders, :numbers, keyword_init: true) do
+        def gender_list
+          genders || []
+        end
+
+        def number_list
+          numbers || []
+        end
+      end
 
       class << self
+        # @param term [String, nil] raw term text from enriched HTML
+        # @return [Result] designation + parsed grammar info
         def parse(term)
-          return Result.new(designation: term) unless term
+          return Result.new(designation: nil) unless term
 
           cleaned = term.strip.gsub(/\s+/, " ")
-          if (m = cleaned.match(SERBIAN_GENDER_PLURAL_RE))
-            Result.new(
-              designation: cleaned[0, m.begin(0)].strip,
-              gender: m[1],
-              plurality: m[2],
-            )
-          elsif (m = cleaned.match(WESTERN_GENDER_RE))
-            Result.new(
-              designation: cleaned[0, m.begin(0)].strip,
-              gender: m[1],
-            )
-          else
-            Result.new(designation: cleaned)
+          designation = cleaned
+          genders = []
+          numbers = []
+
+          loop do
+            break if designation.nil? || designation.empty?
+
+            if (m = designation.match(SERBIAN_RE))
+              designation = designation[0, m.begin(0)].strip
+              genders << GENDER_MAP[m[1]] if GENDER_MAP[m[1]]
+              numbers << NUMBER_MAP[m[2]] if NUMBER_MAP[m[2]]
+            elsif (m = designation.match(WESTERN_RE))
+              designation = designation[0, m.begin(0)].strip
+              genders << GENDER_MAP[m[1]] if GENDER_MAP[m[1]]
+            else
+              break
+            end
           end
+
+          Result.new(
+            designation: designation,
+            genders: genders.uniq,
+            numbers: numbers.uniq,
+          )
+        end
+
+        # Split a multi-designation cell (terms separated by newlines from
+        # <br> tags) into individual terms, then parse markers for each.
+        # @param term_text [String, nil]
+        # @return [Array<Result>] one Result per designation
+        def parse_multiple(term_text)
+          return [] unless term_text
+
+          term_text
+            .split(/\n+/)
+            .map(&:strip)
+            .reject(&:empty?)
+            .map { |part| parse(part) }
         end
       end
     end
