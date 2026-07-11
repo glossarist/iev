@@ -69,10 +69,14 @@ module Iev
         cdata.terms = if term.empty?
                         []
                       else
-                        [Glossarist::Designation::Expression.new(
-                          designation: term,
+                        parsed = TermMarkerParser.parse(term)
+                        expr = Glossarist::Designation::Expression.new(
+                          designation: parsed.designation,
                           normative_status: "preferred",
-                        )]
+                        )
+                        expr.gender = parsed.gender if parsed.gender
+                        expr.plurality = parsed.plurality if parsed.plurality
+                        [expr]
                       end
 
         definition = lc_data["definition"]
@@ -93,6 +97,8 @@ module Iev
 
       NOTE_RE = /^(Note\s+\d+\s+to\s+entry:.*)$/i
       EXAMPLE_RE = /^(Example\s*:.*)$/i
+      NOTE_PREFIX_RE = /^Note\s+\d+\s+to\s+entry:\s*/i
+      EXAMPLE_PREFIX_RE = /^Example\s*:\s*/i
 
       def split_notes_examples(text)
         notes = []
@@ -104,9 +110,9 @@ module Iev
         lines.each do |line|
           stripped = line.strip
           if stripped.match?(NOTE_RE)
-            notes << stripped
+            notes << stripped.sub(NOTE_PREFIX_RE, "")
           elsif stripped.match?(EXAMPLE_RE)
-            examples << stripped
+            examples << stripped.sub(EXAMPLE_PREFIX_RE, "")
           else
             definition_lines << line
           end
