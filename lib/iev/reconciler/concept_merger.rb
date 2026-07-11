@@ -46,6 +46,7 @@ module Iev
 
         unless change_set.empty?
           add_date(tb_concept, "amended", detected_at)
+          flag_stale_translations(tb_concept, change_set, detected_at)
         end
 
         ReconciledConcept.new(
@@ -53,6 +54,32 @@ module Iev
           change_set: change_set,
           source: :both,
         )
+      end
+
+      SOURCE_LANGUAGES = %w[eng fra].freeze
+
+      # When source-language (English/French) notes or definitions change,
+      # the translations in other languages are potentially stale because
+      # they haven't been updated to match. Flag them with an annotation.
+      def flag_stale_translations(concept, change_set, detected_at)
+        source_changes = change_set.select do |c|
+          SOURCE_LANGUAGES.include?(c.language) &&
+            %i[definition notes].include?(c.field)
+        end
+        return if source_changes.empty?
+
+        stale_langs = (concept.localized_concepts&.keys || []) - SOURCE_LANGUAGES
+        return if stale_langs.empty?
+
+        source_fields = source_changes.map { |c| "#{c.language}:#{c.field}" }.uniq.join(", ")
+        stale_langs.each do |lang|
+          lc = concept.localization(lang)
+          next unless lc&.data
+          lc.data.examples ||= []
+          lc.data.examples << Glossarist::DetailedDefinition.new(
+            content: "[Reconciler] Translation may be stale — source language content changed (#{source_fields}) on #{detected_at}",
+          )
+        end
       end
 
       def retire(code, tb_concept, detected_at)
