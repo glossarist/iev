@@ -113,9 +113,12 @@ module Iev
 
         content_td = tds[2]
         bold = content_td.at_css("b")
-        return nil unless bold
 
-        html = bold.inner_html.strip
+        html = if bold
+                 bold.inner_html.strip
+               else
+                 content_td.inner_html.strip
+               end
         return nil if html.empty?
 
         enrich(html)
