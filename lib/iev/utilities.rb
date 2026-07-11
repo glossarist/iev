@@ -92,7 +92,9 @@ module Iev
       when "img"
         src = node["src"] || node.attributes.keys.first.to_s
         "#{IMAGE_PATH_PREFIX}/#{term_domain}/#{src}[]"
-      when "p", "div", "span"
+      when "p"
+        "#{inner}\n"
+      when "div", "span"
         inner
       when "i"
         convert_italic(inner)
@@ -101,9 +103,9 @@ module Iev
       when "sup"
         inner.empty? ? "" : "^#{inner}^"
       when "ol"
-        convert_list(node, ". ")
+        convert_list(node, ". ", term_domain)
       when "ul"
-        convert_list(node, "* ")
+        convert_list(node, "* ", term_domain)
       when "li"
         inner
       when "font"
@@ -124,8 +126,8 @@ module Iev
       end
     end
 
-    def convert_list(node, prefix)
-      node.css("li").map { |li| "#{prefix}#{li.text}" }.join
+    def convert_list(node, prefix, term_domain)
+      node.css("li").map { |li| "#{prefix}#{nodes_to_adoc(li.children, term_domain)}" }.join("\n")
     end
 
     def convert_font(node, inner)

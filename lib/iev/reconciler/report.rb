@@ -62,14 +62,14 @@ module Iev
 
       def write_retired(path)
         retired = @reconciled
-          .select { |rc| rc.source == :termbase_only }
+          .select { |rc| rc.source == :termbase_only && rc.managed_concept }
           .map { |rc| rc.managed_concept.id }
         File.write(path, YAML.dump(retired))
       end
 
       def write_new_concepts(path)
         new_concepts = @reconciled
-          .select { |rc| rc.source == :live_only }
+          .select { |rc| rc.source == :live_only && rc.managed_concept }
           .map { |rc| rc.managed_concept.id }
         File.write(path, YAML.dump(new_concepts))
       end
