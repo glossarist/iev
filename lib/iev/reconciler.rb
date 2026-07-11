@@ -11,6 +11,7 @@ module Iev
     autoload :ReconciledConcept, "iev/reconciler/reconciled_concept"
     autoload :Report,            "iev/reconciler/report"
     autoload :StatusMapper,      "iev/reconciler/status_mapper"
+    autoload :TermMarkerParser,  "iev/reconciler/term_marker_parser"
     autoload :TermbaseLoader,    "iev/reconciler/termbase_loader"
   end
 end
