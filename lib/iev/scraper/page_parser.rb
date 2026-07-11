@@ -4,13 +4,14 @@ module Iev
   class Scraper
     # Parses an Electropedia HTML page into a concept data hash.
     #
-    # The Electropedia HTML structure is a table with rows for each language:
-    # - Language row: <div align="center"><font color="#800080">en</font></div>
-    # - Term cell: <b>term text</b> in the third <td>
-    # - Definition row: next row's third <td> (if present)
-    # - Empty/separator rows with <hr> or spacer images
+    # All extracted text (terms, definitions, notes, examples) is run
+    # through Iev::Utilities' semantic enrichment pipeline, converting
+    # HTML to AsciiDoc notation: <i>x</i> → stem:[x], <b>x</b> → *x*,
+    # <a href=IEV...> → {{urn:...}}, MathML → AsciiMath. This ensures
+    # the parsed output matches the format used in termbase.yaml.
     class PageParser
-      # Map Electropedia HTML language codes to ISO 639-2/3 three-char codes.
+      include Utilities
+
       LANG_CODE_MAP = {
         "en" => "eng",
         "fr" => "fra",
@@ -54,9 +55,12 @@ module Iev
       private
 
       def find_iev_ref
-        # Find the IEV reference cell to confirm the page is valid
         @doc.at_css("b:contains('#{@code}')") ||
           @doc.at_xpath("//td/b[contains(text(), '#{@code}')]")
+      end
+
+      def term_domain
+        @code.rpartition("-").first
       end
 
       def localized_concepts
@@ -74,8 +78,6 @@ module Iev
         result
       end
 
-      # Finds all language sections in the table.
-      # Returns array of [lang_code, term_row, definition_row] tuples.
       def lang_sections
         sections = []
         rows = content_rows
@@ -84,7 +86,6 @@ module Iev
           lang = extract_lang(row)
           next unless lang
 
-          # The definition is in the next non-empty, non-separator row
           def_row = find_definition_row(rows, idx + 1)
           sections << [lang, row, def_row]
         end
@@ -93,8 +94,6 @@ module Iev
       end
 
       def content_rows
-        # Find the main content table (the one with language data)
-        # It's the largest table with IEV data
         tables = @doc.css("table")
         content_table = tables.max_by { |t| t.css("tr").length }
         content_table ? content_table.css("tr").to_a : []
@@ -109,15 +108,17 @@ module Iev
       end
 
       def extract_term(row)
-        # Term is in the third <td> — may be in a <b> tag (en, fr) or plain text
         tds = row.css("td")
         return nil if tds.length < 3
 
         content_td = tds[2]
         bold = content_td.at_css("b")
+        return nil unless bold
 
-        term = bold ? bold.text.strip : content_td.text.strip
-        term.empty? ? nil : term
+        html = bold.inner_html.strip
+        return nil if html.empty?
+
+        enrich(html)
       end
 
       def extract_definition(row)
@@ -127,15 +128,19 @@ module Iev
         return nil if tds.length < 3
 
         content_td = tds[2]
-        # The definition is the text content, which may include MathML
         html = content_td.inner_html.strip
         return nil if html.empty? || html.match?(/\A<img.*ecblank/)
 
-        html
+        enrich(html)
       end
 
-      # Find the definition row following a language row.
-      # Skip separator rows (empty, <hr>, or spacer images).
+      def enrich(html_text)
+        result = parse_anchor_tag(html_text.to_s, term_domain)
+        result = replace_newlines(result)
+        result = Iev::Converter.mathml_to_asciimath(result)
+        result.strip
+      end
+
       def find_definition_row(rows, start_idx)
         return nil if start_idx >= rows.length
 
@@ -149,7 +154,6 @@ module Iev
         content = tds[2].inner_html.strip
         return nil if content.empty?
 
-        # Skip rows that are only spacer images (unless they have <b> content)
         if content.match?(/\A<img.*ecblank/) && !content.include?("<b>")
           return nil
         end

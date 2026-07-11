@@ -5,7 +5,10 @@ require "nokogiri"
 module Iev
   module Reconciler
     # Indexes live HTML pages and builds Glossarist::ManagedConcept
-    # objects on demand per code.
+    # objects on demand per code. Uses Iev::Scraper::PageParser which
+    # runs the full semantic enrichment pipeline (HTML → AsciiDoc with
+    # stem:[] for math, {{urn:...}} for cross-refs, etc.), so parsed
+    # output matches the format used in termbase.yaml.
     class LiveLoader
       # @param pages_dir [String, Pathname] directory containing *.html pages
       def initialize(pages_dir)
@@ -13,14 +16,10 @@ module Iev
         @index = nil
       end
 
-      # @return [Array<String>] all codes with cached HTML pages
       def codes
         index.keys
       end
 
-      # Build a single ManagedConcept for the given code.
-      # @param code [String]
-      # @return [Glossarist::ManagedConcept, nil]
       def get(code)
         path = index[code]
         return nil unless path
@@ -78,12 +77,12 @@ module Iev
 
         definition = lc_data["definition"]
         if definition && !definition.empty?
-          parsed = split_definition(definition)
-          if parsed[:definition] && !parsed[:definition].empty?
-            cdata.definition = [Glossarist::DetailedDefinition.new(content: parsed[:definition])]
+          parts = split_notes_examples(definition)
+          if parts[:definition] && !parts[:definition].empty?
+            cdata.definition = [Glossarist::DetailedDefinition.new(content: parts[:definition])]
           end
-          cdata.notes = parsed[:notes].map { |n| Glossarist::DetailedDefinition.new(content: n) }
-          cdata.examples = parsed[:examples].map { |e| Glossarist::DetailedDefinition.new(content: e) }
+          cdata.notes = parts[:notes].map { |n| Glossarist::DetailedDefinition.new(content: n) }
+          cdata.examples = parts[:examples].map { |e| Glossarist::DetailedDefinition.new(content: e) }
         end
 
         lc = Glossarist::LocalizedConcept.new
@@ -92,43 +91,31 @@ module Iev
         lc
       end
 
-      NOTE_RE = %r{<p>\s*Note\s+\d+\s+to\s+entry:.*?</p>}im
-      EXAMPLE_RE = %r{<p>\s*Example\s*:\s*(?:</p>\s*<p>)?(.*?)</p>}im
-      NOTE_TEXT_RE = /Note\s+\d+\s+to\s+entry:\s*/i
+      NOTE_RE = /^(Note\s+\d+\s+to\s+entry:.*)$/i
+      EXAMPLE_RE = /^(Example\s*:.*)$/i
 
-      def split_definition(html_text)
+      def split_notes_examples(text)
         notes = []
         examples = []
 
-        html_text.scan(NOTE_RE) do
-          note_html = Regexp.last_match[0]
-          notes << strip_html(note_html).sub(NOTE_TEXT_RE, "").strip
+        lines = text.split("\n")
+        definition_lines = []
+
+        lines.each do |line|
+          stripped = line.strip
+          if stripped.match?(NOTE_RE)
+            notes << stripped
+          elsif stripped.match?(EXAMPLE_RE)
+            examples << stripped
+          else
+            definition_lines << line
+          end
         end
 
-        definition_text = html_text
-          .gsub(NOTE_RE, "")
-          .gsub(EXAMPLE_RE) { examples << strip_html(Regexp.last_match[1]).strip; "" }
-          .strip
-        definition_text = nil if definition_text&.empty?
+        definition = definition_lines.join("\n").strip
+        definition = nil if definition.empty?
 
-        { definition: definition_text, notes: notes, examples: examples }
-      end
-
-      def strip_html(html)
-        return "" unless html
-        html
-          .gsub(/<li>/, "\n- ")
-          .gsub(/<\/li>/, "")
-          .gsub(/<ul>|<\/ul>|<ol>|<\/ol>/, "\n")
-          .gsub(/<p>/, "\n")
-          .gsub(/<\/p>/, "")
-          .gsub(/<i>|<\/i>|<b>|<\/b>|<em>|<\/em>/, "")
-          .gsub(/<br\s*\/?>/, "\n")
-          .gsub(/<[^>]+>/, "")
-          .gsub(/&amp;/, "&").gsub(/&lt;/, "<").gsub(/&gt;/, ">")
-          .gsub(/&quot;/, "\"").gsub(/&#39;/, "'")
-          .gsub(/\n{3,}/, "\n\n")
-          .strip
+        { definition: definition, notes: notes, examples: examples }
       end
     end
   end
