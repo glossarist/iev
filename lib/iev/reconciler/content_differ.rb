@@ -50,13 +50,6 @@ module Iev
             old_value: nil, new_value: "present", detected_at: date,
           ))
         end
-
-        (old_langs - new_langs).each do |lang|
-          cs.add(Change.new(
-            code: cs.code, field: :language_removed, language: lang,
-            old_value: "present", new_value: nil, detected_at: date,
-          ))
-        end
       end
 
       def diff_localized(cs, old_c, new_c, date)

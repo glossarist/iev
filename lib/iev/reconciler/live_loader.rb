@@ -104,23 +104,27 @@ module Iev
         expr
       end
 
+      def build_related_concepts(parsed)
+        return [] unless parsed.related_refs&.any?
+
+        parsed.related_refs.map do |code|
+          Glossarist::RelatedConcept.new(
+            type: "see",
+            ref: { "source" => "IEV", "id" => code },
+          )
+        end
+      end
+
       def build_grammar_info(parsed)
         has_gender = parsed.genders&.any?
         has_number = parsed.numbers&.any?
-        has_pos = parsed.pos_list&.any?
+        has_pos = !parsed.part_of_speech.nil?
         return nil unless has_gender || has_number || has_pos
 
         grammar = Glossarist::Designation::GrammarInfo.new
         grammar.gender = parsed.genders if has_gender
         grammar.number = parsed.numbers if has_number
-        parsed.pos_list.each do |flag|
-          case flag
-          when :isNoun then grammar.isNoun = true
-          when :isVerb then grammar.isVerb = true
-          when :isAdjective then grammar.isAdjective = true
-          when :isAdverb then grammar.isAdverb = true
-          end
-        end
+        grammar.part_of_speech = parsed.part_of_speech if has_pos
         grammar
       end
 

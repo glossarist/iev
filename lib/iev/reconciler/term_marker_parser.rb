@@ -29,13 +29,17 @@ module Iev
       PART_OF_SPEECH_MAP = {
         "noun" => "noun",
         "명사" => "noun", "名詞" => "noun",
+        "именица" => "noun",
         "verb" => "verb",
         "동사" => "verb", "動詞" => "verb",
+        "глагол" => "verb",
         "adj" => "adj", "adjective" => "adj",
         "형용사" => "adj", "形容詞" => "adj",
         "adjektiv" => "adj",
+        "придев" => "adj",
         "adv" => "adv", "adverb" => "adv",
         "부사" => "adv", "副詞" => "adv",
+        "прилог" => "adv",
       }.freeze
 
       USAGE_INFO_RE = /<([^>]+)>/
@@ -44,14 +48,17 @@ module Iev
       POS_RE = /,\s*(#{PART_OF_SPEECH_MAP.keys.map { |k| Regexp.escape(k) }.join("|")})\s*\z/i
       TRAILING_PUNCT_RE = /[,;\s]+$/
 
+      IEV_XREF_RE = /<[^>]*IEV\s*(\d{3}-\d{2}-\d{2,3})[^>]*>/i
+
       Result = Struct.new(:designation, :genders, :numbers, :usage_info,
-                          :part_of_speech, keyword_init: true)
+                          :part_of_speech, :related_refs, keyword_init: true)
 
       class << self
         def parse(term)
           return Result.new(designation: nil) unless term
 
           text = decode_entities(term).strip.gsub(/\s+/, " ")
+          related_refs, text = extract_iev_xrefs(text)
           usage_info, text = extract_usage_info(text)
           designation, genders, numbers, pos = extract_markers(text)
 
@@ -61,6 +68,7 @@ module Iev
             numbers: numbers,
             usage_info: usage_info,
             part_of_speech: pos,
+            related_refs: related_refs,
           )
         end
 
@@ -91,8 +99,19 @@ module Iev
 
           usage = match[1].strip
           remaining = text.sub(match[0], "").gsub(TRAILING_PUNCT_RE, "").strip
-          remaining = remaining.sub(/^,;\s*/, "").strip
+          remaining = remaining.sub(/^[,;\s]+/, "").strip
           [usage, remaining]
+        end
+
+        def extract_iev_xrefs(text)
+          refs = []
+          remaining = text
+          while (match = remaining.match(IEV_XREF_RE))
+            refs << match[1]
+            remaining = remaining.sub(match[0], "").gsub(TRAILING_PUNCT_RE, "").strip
+            remaining = remaining.sub(/^[,;\s]+/, "").strip
+          end
+          [refs.empty? ? nil : refs, remaining]
         end
 
         def extract_markers(text)
