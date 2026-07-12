@@ -97,11 +97,31 @@ module Iev
           normative_status: "preferred",
         )
         expr.geographical_area = area if area
-        grammar = Glossarist::Designation::GrammarInfo.new
-        grammar.gender = parsed.genders if parsed.genders&.any?
-        grammar.number = parsed.numbers if parsed.numbers&.any?
-        expr.grammar_info = [grammar] if grammar.gender&.any? || grammar.number&.any?
+        expr.usage_info = parsed.usage_info if parsed.usage_info
+
+        grammar = build_grammar_info(parsed)
+        expr.grammar_info = [grammar] if grammar
         expr
+      end
+
+      def build_grammar_info(parsed)
+        has_gender = parsed.genders&.any?
+        has_number = parsed.numbers&.any?
+        has_pos = parsed.pos_list&.any?
+        return nil unless has_gender || has_number || has_pos
+
+        grammar = Glossarist::Designation::GrammarInfo.new
+        grammar.gender = parsed.genders if has_gender
+        grammar.number = parsed.numbers if has_number
+        parsed.pos_list.each do |flag|
+          case flag
+          when :isNoun then grammar.isNoun = true
+          when :isVerb then grammar.isVerb = true
+          when :isAdjective then grammar.isAdjective = true
+          when :isAdverb then grammar.isAdverb = true
+          end
+        end
+        grammar
       end
 
       NOTE_RE = /^(Note\s+\d+\s+to\s+entry:.*)$/i
