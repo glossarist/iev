@@ -75,13 +75,12 @@ RSpec.describe Iev::Reconciler::ContentDiffer do
     expect(cs.by_field(:language_added).first.language).to eq("fra")
   end
 
-  it "detects language removed" do
+  it "does not flag language removed (termbase languages preserved)" do
     old = make_concept("102-01-01", localized: { eng: { term: "x" }, deu: { term: "y" } })
     new = make_concept("102-01-01", localized: { eng: { term: "x" } })
 
     cs = differ.diff(old, new, detected_at: date)
-    expect(cs.by_field(:language_removed).size).to eq(1)
-    expect(cs.by_field(:language_removed).first.language).to eq("deu")
+    expect(cs.by_field(:language_removed)).to be_empty
   end
 
   it "normalizes HTML tags and whitespace before comparing" do
