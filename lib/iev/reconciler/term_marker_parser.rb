@@ -45,10 +45,15 @@ module Iev
       USAGE_INFO_RE = /<([^>]+)>/
       SERBIAN_RE = /,\s*([жмс])\s+(јд|мн)\s*\z/
       WESTERN_RE = /,\s*([fmn])\s*\z/
+      WESTERN_NUMBER_RE = /,\s*(sg|pl)\s*\z/i
       POS_RE = /,\s*(#{PART_OF_SPEECH_MAP.keys.map { |k| Regexp.escape(k) }.join("|")})\s*\z/i
       TRAILING_PUNCT_RE = /[,;\s]+$/
 
       IEV_XREF_RE = /<[^>]*IEV\s*(\d{3}-\d{2}-\d{2,3})[^>]*>/i
+
+      WESTERN_NUMBER_MAP = {
+        "sg" => "singular", "pl" => "plural",
+      }.freeze
 
       Result = Struct.new(:designation, :genders, :numbers, :usage_info,
                           :part_of_speech, :related_refs, keyword_init: true)
@@ -130,6 +135,9 @@ module Iev
             elsif (m = designation.match(POS_RE))
               designation = designation[0, m.begin(0)].strip
               pos = PART_OF_SPEECH_MAP[m[1].downcase]
+            elsif (m = designation.match(WESTERN_NUMBER_RE))
+              designation = designation[0, m.begin(0)].strip
+              numbers << WESTERN_NUMBER_MAP[m[1].downcase] if WESTERN_NUMBER_MAP[m[1].downcase]
             elsif (m = designation.match(WESTERN_RE))
               designation = designation[0, m.begin(0)].strip
               genders << GENDER_MAP[m[1]] if GENDER_MAP[m[1]]
