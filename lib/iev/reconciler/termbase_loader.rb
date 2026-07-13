@@ -97,11 +97,7 @@ module Iev
         cdata.entry_status = StatusMapper.call(data["entry_status"])
 
         cdata.terms = (data["terms"] || []).map do |t|
-          Glossarist::Designation::Expression.new(
-            designation: t["designation"],
-            normative_status: t["normative_status"] || "preferred",
-            type: t["type"] || "expression",
-          )
+          build_term_expression(t)
         end
 
         if data["definition"] && !data["definition"].empty?
@@ -115,6 +111,30 @@ module Iev
         lc.id = code
         lc.data = cdata
         lc
+      end
+
+      def build_term_expression(term_data)
+        designation = term_data["designation"].to_s
+        parsed = TermMarkerParser.parse(designation)
+
+        expr = Glossarist::Designation::Expression.new(
+          designation: parsed.designation,
+          normative_status: term_data["normative_status"] || "preferred",
+          type: term_data["type"] || "expression",
+        )
+        expr.geographical_area = term_data["geographical_area"] if term_data["geographical_area"]
+        expr.usage_info = term_data["usage_info"] || parsed.usage_info
+        expr.prefix = parsed.is_prefix if parsed.is_prefix
+
+        grammar = Glossarist::Designation::GrammarInfo.new
+        merged_genders = (Array(term_data["gender"]) + parsed.genders).flatten.compact.uniq
+        merged_numbers = (Array(term_data["plurality"]) + parsed.numbers).flatten.compact.uniq
+        grammar.gender = merged_genders if merged_genders.any?
+        grammar.number = merged_numbers if merged_numbers.any?
+        grammar.part_of_speech = parsed.part_of_speech if parsed.part_of_speech
+        expr.grammar_info = [grammar] if grammar.gender&.any? || grammar.number&.any? || grammar.part_of_speech
+        expr
+      end
       end
     end
   end

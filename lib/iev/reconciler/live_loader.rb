@@ -98,6 +98,7 @@ module Iev
         )
         expr.geographical_area = area if area
         expr.usage_info = parsed.usage_info if parsed.usage_info
+        expr.prefix = parsed.is_prefix if parsed.is_prefix
 
         grammar = build_grammar_info(parsed)
         expr.grammar_info = [grammar] if grammar
