@@ -135,7 +135,6 @@ module Iev
         expr.grammar_info = [grammar] if grammar.gender&.any? || grammar.number&.any? || grammar.part_of_speech
         expr
       end
-      end
     end
   end
 end
