@@ -75,7 +75,7 @@ module Iev
         def parse(term)
           return Result.new(designation: nil) unless term
 
-          text = decode_entities(term).strip.gsub(/\s+/, " ")
+          text = decode_entities(term).strip.gsub(/\s+/, " ").gsub(/　/, " ")
           related_refs, text = extract_iev_xrefs(text)
           domain, text = extract_domain(text)
           usage_info, text = extract_usage_info(text)
