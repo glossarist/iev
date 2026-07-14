@@ -187,82 +187,23 @@ module Iev
         exit 1
       end
 
-      desc "mirror", "Mirror Electropedia concept pages to local cache"
-      option :area,    desc: "Only fetch this subject area (e.g. 102)"
-      option :section, desc: "Only fetch this section (e.g. 102-01)"
-      option :limit, type: :numeric,
-                     desc: "Cap on concepts fetched this run"
-      option :refresh, type: :boolean, default: false,
-                       desc: "Re-fetch cached pages"
-      option :delay, type: :numeric, default: Iev::Fetcher::Mirror::FETCH_DELAY,
-                     desc: "Seconds between fetches (mean)"
-      option :jitter, type: :numeric,
-                      default: Iev::Fetcher::Mirror::DEFAULT_JITTER,
-                      desc: "±fraction of delay to randomize each sleep"
-      option :source, desc: "Where to fetch from",
-                      enum: %w[archive live manual], default: "archive"
-      option :cdx,
-             desc: "Path to CDX index JSON (required for --source archive)"
-      def mirror
-        cdx = load_cdx_index
-        scope = build_fetch_scope(cdx: cdx)
-        source = build_mirror_source
-        probe_factory = build_probe_factory(cdx: cdx)
-        begin
-          mirror = Iev::Fetcher::Mirror.new(
-            scope: scope,
-            fetcher: source,
-            options: Iev::Fetcher::Mirror::Options.new(**mirror_options),
-            probe_factory: probe_factory,
-          )
-          mirror.run
-          info "Mirror complete: #{mirror.fetched} concepts fetched."
-        rescue Iev::Fetcher::Waf::Error => e
-          error "WAF: #{e.message}"
-          exit 1
-        ensure
-          source&.quit
-        end
-      end
-
-      desc "cdx_refresh",
-           "Fetch CDX index of Electropedia snapshots from archive.org"
-      option :output, aliases: :o,
-                      desc: "Output JSON path",
-                      default: File.join(Dir.pwd, "tmp", "cdx_display.json")
-      option :from, desc: "Earliest snapshot timestamp YYYYMMDD",
-                    default: "20250101"
-      def cdx_refresh
-        url = "https://web.archive.org/cdx/search/cdx?" \
-              "url=electropedia.org/iev/iev.nsf/display&" \
-              "matchType=prefix&" \
-              "from=#{options[:from]}&" \
-              "output=json&" \
-              "fl=original,timestamp&" \
-              "limit=1000000"
-        info "Fetching CDX index from archive.org..."
-        FileUtils.mkdir_p(File.dirname(options[:output]))
-        system("curl", "-sS", url, "-o", options[:output]) or
-          raise "curl failed"
-        rows = JSON.parse(File.read(options[:output], encoding: "utf-8"))
-        info "Saved #{rows.length - 1} CDX rows to #{options[:output]}."
-      rescue JSON::ParserError => e
-        error "Failed to parse CDX response: #{e.message}"
-        exit 1
-      end
-
       desc "reparse", "Parse cached HTML into Glossarist YAML concept files"
       option :output, aliases: :o,
                       default: File.join(Dir.pwd, "concepts"),
                       desc: "Output directory"
-      option :area,    desc: "Only emit concepts in this area"
-      option :section, desc: "Only emit concepts in this section"
+      option :pages_dir, desc: "Directory containing cached HTML pages"
       def reparse
-        cdx = load_cdx_index_for_reparse
-        scope = build_fetch_scope(cdx: cdx)
+        pages_dir = options[:pages_dir] || Iev.config.pages_dir
         concepts_dir = build_reparse_dir(options[:output])
         collection = Glossarist::ManagedConceptCollection.new
-        each_cached_concept(scope) { |c, raw| collection.store(c) if raw }
+        Dir.glob(File.join(pages_dir, "pages", "*.html")).sort.each do |path|
+          code = File.basename(path, ".html")
+          html = File.read(path, encoding: "utf-8")
+          doc = Nokogiri::HTML(html)
+          raw = Iev::Scraper::PageParser.new(doc, code).parse
+          next unless raw
+          collection.store(build_concept_from_raw(code, raw))
+        end
         collection.save_grouped_concepts_to_files(concepts_dir.to_s)
         info "Reparsed #{collection.count} concepts into #{concepts_dir}."
       end
@@ -273,125 +214,10 @@ module Iev
 
       private
 
-      def build_fetch_scope(cdx: nil)
-        if options[:section]
-          Iev::Fetcher::Scope.for_section(options[:section])
-        elsif options[:area]
-          scope_for_area(options[:area], cdx: cdx)
-        else
-          cdx ? Iev::Fetcher::Scope.from_cdx(cdx) : Iev::Fetcher::Scope.all
-        end
-      end
-
-      def scope_for_area(area_code, cdx:)
-        return Iev::Fetcher::Scope.for_area(area_code) unless cdx
-
-        scope = Iev::Fetcher::Scope.from_cdx(cdx)
-        sections = scope.sections.select do |s|
-          s.area_code == area_code.to_s
-        end
-        Iev::Fetcher::Scope.new(sections: sections)
-      end
-
-      def mirror_options
-        {
-          limit: options[:limit],
-          refresh: options[:refresh],
-          delay: options[:delay],
-          jitter: options[:jitter],
-          on_progress: method(:mirror_progress),
-        }
-      end
-
-      def build_mirror_source
-        case options[:source]
-        when "live" then Iev::Scraper::Browser::Session.new
-        when "manual" then Iev::Fetcher::ManualSolver.new
-        else Iev::Fetcher::Source::Archive.new
-        end
-      end
-
-      # Returns a probe_factory lambda. Whenever --cdx is provided, uses
-      # ArchiveProbe (gap-aware: iterates the known CDX code list, silently
-      # skips nil fetches rather than treating them as end-of-section).
-      # The class is misnamed for historical reasons — it isn't archive-
-      # specific. Without --cdx, returns nil so Mirror falls back to its
-      # default SequentialProbe factory.
-      def build_probe_factory(cdx:)
-        return nil unless cdx
-
-        lambda do |section:, fetcher:, store:, validator:, refresh:|
-          codes = cdx.codes_for_section(section.code)
-          opts = Iev::Fetcher::ArchiveProbe::Options.new(store: store,
-                                                         refresh: refresh)
-          Iev::Fetcher::ArchiveProbe.new(section.code,
-                                         codes: codes,
-                                         fetcher: fetcher,
-                                         validator: validator,
-                                         options: opts)
-        end
-      end
-
-      # Like load_cdx_index but never errors and never requires --source.
-      # Used by reparse, which should silently use yaml Scope if no CDX
-      # is around (so reparse still works in repos that don't do mirroring).
-      def load_cdx_index_for_reparse
-        cdx_path = options[:cdx] || ENV["IEV_CDX_PATH"] ||
-                   File.join(Dir.pwd, "tmp", "cdx_display.json")
-        return nil unless File.exist?(cdx_path)
-
-        info "Loading CDX index from #{cdx_path} for reparse scope."
-        Iev::Fetcher::CdxIndex.load(cdx_path)
-      end
-
-      # Loads the CDX index. Fires whenever --cdx is set, --source archive
-      # is used, OR the default cdx_display.json file exists at the expected
-      # path. The last fallback is important for reparse, which doesn't take
-      # --source — without it, reparse silently uses yaml-only Scope and
-      # skips 158 CDX-only sections (~1,900 cached pages).
-      def load_cdx_index
-        return nil unless options[:source] == "archive" || options[:cdx]
-
-        cdx_path = options[:cdx] || ENV["IEV_CDX_PATH"] ||
-                   File.join(Dir.pwd, "tmp", "cdx_display.json")
-        unless File.exist?(cdx_path)
-          error "CDX index not found at #{cdx_path}."
-          error "Run `iev cdx_refresh` first."
-          exit 1
-        end
-
-        cdx = Iev::Fetcher::CdxIndex.load(cdx_path)
-        info "Loaded CDX index: #{cdx.total_codes} codes across " \
-             "#{cdx.sections.length} sections."
-        cdx
-      end
-
       def build_reparse_dir(output)
         concepts_dir = Pathname.new(output).expand_path.join("concepts")
         FileUtils.mkdir_p(concepts_dir)
         concepts_dir
-      end
-
-      def each_cached_concept(scope)
-        store = Iev::Fetcher::PageStore.new
-        store.each_concept(scope: scope).each do |code, html|
-          doc = Nokogiri::HTML(html)
-          raw = Iev::Scraper::PageParser.new(doc, code).parse
-          yield build_concept_from_raw(code, raw), raw if raw
-        end
-      end
-
-      def mirror_progress(_section_idx, _total_sections, _code, status)
-        marker = case status
-                 when :ok then "+"
-                 when :skipped then "."
-                 when :not_found, :invalid then "?"
-                 when :waf_blocked then "x"
-                 when :section_done then "\n"
-                 else " "
-                 end
-        $stdout.write(marker)
-        $stdout.flush
       end
     end
   end
