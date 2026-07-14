@@ -52,13 +52,15 @@ module Iev
       ].freeze
 
       USAGE_INFO_RE = /<([^>]+)>/
+      PAREN_USAGE_INFO_RE = /\(([^)]+)\)\s*(?=[,]?\s*(?:[fmnжмс]\b|[fmn]\/[fmn]|sg|pl|јд|мн|\z))/i
       IEV_XREF_RE = /<[^>]*IEV\s*(\d{3}-\d{2}-\d{2,3})[^>]*>/i
 
       SERBIAN_RE = /,\s*([жмс])\s+(јд|мн)\s*\z/
       WESTERN_GENDER_NUMBER_RE = /,\s*([fmn])\s+(sg|pl)\.?\s*\z/i
       WESTERN_NUMBER_RE = /,\s*(sg|pl)\.?\s*\z/i
       SLASH_GENDER_RE = /,\s*([fmn])\/([fmn])\s*\z/i
-      WESTERN_RE = /,\s*([fmn])\s*\z/
+      WESTERN_RE = /[,]?\s+([fmn])\s*\z/
+      SPACE_GENDER_RE = /\s+([fmn])\s*\z/
 
       POS_RE = /,\s*(#{PART_OF_SPEECH_MAP.keys.map { |k| Regexp.escape(k) }.join("|")})\s*\z/i
       PREFIX_RE = /,\s*(#{PREFIX_KEYWORDS.map { |k| Regexp.escape(k) }.join("|")})\s*\z/
@@ -75,7 +77,9 @@ module Iev
 
           text = decode_entities(term).strip.gsub(/\s+/, " ")
           related_refs, text = extract_iev_xrefs(text)
-          usage_info, text = extract_usage_info(text)
+          angle_usage, text = extract_usage_info(text)
+          paren_usage, text = extract_paren_usage_info(text)
+          usage_info = paren_usage || angle_usage
           designation, genders, numbers, pos, is_prefix = extract_markers(text)
 
           Result.new(
@@ -129,6 +133,18 @@ module Iev
             remaining = remaining.sub(/^[,;\s]+/, "").strip
           end
           [refs.empty? ? nil : refs, remaining]
+        end
+
+        # Extract a parenthetical qualifier that precedes trailing markers
+        # (gender/number/POS). E.g. "Orientierung (einer Kurve) f" →
+        # usage_info="einer Kurve", remaining="Orientierung  f".
+        def extract_paren_usage_info(text)
+          match = text.match(PAREN_USAGE_INFO_RE)
+          return [nil, text] unless match
+
+          usage = match[1].strip
+          remaining = text.sub(match[0], "").gsub(/\s+/, " ").strip
+          [usage, remaining]
         end
 
         def extract_markers(text)
