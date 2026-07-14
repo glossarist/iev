@@ -29,7 +29,6 @@ module Iev
   autoload :DataSource, "iev/data_source"
   autoload :DbWriter, "iev/db_writer"
   autoload :Exporter, "iev/exporter"
-  autoload :Fetcher, "iev/fetcher"
   autoload :FigureBuilder, "iev/figure_builder"
   autoload :IevCode, "iev/iev_code"
   autoload :Iso639Code, "iev/iso_639_code"
