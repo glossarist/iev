@@ -97,6 +97,7 @@ module Iev
           normative_status: "preferred",
         )
         expr.geographical_area = area if area
+        expr.field_of_application = parsed.domain if parsed.domain
         expr.usage_info = parsed.usage_info if parsed.usage_info
         expr.prefix = parsed.is_prefix if parsed.is_prefix
 

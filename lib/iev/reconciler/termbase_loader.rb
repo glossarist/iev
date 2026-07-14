@@ -123,7 +123,8 @@ module Iev
           type: term_data["type"] || "expression",
         )
         expr.geographical_area = term_data["geographical_area"] if term_data["geographical_area"]
-        expr.usage_info = term_data["usage_info"] || parsed.usage_info
+        expr.field_of_application = term_data["usage_info"] || parsed.domain
+        expr.usage_info = parsed.usage_info if parsed.usage_info
         expr.prefix = parsed.is_prefix if parsed.is_prefix
 
         grammar = Glossarist::Designation::GrammarInfo.new
