@@ -184,11 +184,8 @@ module Iev
 
       def enrich(html_text)
         text = html_text.to_s
-          .gsub(/&lt;/, "<")
-          .gsub(/&gt;/, ">")
-          .gsub(/&amp;/, "&")
-          .gsub(/&quot;/, '"')
-          .gsub(/&#39;/, "'")
+          .gsub(/&lt;i&gt;/, "<i>")
+          .gsub(/&lt;\/i&gt;/, "</i>")
         mathml_blocks, text = extract_mathml_blocks(text)
         result = parse_anchor_tag(text, term_domain)
         result = restore_and_convert_mathml(result, mathml_blocks)
