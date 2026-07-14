@@ -183,10 +183,53 @@ module Iev
       end
 
       def enrich(html_text)
-        result = parse_anchor_tag(html_text.to_s, term_domain)
+        text = html_text.to_s
+          .gsub(/&lt;/, "<")
+          .gsub(/&gt;/, ">")
+          .gsub(/&amp;/, "&")
+          .gsub(/&quot;/, '"')
+          .gsub(/&#39;/, "'")
+        mathml_blocks, text = extract_mathml_blocks(text)
+        result = parse_anchor_tag(text, term_domain)
+        result = restore_and_convert_mathml(result, mathml_blocks)
         result = replace_newlines(result)
-        result = Iev::Converter.mathml_to_asciimath(result)
+        result = convert_literal_italic(result)
         result.strip
+      end
+
+      MATHML_PLACEHOLDER = "@@MATHML_%d@@"
+
+      def extract_mathml_blocks(text)
+        blocks = []
+        result = text.gsub(/<math[^>]*>.*?<\/math>/m) do |match|
+          blocks << match
+          format(MATHML_PLACEHOLDER, blocks.size - 1)
+        end
+        [blocks, result]
+      end
+
+      # Restore MathML blocks and convert each to AsciiMath individually.
+      # If the converter returns empty (unsupported expression like
+      # <mtable>), keep the original MathML so the formula is not lost.
+      def restore_and_convert_mathml(text, blocks)
+        return text if blocks.empty?
+
+        blocks.each_with_index do |mathml, i|
+          converted = Iev::Converter.mathml_to_asciimath(mathml).strip
+          replacement = converted.empty? ? mathml : converted
+          text = text.sub(format(MATHML_PLACEHOLDER, i), replacement)
+        end
+        text
+      end
+
+      # After Nokogiri processing, &lt;i&gt;entity-encoded tags appear as
+      # literal <i>...</i> text. Convert them to stem:[...] just like
+      # real <i> elements are converted by convert_italic.
+      def convert_literal_italic(text)
+        text.gsub(/<i>([^<]*)<\/i>/) do
+          inner = Regexp.last_match(1)
+          convert_italic(inner)
+        end
       end
 
       def find_definition_row(rows, start_idx)
