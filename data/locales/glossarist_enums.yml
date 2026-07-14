@@ -1,0 +1,705 @@
+# i18n translations for glossarist concept-model enums.
+#
+# Used by glossarist to render GrammarGender, GrammarNumber,
+# part_of_speech, ConceptStatus, NormativeStatus, ConceptDateType,
+# ConceptSourceStatus, and other enums in the reader's language.
+#
+# Languages: eng, fra, deu, spa, ita, jpn, kor, pol, por, srp, swe,
+#            zho, nld, fin, ces, nor, rus, slv, ara
+
+eng:
+  grammar_gender:
+    masculine: masculine
+    feminine: feminine
+    neuter: neuter
+    common: common
+  grammar_number:
+    singular: singular
+    dual: dual
+    plural: plural
+  part_of_speech:
+    noun: noun
+    verb: verb
+    adj: adjective
+    adv: adverb
+  concept_status:
+    draft: draft
+    notValid: not valid
+    valid: valid
+    superseded: superseded
+    retired: retired
+  normative_status:
+    preferred: preferred
+    admitted: admitted
+    deprecated: deprecated
+  concept_date_type:
+    accepted: accepted
+    amended: amended
+    retired: retired
+  concept_source_status:
+    identical: identical
+    modified: modified
+    restyled: restyled
+    context-added: context added
+    generalisation: generalisation
+    specialisation: specialisation
+    unspecified: unspecified
+  concept_source_type:
+    authoritative: authoritative
+    lineage: lineage
+
+fra:
+  grammar_gender:
+    masculine: masculin
+    feminine: féminin
+    neuter: neutre
+    common: commun
+  grammar_number:
+    singular: singulier
+    dual: duel
+    plural: pluriel
+  part_of_speech:
+    noun: nom
+    verb: verbe
+    adj: adjectif
+    adv: adverbe
+  concept_status:
+    draft: provisoire
+    notValid: non valide
+    valid: valide
+    superseded: remplacé
+    retired: retiré
+  normative_status:
+    preferred: préféré
+    admitted: admis
+    deprecated: déconseillé
+  concept_date_type:
+    accepted: accepté
+    amended: modifié
+    retired: retiré
+  concept_source_status:
+    identical: identique
+    modified: modifié
+    restyled: reformulé
+    context-added: contexte ajouté
+    generalisation: généralisation
+    specialisation: spécialisation
+    unspecified: non spécifié
+  concept_source_type:
+    authoritative: autoritaire
+    lineage: filiation
+
+deu:
+  grammar_gender:
+    masculine: männlich
+    feminine: weiblich
+    neuter: sächlich
+    common: utrum
+  grammar_number:
+    singular: Singular
+    dual: Dual
+    plural: Plural
+  part_of_speech:
+    noun: Substantiv
+    verb: Verb
+    adj: Adjektiv
+    adv: Adverb
+  concept_status:
+    draft: Entwurf
+    notValid: nicht gültig
+    valid: gültig
+    superseded: ersetzt
+    retired: zurückgezogen
+  normative_status:
+    preferred: bevorzugt
+    admitted: zugelassen
+    deprecated: veraltet
+  concept_date_type:
+    accepted: angenommen
+    amended: geändert
+    retired: zurückgezogen
+  concept_source_status:
+    identical: identisch
+    modified: geändert
+    restyled: umformuliert
+    context-added: Kontext hinzugefügt
+    generalisation: Generalisierung
+    specialisation: Spezialisierung
+    unspecified: nicht spezifiziert
+  concept_source_type:
+    authoritative: maßgeblich
+    lineage: Herkunft
+
+spa:
+  grammar_gender:
+    masculine: masculino
+    feminine: femenino
+    neuter: neutro
+    common: común
+  grammar_number:
+    singular: singular
+    dual: dual
+    plural: plural
+  part_of_speech:
+    noun: sustantivo
+    verb: verbo
+    adj: adjetivo
+    adv: adverbio
+  concept_status:
+    draft: borrador
+    notValid: no válido
+    valid: válido
+    superseded: sustituido
+    retired: retirado
+  normative_status:
+    preferred: preferido
+    admitted: admitido
+    deprecated: desaconsejado
+  concept_date_type:
+    accepted: aceptado
+    amended: modificado
+    retired: retirado
+  concept_source_status:
+    identical: idéntico
+    modified: modificado
+    restyled: reestilizado
+    context-added: contexto añadido
+    generalisation: generalización
+    specialisation: especialización
+    unspecified: no especificado
+  concept_source_type:
+    authoritative: autorizado
+    lineage: linaje
+
+ita:
+  grammar_gender:
+    masculine: maschile
+    feminine: femminile
+    neuter: neutro
+    common: comune
+  grammar_number:
+    singular: singolare
+    dual: duale
+    plural: plurale
+  part_of_speech:
+    noun: sostantivo
+    verb: verbo
+    adj: aggettivo
+    adv: avverbio
+  concept_status:
+    draft: bozza
+    notValid: non valido
+    valid: valido
+    superseded: sostituito
+    retired: ritirato
+  normative_status:
+    preferred: preferito
+    admitted: ammesso
+    deprecated: deprecato
+  concept_date_type:
+    accepted: accettato
+    amended: modificato
+    retired: ritirato
+  concept_source_status:
+    identical: identico
+    modified: modificato
+    restyled: riformulato
+    context-added: contesto aggiunto
+    generalisation: generalizzazione
+    specialisation: specializzazione
+    unspecified: non specificato
+  concept_source_type:
+    authoritative: autorevole
+    lineage: derivazione
+
+jpn:
+  grammar_gender:
+    masculine: 男性
+    feminine: 女性
+    neuter: 中性
+    common: 共通
+  grammar_number:
+    singular: 単数
+    dual: 双数
+    plural: 複数
+  part_of_speech:
+    noun: 名詞
+    verb: 動詞
+    adj: 形容詞
+    adv: 副詞
+  concept_status:
+    draft: 草案
+    notValid: 無効
+    valid: 有効
+    superseded: 廃止
+    retired: 廃止
+  normative_status:
+    preferred: 優先
+    admitted: 認可
+    deprecated: 非推奨
+  concept_date_type:
+    accepted: 承認
+    amended: 改正
+    retired: 廃止
+  concept_source_status:
+    identical: 同一
+    modified: 変更
+    restyled: 再構成
+    context-added: 文脈追加
+    generalisation: 一般化
+    specialisation: 特殊化
+    unspecified: 未指定
+  concept_source_type:
+    authoritative: 権威
+    lineage: 由来
+
+kor:
+  grammar_gender:
+    masculine: 남성
+    feminine: 여성
+    neuter: 중성
+    common: 공통
+  grammar_number:
+    singular: 단수
+    dual: 쌍수
+    plural: 복수
+  part_of_speech:
+    noun: 명사
+    verb: 동사
+    adj: 형용사
+    adv: 부사
+  concept_status:
+    draft: 초안
+    notValid: 무효
+    valid: 유효
+    superseded: 대체됨
+    retired: 폐지됨
+  normative_status:
+    preferred: 우선
+    admitted: 인정
+    deprecated: 권장하지 않음
+  concept_date_type:
+    accepted: 채택
+    amended: 수정
+    retired: 폐지
+  concept_source_status:
+    identical: 동일
+    modified: 수정
+    restyled: 재구성
+    context-added: 맥락 추가
+    generalisation: 일반화
+    specialisation: 특수화
+    unspecified: 미지정
+  concept_source_type:
+    authoritative: 권위
+    lineage: 유래
+
+pol:
+  grammar_gender:
+    masculine: męski
+    feminine: żeński
+    neuter: nijaki
+    common: wspólny
+  grammar_number:
+    singular: liczba pojedyncza
+    dual: liczba podwójna
+    plural: liczba mnoga
+  part_of_speech:
+    noun: rzeczownik
+    verb: czasownik
+    adj: przymiotnik
+    adv: przysłówek
+  concept_status:
+    draft: szkic
+    notValid: nieważny
+    valid: ważny
+    superseded: zastąpiony
+    retired: wycofany
+  normative_status:
+    preferred: preferowany
+    admitted: dopuszczony
+    deprecated: przestarzały
+  concept_date_type:
+    accepted: zaakceptowany
+    amended: zmieniony
+    retired: wycofany
+  concept_source_status:
+    identical: identyczny
+    modified: zmieniony
+    restyled: przeformułowany
+    context-added: kontekst dodany
+    generalisation: uogólnienie
+    specialisation: specjalizacja
+    unspecified: nieokreślony
+  concept_source_type:
+    authoritative: autorytatywny
+    lineage: pochodzenie
+
+por:
+  grammar_gender:
+    masculine: masculino
+    feminine: feminino
+    neuter: neutro
+    common: comum
+  grammar_number:
+    singular: singular
+    dual: dual
+    plural: plural
+  part_of_speech:
+    noun: substantivo
+    verb: verbo
+    adj: adjetivo
+    adv: advérbio
+  concept_status:
+    draft: rascunho
+    notValid: não válido
+    valid: válido
+    superseded: substituído
+    retired: retirado
+  normative_status:
+    preferred: preferido
+    admitted: admitido
+    deprecated: desaconselhado
+  concept_date_type:
+    accepted: aceitado
+    amended: modificado
+    retired: retirado
+  concept_source_status:
+    identical: idêntico
+    modified: modificado
+    restyled: reestilizado
+    context-added: contexto adicionado
+    generalisation: generalização
+    specialisation: especialização
+    unspecified: não especificado
+  concept_source_type:
+    authoritative: autorizado
+    lineage: linhagem
+
+srp:
+  grammar_gender:
+    masculine: мушки
+    feminine: женски
+    neuter: средњи
+    common: заједнички
+  grammar_number:
+    singular: једнина
+    dual: двојина
+    plural: множина
+  part_of_speech:
+    noun: именица
+    verb: глагол
+    adj: придев
+    adv: прилог
+  concept_status:
+    draft: нацрт
+    notValid: неважећи
+    valid: важећи
+    superseded: замењен
+    retired: повучен
+  normative_status:
+    preferred: префериран
+    admitted: прихваћен
+    deprecated: застарео
+  concept_date_type:
+    accepted: прихваћен
+    amended: измењен
+    retired: повучен
+  concept_source_status:
+    identical: идентичан
+    modified: измењен
+    restyled: преформулисан
+    context-added: контекст додат
+    generalisation: генерализација
+    specialisation: специјализација
+    unspecified: неодређен
+  concept_source_type:
+    authoritative: ауторитативан
+    lineage: порекло
+
+swe:
+  grammar_gender:
+    masculine: maskulin
+    feminine: feminin
+    neuter: neutrum
+    common: utrum
+  grammar_number:
+    singular: singular
+    dual: dualis
+    plural: plural
+  part_of_speech:
+    noun: substantiv
+    verb: verb
+    adj: adjektiv
+    adv: adverb
+  concept_status:
+    draft: utkast
+    notValid: ej giltig
+    valid: giltig
+    superseded: ersatt
+    retired: tillbakadragen
+  normative_status:
+    preferred: föredragen
+    admitted: antagen
+    deprecated: avråds från
+  concept_date_type:
+    accepted: antagen
+    amended: ändrad
+    retired: tillbakadragen
+  concept_source_status:
+    identical: identisk
+    modified: ändrad
+    restyled: omformulerad
+    context-added: kontext tillagd
+    generalisation: generalisering
+    specialisation: specialisering
+    unspecified: ospecificerad
+  concept_source_type:
+    authoritative: auktoritativ
+    lineage: ursprung
+
+zho:
+  grammar_gender:
+    masculine: 阳性
+    feminine: 阴性
+    neuter: 中性
+    common: 通用
+  grammar_number:
+    singular: 单数
+    dual: 双数
+    plural: 复数
+  part_of_speech:
+    noun: 名词
+    verb: 动词
+    adj: 形容词
+    adv: 副词
+  concept_status:
+    draft: 草案
+    notValid: 无效
+    valid: 有效
+    superseded: 废止
+    retired: 废止
+  normative_status:
+    preferred: 优选
+    admitted: 认可
+    deprecated: 不推荐
+  concept_date_type:
+    accepted: 承认
+    amended: 修正
+    retired: 废止
+  concept_source_status:
+    identical: 相同
+    modified: 修改
+    restyled: 重述
+    context-added: 上下文添加
+    generalisation: 概括
+    specialisation: 特指
+    unspecified: 未指定
+  concept_source_type:
+    authoritative: 权威
+    lineage: 来源
+
+nld:
+  grammar_gender:
+    masculine: mannelijk
+    feminine: vrouwelijk
+    neuter: onzijdig
+    common: commuun
+  grammar_number:
+    singular: enkelvoud
+    dual: tweevoud
+    plural: meervoud
+  part_of_speech:
+    noun: zelfstandig naamwoord
+    verb: werkwoord
+    adj: bijvoeglijk naamwoord
+    adv: bijwoord
+  concept_status:
+    draft: concept
+    notValid: niet geldig
+    valid: geldig
+    superseded: vervangen
+    retired: ingetrokken
+  normative_status:
+    preferred: voorkeur
+    admitted: toegelaten
+    deprecated: afgeraden
+  concept_date_type:
+    accepted: aanvaard
+    amended: gewijzigd
+    retired: ingetrokken
+  concept_source_status:
+    identical: identiek
+    modified: gewijzigd
+    restyled: herformuleerd
+    context-added: context toegevoegd
+    generalisation: generalisatie
+    specialisation: specialisatie
+    unspecified: niet gespecificeerd
+  concept_source_type:
+    authoritative: gezaghebbend
+    lineage: herkomst
+
+fin:
+  grammar_gender:
+    masculine: maskuliini
+    feminine: feminiini
+    neuter: neutri
+    common: yhteinen
+  grammar_number:
+    singular: yksikkö
+    dual: duaalinen
+    plural: monikko
+  part_of_speech:
+    noun: substantiivi
+    verb: verbi
+    adj: adjektiivi
+    adv: adverbi
+  concept_status:
+    draft: luonnos
+    notValid: ei voimassa
+    valid: voimassa
+    superseded: korvattu
+    retired: poistettu
+  normative_status:
+    preferred: suositettava
+    admitted: hyväksytty
+    deprecated: vältettävä
+  concept_date_type:
+    accepted: hyväksytty
+    amended: muutettu
+    retired: poistettu
+  concept_source_status:
+    identical: identtinen
+    modified: muutettu
+    restyled: uudelleenmuotoiltu
+    context-added: konteksti lisätty
+    generalisation: yleistäminen
+    specialisation: erikoistaminen
+    unspecified: määrittelemätön
+  concept_source_type:
+    authoritative: auktoritatiivinen
+    lineage: alkuperä
+
+ces:
+  grammar_gender:
+    masculine: mužský
+    feminine: ženský
+    neuter: střední
+    common: společný
+  grammar_number:
+    singular: jednotné číslo
+    dual: duál
+    plural: množné číslo
+  part_of_speech:
+    noun: podstatné jméno
+    verb: sloveso
+    adj: přídavné jméno
+    adv: příslovce
+  concept_status:
+    draft: návrh
+    notValid: neplatný
+    valid: platný
+    superseded: nahrazený
+    retired: stažený
+  normative_status:
+    preferred: preferovaný
+    admitted: přijatý
+    deprecated: zastaralý
+  concept_date_type:
+    accepted: přijatý
+    amended: pozměněný
+    retired: stažený
+  concept_source_status:
+    identical: totožný
+    modified: pozměněný
+    restyled: přeformulovaný
+    context-added: kontext přidán
+    generalisation: generalizace
+    specialisation: specializace
+    unspecified: neurčený
+  concept_source_type:
+    authoritative: autoritativní
+    lineage: původ
+
+rus:
+  grammar_gender:
+    masculine: мужской
+    feminine: женский
+    neuter: средний
+    common: общий
+  grammar_number:
+    singular: единственное
+    dual: двойственное
+    plural: множественное
+  part_of_speech:
+    noun: существительное
+    verb: глагол
+    adj: прилагательное
+    adv: наречие
+  concept_status:
+    draft: черновик
+    notValid: недействителен
+    valid: действителен
+    superseded: заменён
+    retired: отозван
+  normative_status:
+    preferred: предпочтительный
+    admitted: допущенный
+    deprecated: устаревший
+  concept_date_type:
+    accepted: принят
+    amended: изменён
+    retired: отозван
+  concept_source_status:
+    identical: идентичный
+    modified: изменённый
+    restyled: переформулированный
+    context-added: контекст добавлен
+    generalisation: обобщение
+    specialisation: специализация
+    unspecified: неуказанный
+  concept_source_type:
+    authoritative: авторитетный
+    lineage: происхождение
+
+ara:
+  grammar_gender:
+    masculine: مذكر
+    feminine: مؤنث
+    neuter: محايد
+    common: مشترك
+  grammar_number:
+    singular: مفرد
+    dual: مثنى
+    plural: جمع
+  part_of_speech:
+    noun: اسم
+    verb: فعل
+    adj: صفة
+    adv: ظرف
+  concept_status:
+    draft: مسودة
+    notValid: غير صالح
+    valid: صالح
+    superseded: ملغى
+    retired: متقاعد
+  normative_status:
+    preferred: مفضل
+    admitted: مقبول
+    deprecated: مهمل
+  concept_date_type:
+    accepted: مقبول
+    amended: معدل
+    retired: متقاعد
+  concept_source_status:
+    identical: مطابق
+    modified: معدل
+    restyled: معاد صياغته
+    context-added: سياق مضاف
+    generalisation: تعميم
+    specialisation: تخصص
+    unspecified: غير محدد
+  concept_source_type:
+    authoritative: موثوق
+    lineage: أصل
