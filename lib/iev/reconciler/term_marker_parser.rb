@@ -51,8 +51,8 @@ module Iev
         Präfix prefix préfixe 접두사 接頭語 接尾語
       ].freeze
 
-      USAGE_INFO_RE = /<([^>]+)>/
-      PAREN_USAGE_INFO_RE = /\(([^)]+)\)\s*(?=[,]?\s*(?:[fmnжмс]\b|[fmn]\/[fmn]|sg|pl|јд|мн|\z))/i
+      DOMAIN_RE = /<([^>]+)>/
+      USAGE_INFO_RE = /\(([^)]+)\)\s*(?=[,]?\s*(?:[fmnжмс]\b|[fmn]\/[fmn]|sg|pl|јд|мн|\z))/i
       IEV_XREF_RE = /<[^>]*IEV\s*(\d{3}-\d{2}-\d{2,3})[^>]*>/i
 
       SERBIAN_RE = /,\s*([жмс])\s+(јд|мн)\s*\z/
@@ -67,9 +67,9 @@ module Iev
 
       TRAILING_PUNCT_RE = /[,;\s]+$/
 
-      Result = Struct.new(:designation, :genders, :numbers, :usage_info,
-                          :part_of_speech, :related_refs, :is_prefix,
-                          keyword_init: true)
+      Result = Struct.new(:designation, :genders, :numbers, :domain,
+                          :usage_info, :part_of_speech, :related_refs,
+                          :is_prefix, keyword_init: true)
 
       class << self
         def parse(term)
@@ -77,15 +77,15 @@ module Iev
 
           text = decode_entities(term).strip.gsub(/\s+/, " ")
           related_refs, text = extract_iev_xrefs(text)
-          angle_usage, text = extract_usage_info(text)
-          paren_usage, text = extract_paren_usage_info(text)
-          usage_info = paren_usage || angle_usage
+          domain, text = extract_domain(text)
+          usage_info, text = extract_usage_info(text)
           designation, genders, numbers, pos, is_prefix = extract_markers(text)
 
           Result.new(
             designation: designation,
             genders: genders,
             numbers: numbers,
+            domain: domain,
             usage_info: usage_info,
             part_of_speech: pos,
             related_refs: related_refs,
@@ -114,14 +114,15 @@ module Iev
             .gsub(/&#39;/, "'")
         end
 
-        def extract_usage_info(text)
-          match = text.match(USAGE_INFO_RE)
+        # Extract domain qualifier from angle brackets: <text> -> domain
+        def extract_domain(text)
+          match = text.match(DOMAIN_RE)
           return [nil, text] unless match
 
-          usage = match[1].strip
+          domain = match[1].strip
           remaining = text.sub(match[0], "").gsub(TRAILING_PUNCT_RE, "").strip
           remaining = remaining.sub(/^[,;\s]+/, "").strip
-          [usage, remaining]
+          [domain, remaining]
         end
 
         def extract_iev_xrefs(text)
@@ -135,11 +136,10 @@ module Iev
           [refs.empty? ? nil : refs, remaining]
         end
 
-        # Extract a parenthetical qualifier that precedes trailing markers
-        # (gender/number/POS). E.g. "Orientierung (einer Kurve) f" →
-        # usage_info="einer Kurve", remaining="Orientierung  f".
-        def extract_paren_usage_info(text)
-          match = text.match(PAREN_USAGE_INFO_RE)
+        # Extract usage_info from parentheses that precede trailing markers.
+        # E.g. "Orientierung (einer Kurve) f" -> usage_info="einer Kurve"
+        def extract_usage_info(text)
+          match = text.match(USAGE_INFO_RE)
           return [nil, text] unless match
 
           usage = match[1].strip
