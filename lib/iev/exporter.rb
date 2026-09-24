@@ -308,7 +308,8 @@ module Iev
 
       concept.related << Glossarist::RelatedConcept.new(
         type: "broader",
-        content: code.section_uri,
+        # lang-keyed hash per glossarist 2.13 RelatedConcept L10N invariant
+        content: { "eng" => code.section_uri },
         ref: Glossarist::ConceptRef.new(source: "IEV", id: code.section_uri),
       )
     end
@@ -333,7 +334,7 @@ module Iev
         narrower = child_ids.sort.map do |child_id|
           Glossarist::RelatedConcept.new(
             type: "narrower",
-            content: child_id,
+            content: { "eng" => child_id },
             ref: Glossarist::ConceptRef.new(source: "IEV", id: child_id),
           )
         end

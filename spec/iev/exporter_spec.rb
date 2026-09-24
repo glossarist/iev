@@ -96,7 +96,7 @@ RSpec.describe Iev::Exporter do
         broader = concept.related&.select { |r| r.type == "broader" }
         expect(broader).not_to be_empty
 
-        section_ref = broader.find { |r| r.content == "section-103-01" }
+        section_ref = broader.find { |r| r.content["eng"] == "section-103-01" }
         expect(section_ref).not_to be_nil
         expect(section_ref.ref).to be_a(Glossarist::ConceptRef)
         expect(section_ref.ref.source).to eq("IEV")
@@ -116,7 +116,7 @@ RSpec.describe Iev::Exporter do
         narrower = section.related&.select { |r| r.type == "narrower" }
         expect(narrower).not_to be_empty
 
-        narrower_ids = narrower.map(&:content)
+        narrower_ids = narrower.map { |r| r.content["eng"] }
         expect(narrower_ids).to include("103-01-01")
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe Iev::Exporter do
         narrower.each do |rel|
           expect(rel.ref).to be_a(Glossarist::ConceptRef)
           expect(rel.ref.source).to eq("IEV")
-          expect(rel.ref.id).to eq(rel.content)
+          expect(rel.ref.id).to eq(rel.content["eng"])
         end
       end
     end
@@ -187,12 +187,12 @@ RSpec.describe Iev::Exporter do
         section = collection.find { |c| c.data.id == "section-103-01" }
         section_narrower_ids = section.related
           &.select { |r| r.type == "narrower" }
-          &.map(&:content) || []
+          &.map { |r| r.content["eng"] } || []
 
         concept = collection.find { |c| c.data.id == "103-01-01" }
         concept_broader_ids = concept.related
           &.select { |r| r.type == "broader" }
-          &.map(&:content) || []
+          &.map { |r| r.content["eng"] } || []
 
         concept_broader_ids.each do |broader_id|
           expect(section_narrower_ids).to(

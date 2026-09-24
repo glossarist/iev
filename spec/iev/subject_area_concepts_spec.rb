@@ -69,15 +69,15 @@ RSpec.describe Iev::SubjectAreaConcepts do
     it "has narrower relations to its sections" do
       expect(area_concept.related.length).to eq(2)
       expect(area_concept.related.map(&:type)).to eq(%w[narrower narrower])
-      expect(area_concept.related.map(&:content)).to eq(%w[section-103-01
-                                                           section-103-02])
+      expect(area_concept.related.map { |r| r.content["eng"] })
+        .to eq(%w[section-103-01 section-103-02])
     end
 
     it "sets ref on narrower relations for RDF transform" do
       area_concept.related.each do |rel|
         expect(rel.ref).to be_a(Glossarist::ConceptRef)
         expect(rel.ref.source).to eq("IEV")
-        expect(rel.ref.id).to eq(rel.content)
+        expect(rel.ref.id).to eq(rel.content["eng"])
       end
     end
 
@@ -138,7 +138,7 @@ RSpec.describe Iev::SubjectAreaConcepts do
       expect(section_concept.related.length).to eq(1)
       rel = section_concept.related.first
       expect(rel.type).to eq("broader")
-      expect(rel.content).to eq("area-103")
+      expect(rel.content).to eq({ "eng" => "area-103" })
     end
 
     it "sets ref on broader relation for RDF transform" do

@@ -406,7 +406,13 @@ module Iev
       return nil unless item
 
       item.source("src")
-    rescue Relaton::RequestError, Socket::ResolutionError, SocketError => e
+      # Free-text refs like "ITU-R Rec. 431 MOD" are not parseable pubids.
+      # relaton 3 (pubid 2) raises Pubid::Errors::ParseError (a
+      # Parslet::ParseFailed) eagerly when building the search, whereas
+      # relaton 2 swallowed it. Link resolution is best-effort: warn and
+      # skip instead of failing the whole source parse.
+    rescue Relaton::RequestError, Socket::ResolutionError, SocketError,
+           Parslet::ParseFailed => e
       warn e.message
       nil
     end
