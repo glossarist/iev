@@ -128,10 +128,12 @@ module Iev
 
       # --- RelatedConcept factory methods ---
 
+      # RelatedConcept#content is a lang-keyed hash since glossarist 2.13
+      # (L10N invariant: all relationship free-text is { "eng" => ... }).
       def broader_relation(target_uri)
         Glossarist::RelatedConcept.new(
           type: "broader",
-          content: target_uri,
+          content: { "eng" => target_uri },
           ref: Glossarist::ConceptRef.new(source: "IEV", id: target_uri),
         )
       end
@@ -139,7 +141,7 @@ module Iev
       def narrower_relation(target_uri)
         Glossarist::RelatedConcept.new(
           type: "narrower",
-          content: target_uri,
+          content: { "eng" => target_uri },
           ref: Glossarist::ConceptRef.new(source: "IEV", id: target_uri),
         )
       end
