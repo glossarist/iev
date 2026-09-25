@@ -74,12 +74,7 @@ module Iev
 
       def save_concept(concept)
         path = File.join(@output_dir, "concepts", "#{concept.id}.yaml")
-        parts = [concept.to_yaml]
-        (concept.localized_concepts || {}).each_key do |lang|
-          lc = concept.localization(lang)
-          parts << lc.to_yaml if lc
-        end
-        File.write(path, parts.join("\n"), encoding: "utf-8")
+        Iev::MultiDocYaml.write(path, Iev::MultiDocYaml.parts_for(concept))
       end
 
       def compute_stats(reconciled)

@@ -121,12 +121,7 @@ module Iev
       end
 
       def print_concept_grouped_yaml(concept)
-        content = []
-        content << concept.to_yaml
-        concept.localized_concepts.each_key do |lang|
-          content << concept.localization(lang).to_yaml
-        end
-        puts content.join("\n")
+        puts Iev::MultiDocYaml.join(Iev::MultiDocYaml.parts_for(concept))
       end
     end
   end

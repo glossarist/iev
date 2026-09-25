@@ -204,7 +204,7 @@ module Iev
           next unless raw
           collection.store(build_concept_from_raw(code, raw))
         end
-        collection.save_grouped_concepts_to_files(concepts_dir.to_s)
+        Iev::MultiDocYaml.save_grouped_concepts(collection, concepts_dir.to_s)
         info "Reparsed #{collection.count} concepts into #{concepts_dir}."
       end
 

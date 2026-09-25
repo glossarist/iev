@@ -176,8 +176,7 @@ module Iev
 
     def save_collection(collection)
       concepts_dir = output_dir.expand_path.join("concepts")
-      FileUtils.mkdir_p(concepts_dir)
-      collection.save_grouped_concepts_to_files(concepts_dir.to_s)
+      MultiDocYaml.save_grouped_concepts(collection, concepts_dir.to_s)
     end
 
     def save_figures(figures)
