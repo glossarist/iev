@@ -27,7 +27,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "lutaml-model", "~> 0.8.0"
   spec.add_dependency "nokogiri", "~> 1.19"
   spec.add_dependency "plurimath"
-  spec.add_dependency "relaton", ">= 2.0.0", "< 3"
+  # relaton 3.0.0.pre line is the ecosystem target (glossarist 2.14+); keep 2.x working.
+spec.add_dependency "relaton", ">= 2.0.0", "< 4"
   spec.add_dependency "sequel", "~> 5.40"
   spec.add_dependency "sqlite3", "~> 1.7"
   spec.add_dependency "thor", "~> 1.0"
