@@ -32,6 +32,7 @@ module Iev
   autoload :FigureBuilder, "iev/figure_builder"
   autoload :IevCode, "iev/iev_code"
   autoload :Iso639Code, "iev/iso_639_code"
+  autoload :MultiDocYaml, "iev/multi_doc_yaml"
   autoload :Profiler, "iev/profiler"
   autoload :Reconciler, "iev/reconciler"
   autoload :RelatonDb, "iev/relaton_db"
