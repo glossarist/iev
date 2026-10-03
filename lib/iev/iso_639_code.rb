@@ -27,14 +27,7 @@ module Iev
         key if value["iso_639_1"] == @code.to_s && value[code_type]
       end
 
-      if code.nil?
-        t = COUNTRY_CODES
-        eng = t.is_a?(::Hash) ? (t["eng"].inspect[0, 60]) : t.inspect[0, 30]
-        raise StandardError,
-              "Iso639Code not found for '#{@code}'! " \
-              "(diag: table=#{t.class}:#{(t.size if t.respond_to?(:size)).inspect} " \
-              "eng=#{eng})"
-      end
+      raise StandardError, "Iso639Code not found for '#{@code}'!" if code.nil?
 
       code
     end
