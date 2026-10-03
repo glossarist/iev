@@ -411,7 +411,12 @@ module Iev
       # Parslet::ParseFailed) eagerly when building the search, whereas
       # relaton 2 swallowed it. Link resolution is best-effort: warn and
       # skip instead of failing the whole source parse.
-    rescue Relaton::RequestError, Socket::ResolutionError, SocketError,
+      # relaton 3.0.0.pre.alpha.6 (#205 strict routing) also raises
+      # UnknownReferenceError for spellings no flavor claims (the French
+      # "CEI", agency refs like "IAEA 4") where alpha.5's permissive
+      # parse answered nil. Same best-effort contract: warn and skip.
+    rescue Relaton::RequestError, Relaton::UnknownReferenceError,
+           Socket::ResolutionError, SocketError,
            Parslet::ParseFailed => e
       warn e.message
       nil
