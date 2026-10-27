@@ -272,4 +272,137 @@ RSpec.describe Iev::TermAttrsParser do
       expect(subject.prefix).to be(nil)
     end
   end
+
+  # iev-data #33: every TERMATTRIBUTE variant listed in the issue.
+  describe "issue #33 variants" do
+    include IevHtmlPartialsHelpers
+
+    let(:variants) do
+      path = File.expand_path(
+        "../fixtures/iev_term_attributes/issue_33_variants.txt", __dir__
+      )
+      File.readlines(path, chomp: true)
+    end
+
+    it "parses every variant in the issue without raising" do
+      expect(variants.size).to be > 7000
+      expect do
+        variants.each { |v| parse_term_attributes(v) }
+      end.not_to raise_error
+    end
+
+    it "extracts usage info from every closed <...> variant" do
+      closed = variants.grep(/&lt;.+?&gt;|<[^<>]+>/)
+      expect(closed.size).to be > 4000
+
+      missing = closed.reject do |variant|
+        attrs = parse_term_attributes(variant)
+        # HTML-only and parenthesised qualifiers are not angle usage info.
+        !attrs.src_str.match?(/<[^<>]+>/) || attrs.usage_info
+      end
+      expect(missing).to be_empty
+    end
+
+    it "never reads a gender out of the usage info text" do
+      letters = Iev::TermAttrsParser::CYRILLIC_GENDERS
+      leaks = variants.filter_map do |v|
+        attrs = parse_term_attributes(v)
+        next unless attrs.usage_info && attrs.gender
+
+        outside = attrs.src_str.sub(/[<\uFF1C].*?[>\uFF1E]/, "")
+        accepted = [attrs.gender, letters.key(attrs.gender)].compact
+        v unless accepted.any? { |g| outside.match?(/\b#{g}\b/) }
+      end
+
+      expect(leaks).to be_empty
+    end
+
+    {
+      "<de <i>n</i> vecteurs> m" => ["m", "de n vecteurs", nil],
+      "<eines Betriebsmittels> f" => ["f", "eines Betriebsmittels", nil],
+      "<modelu referencyjnego ISO> f sg" =>
+        ["f", "modelu referencyjnego ISO", "singular"],
+      "<bei Zentralkanalsignalisierung> f pl" =>
+        ["f", "bei Zentralkanalsignalisierung", "plural"],
+      "<PN споја> м јд" => ["m", "PN споја", "singular"],
+      "<(1)> ж јд" => ["f", "(1)", "singular"],
+      "<у електроенергетском систему> с јд" =>
+        ["n", "у електроенергетском систему", "singular"],
+      "<у рачунарским мрежама> ж мн" =>
+        ["f", "у рачунарским мрежама", "plural"],
+      "<за уређај диференцијалне струје> м мн" =>
+        ["m", "за уређај диференцијалне струје", "plural"],
+      "<ogniwa paliwowego> m" => ["m", "ogniwa paliwowego", "singular"],
+    }.each do |input, (gender, info, plurality)|
+      it "reads #{input.inspect}", string: input do
+        attrs = parse_term_attributes(input)
+        expect([attrs.gender, attrs.usage_info, attrs.plurality])
+          .to eq([gender, info, plurality ||
+                  (gender ? "singular" : nil)])
+      end
+    end
+
+    {
+      "<eines Messrelais oder einer Schutzeinrichtung> Verb" => "verb",
+      "<3> verbe" => "verb",
+      "<para um relé de medição> verbo" => "verb",
+      "<측정 계전기 또는 보호 장비> 동사" => "verb",
+      "<요소 계전기>, 명사" => "noun",
+      "<у рачунарским мрежама> глагол" => "verb",
+      "<في البرمجة> فعل" => "verb",
+      "<装置> 動詞" => "verb",
+      "<作用> 动词" => "verb",
+      "<elettrostaticamente> agg" => "adj",
+      "<проводан: IEV 151-15-56> придев" => "adj",
+      "<bezüglich der Darstellung von Information> Adjektiv" => "adj",
+      "<Begeitheizung> adjektivisch" => "adj",
+    }.each do |input, pos|
+      it "maps the part of speech in #{input.inspect}" do
+        attrs = parse_term_attributes(input)
+        expect(attrs.part_of_speech).to eq(pos)
+        expect(attrs.to_grammar_info.part_of_speech).to eq(pos)
+        expect(attrs.usage_info).not_to be_nil
+      end
+    end
+
+    it "reads a Cyrillic prefix keyword" do
+      attrs = parse_term_attributes("<електро: IEV 151-11-04> префикс")
+      expect(attrs.prefix).to eq("префикс")
+      expect(attrs.usage_info).to eq("електро: IEV 151-11-04")
+    end
+
+    it "keeps bare gender and parts of speech" do
+      expect(parse_term_attributes("f").gender).to eq("f")
+      expect(parse_term_attributes("adj").part_of_speech).to eq("adj")
+      expect(parse_term_attributes("m").to_grammar_info.gender).to eq(["m"])
+    end
+
+    # Open questions (issue #33). These values are intentionally NOT turned
+    # into attributes until the representation is decided; the specs pin
+    # that nothing is invented from them.
+    describe "unresolved variants" do
+      [
+        "(of an amplifier)", # Q1 parenthesised qualifier
+        "(d'un signal) f", # Q1 with gender
+        "(1)", # Q2 homograph number
+        "(deprecated)", # Q3 status word in attributes
+        "(abgelehnt)",
+        "(abréviation)", # Q4 abbreviation marker
+        "qualificatif", # Q5 qualifier word class
+        "限定词",
+        "<신호 장비&gt", # Q6 truncated closing sign
+        "<電子ネットワークの＞", # Q6 mixed-width signs
+      ].each do |input|
+        it "extracts no usage info or surprise grammar from #{input.inspect}" do
+          attrs = parse_term_attributes(input)
+          expect(attrs.usage_info).to be_nil
+          expect(attrs.part_of_speech).to be_nil
+        end
+      end
+
+      it "still reads the gender next to a parenthesised qualifier" do
+        expect(parse_term_attributes("(d'un signal) f").gender).to eq("f")
+      end
+    end
+  end
 end

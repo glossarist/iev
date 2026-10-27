@@ -105,8 +105,10 @@ module Iev
       # définition 3.60 de la 62127-1
       # definition 3.60 of 62127-1
       # définition 3.60 de la 62127-1
-      # definition 3.7 of IEC 62127-1 MOD, adapted from 4.2.9 of IEC 61828 and 3.6 of IEC 61102
-      # définition 3.7 de la CEI 62127-1 MOD, adaptées sur la base du 4.2.9 de la CEI 61828 et du 3.6 de la CEI 61102
+      # definition 3.7 of IEC 62127-1 MOD, adapted from 4.2.9 of IEC 61828 and
+      # 3.6 of IEC 61102
+      # définition 3.7 de la CEI 62127-1 MOD, adaptées sur la base du 4.2.9 de
+      # la CEI 61828 et du 3.6 de la CEI 61102
       # definition 3.54 of 62127-1 MOD
       # définition 3.54 de la CEI 62127-1 MOD
       # IEC 62313:2009, 3.6, modified
@@ -125,10 +127,22 @@ module Iev
         .gsub(/ITU-R Rec. (\d+)/, 'ITU-R Recommendation \1')
         .gsub(/[≈≠]\s+/, "")
         .sub(/ИЗМ\Z/, "MOD")
-        .sub(/definition ([\d\.]+) of ([\d\-\:]+) MOD/, 'IEC \2, \1, modified - ')
-        .sub(/definition ([\d\.]+) of IEC ([\d\-\:]+) MOD/, 'IEC \2, \1, modified - ')
-        .sub(/définition ([\d\.]+) de la ([\d\-\:]+) MOD/, 'IEC \2, \1, modified - ')
-        .sub(/définition ([\d\.]+) de la IEC ([\d\-\:]+) MOD/, 'IEC \2, \1, modified - ')
+        .sub(
+          /definition ([\d\.]+) of ([\d\-\:]+) MOD/,
+          'IEC \2, \1, modified - ',
+        )
+        .sub(
+          /definition ([\d\.]+) of IEC ([\d\-\:]+) MOD/,
+          'IEC \2, \1, modified - ',
+        )
+        .sub(
+          /définition ([\d\.]+) de la ([\d\-\:]+) MOD/,
+          'IEC \2, \1, modified - ',
+        )
+        .sub(
+          /définition ([\d\.]+) de la IEC ([\d\-\:]+) MOD/,
+          'IEC \2, \1, modified - ',
+        )
         .sub(/(\d{3})\ (\d{2})\ (\d{2})/, '\1-\2-\3') # for 221 04 03
 
       # .sub(/\A(from|d'après|voir la|see|See|voir|Voir)\s+/, "")
@@ -165,9 +179,10 @@ module Iev
         "ITU-R RR"
       # IEC 50(845)
       when /IEC (\d+)\((\d+)\)/
-        "IEC 600#{::Regexp.last_match(1)}-#{::Regexp.last_match(1)}"
+        "IEC 600#{::Regexp.last_match(1)}-#{::Regexp.last_match(2)}"
       when %r{(ISO|IEC)[/\ ](PAS|TR|TS) ([\d\:\-]+)}
-        "#{::Regexp.last_match(1)}/#{::Regexp.last_match(2)} #{::Regexp.last_match(3)}".sub(
+        "#{::Regexp.last_match(1)}/#{::Regexp.last_match(2)} " \
+        "#{::Regexp.last_match(3)}".sub(
           /:\Z/, ""
         )
       when %r{ISO/IEC ([\d\:\-]+)}
@@ -188,11 +203,13 @@ module Iev
 
       # ITU-T Recommendation F.791 (11/2015)
       when %r{ITU-T Recommendation (\w.\d+) \((\d+/\d+)\)}i
-        "ITU-T Recommendation #{::Regexp.last_match(1)} (#{::Regexp.last_match(2)})"
+        "ITU-T Recommendation #{::Regexp.last_match(1)} (" \
+        "#{::Regexp.last_match(2)})"
 
       # ITU-T Recommendation F.791:2015
       when /ITU-T Recommendation (\w.\d+):(\d+)/i
-        "ITU-T Recommendation #{::Regexp.last_match(1)} (#{::Regexp.last_match(2)})"
+        "ITU-T Recommendation #{::Regexp.last_match(1)} (" \
+        "#{::Regexp.last_match(2)})"
 
       when /ITU-T Recommendation (\w\.\d+)/i
         "ITU-T Recommendation #{::Regexp.last_match(1)}"
@@ -256,12 +273,15 @@ module Iev
         [/\d{4}, (Appendix \d)/, "1"],
         [/\d{4}, (Annexe \d)/, "1"],
 
-        # International Telecommunication Union (ITU) Constitution (Ed. 2015), No. 1012 of the Annex,
-        # Constitution de l’Union internationale des télécommunications (UIT) (Ed. 2015), N° 1012 de l’Annexe,
+        # International Telecommunication Union (ITU) Constitution (Ed. 2015),
+        # No. 1012 of the Annex,
+        # Constitution de l’Union internationale des télécommunications (UIT)
+        # (Ed. 2015), N° 1012 de l’Annexe,
         [/, (No. \d{4} of the Annex)/, "1"],
         [/, (N° \d{4} 1012 de l’Annexe)/, "1"],
 
-        # ISO/IEC 2382:2015 (https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:ed-1:v1:en), 2126371
+        # ISO/IEC 2382:2015
+        # (https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:ed-1:v1:en), 2126371
         [/\), (\d{7}),/, "1"],
 
         # " 1.1 "
@@ -286,7 +306,8 @@ module Iev
         # ISO 921:1997, définition 6,
         [/\AISO [\d:]+, (d[ée]finition \d+)/, "1"],
 
-        # "ISO/IEC/IEEE 24765:2010,  <i>Systems and software engineering – Vocabulary</i>, 3.234 (2)
+        # "ISO/IEC/IEEE 24765:2010,  <i>Systems and software engineering –
+        # Vocabulary</i>, 3.234 (2)
         [/, ([\d\.\w]+ \(\d+\))/, "1"],
       ].map do |regex, _rule|
         # TODO: Rubocop complains about unused rule -- need to make sure
@@ -360,7 +381,8 @@ module Iev
     #   "ISO/IEC 2382:2015"        → ["ISO/IEC",      "2382:2015"]
     #   "ISO/TS 14812:2022"        → ["ISO/TS",       "14812:2022"]
     #   "IEC CISPR 16-1:2003"      → ["IEC CISPR",    "16-1:2003"]
-    #   "ITU-T Recommendation F.791 (11/2015)" → ["ITU-T Recommendation", "F.791 (11/2015)"]
+    #   "ITU-T Recommendation F.791 (11/2015)" → ["ITU-T Recommendation", "F.791
+    # (11/2015)"]
     #   "IEV"                      → ["IEV",          nil]
     def split_ref(full_ref)
       case full_ref

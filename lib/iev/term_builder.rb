@@ -176,7 +176,7 @@ module Iev
       remaining_str&.sub!(/^\[:Ex(a|e)mple\]/, 'Ex\1mple')
       next_part_arr.push(remaining_str)
       @definition = definition_arr.first
-      @definition = nil if @definition&.empty?
+      @definition = nil if @definition && @definition.empty?
     end
 
     def extract_terms
@@ -284,6 +284,7 @@ module Iev
     private
 
     def build_expression_designation(raw_term, attribute_data:, status:)
+      raw_term, term_usage_info = TermAttrsParser.split_usage_info(raw_term)
       term = convert_content(raw_term)
       term_attributes = TermAttrsParser.new(attribute_data.to_s)
 
@@ -298,7 +299,7 @@ module Iev
         normative_status: statuses[status] || status,
         geographical_area: term_attributes.geographical_area,
         prefix: term_attributes.prefix,
-        usage_info: term_attributes.usage_info,
+        usage_info: term_usage_info || term_attributes.usage_info,
         grammar_info: grammar_info ? [grammar_info] : nil,
       }.compact
 

@@ -54,7 +54,8 @@ RSpec.describe Iev::TermBuilder do
   describe "#split_definition" do
     # #160, #161: Note/example extraction with numbering artifacts
     it "extracts notes from definition with 'Note N to entry:' pattern" do
-      definition = "some definition<p>Note 1 to entry: first note<p>Note 2 to entry: second note"
+      definition = "some definition<p>Note 1 to entry: first note<p>Note " \
+                   "2 to entry: second note"
       builder = described_class.new({ IEVREF: "103-01-02",
                                       DEFINITION: definition })
       builder.split_definition
@@ -73,7 +74,8 @@ RSpec.describe Iev::TermBuilder do
 
     # #11: <NOTE/> pattern
     it "handles <NOTE/> pattern" do
-      definition = "some definition<p><NOTE/>1 – first note<p><NOTE/>2 – second note"
+      definition = "some definition<p><NOTE/>1 – first note<p><NOTE/>2 – " \
+                   "second note"
       builder = described_class.new({ IEVREF: "103-01-02",
                                       DEFINITION: definition })
       builder.split_definition
@@ -118,6 +120,47 @@ RSpec.describe Iev::TermBuilder do
       builder = described_class.new({ IEVREF: "103-01-02" })
       allow(Iev).to receive(:find_section).and_raise(NoMethodError, "boom")
       expect(builder.extract_domain).to be_nil
+    end
+  end
+
+  # iev-data #128: angle-bracket text in a designation is usage info
+  describe "designation usage info" do
+    include IevHtmlPartialsHelpers
+
+    it "moves an unclosed trailing <usage> out of the designation" do
+      designation = primary_designation("badanie typu <ogniw paliwowych>")
+
+      expect(designation.designation).to eq("badanie typu")
+      expect(designation.usage_info).to eq("ogniw paliwowych")
+    end
+
+    it "handles the spurious closing tag printed in issue #128" do
+      designation = primary_designation(
+        "badanie typu <ogniw paliwowych></ogniw>",
+      )
+
+      expect(designation.designation).to eq("badanie typu")
+      expect(designation.usage_info).to eq("ogniw paliwowych")
+    end
+
+    it "keeps grammar from TERMATTRIBUTE alongside term usage info" do
+      designation = primary_designation("badanie typu <ogniw paliwowych>", "n")
+
+      expect(designation.grammar_info.first.gender).to eq(["n"])
+    end
+
+    it "prefers TERMATTRIBUTE usage info when the term has none" do
+      designation = primary_designation("ogniwo", "<paliwowe> n")
+
+      expect(designation.designation).to eq("ogniwo")
+      expect(designation.usage_info).to eq("paliwowe")
+    end
+
+    it "leaves plain designations and HTML markup untouched" do
+      designation = primary_designation("H<sub>2</sub>O")
+
+      expect(designation.usage_info).to be_nil
+      expect(designation.designation).to eq("H~2~O")
     end
   end
 end

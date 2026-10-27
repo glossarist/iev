@@ -27,11 +27,73 @@ module Iev
       "形容詞" => "adj",
       "형용사" => "adj",
       "Adjektiv" => "adj",
+      # Words seen in the iev-data #33 corpus (de, es, fr, it, pt, ar, ja, ko,
+      # sr, zh); the value is a Glossarist grammar_info part_of_speech.
+      "adjektivisch" => "adj",
+      "adjectivo" => "adj",
+      "agg" => "adj",
+      "придев" => "adj",
+      "صفة" => "adj",
+      "形容词" => "adj",
+      "Verb" => "verb",
+      "verbe" => "verb",
+      "verbo" => "verb",
+      "глагол" => "verb",
+      "فعل" => "verb",
+      "动词" => "verb",
+      "동사" => "verb",
+      "名词" => "noun",
+      "명사" => "noun",
+      "إسم" => "noun",
+      "substantif" => "noun",
+      "adv" => "adverb",
+      "прилог" => "adverb",
+      "prp" => "preposition",
+    }.freeze
+
+    # Serbian (Cyrillic) gender letters: masculine, feminine, neuter.
+    CYRILLIC_GENDERS = { "м" => "m", "ж" => "f", "с" => "n" }.freeze
+
+    NUMBERS = {
+      "pl" => "plural",
+      "мн" => "plural",
+      "복수" => "plural",
+      "sg" => "singular",
+      "јд" => "singular",
     }.freeze
 
     PREFIX_KEYWORDS = %w[
-      Präfix prefix préfixe 接尾語 접두사 przedrostek prefixo 词头
+      Präfix prefix préfixe 接尾語 접두사 przedrostek prefixo 词头 префикс
     ].freeze
+
+    # Markup that may legitimately appear inside <...> in a term.
+    MARKUP_TAG = %r{
+      \A/?(?:sub|sup|i|b|em|strong|span|small|a|p|r|br|simg|img|math|
+      [\w-]+:\w+)(?:[\s/]|\z)
+    }xi
+
+    TERM_USAGE_INFO = /
+      \s*<(?<inner>[^<>]+)>\s*
+      |
+      \s*\uFF1C(?<inner>[^\uFF1C\uFF1E]+)\uFF1E\s*
+    /x
+
+    # IEV terms carry usage info as a bare <text>, e.g. "badanie typu
+    # <ogniw paliwowych>" (iev-data #128). Returns [term_without_it,
+    # usage_info]; markup tags are left in place for later HTML conversion.
+    def self.split_usage_info(raw_term)
+      info = nil
+      cleaned = raw_term.to_s.gsub(TERM_USAGE_INFO) do |match|
+        inner = Regexp.last_match[:inner].strip
+        next match if inner.empty? || inner.match?(MARKUP_TAG) ||
+          inner.include?("=")
+
+        info ||= inner
+        " "
+      end
+
+      info ? [cleaned.strip, info] : [raw_term, nil]
+    end
 
     def initialize(attr_str)
       @raw_str = attr_str.dup.freeze
@@ -61,11 +123,13 @@ module Iev
     def parse
       curr_str = src_str.dup
 
+      # Usage info goes first: its free text may contain single letters
+      # such as "n" that would otherwise be read as a gender.
+      extract_usage_info(curr_str)
       extract_gender(curr_str)
       extract_plurality(curr_str)
       extract_geographical_area(curr_str)
       extract_part_of_speech(curr_str)
-      extract_usage_info(curr_str)
       extract_prefix(curr_str)
 
       nil unless /\p{Word}/.match?(curr_str)
@@ -77,22 +141,24 @@ module Iev
       # Match gender either:
       # 1. Inside brackets/parentheses: (m), [f], (n)
       # 2. As standalone word with boundaries: m, f, n
-      gender_rx = /(?:\(|\[)[mfn](?:\)|\])|\b[mfn]\b/
+      gender_rx = /(?:\(|\[)[mfnмжс](?:\)|\])|\b[mfnмжс]\b/
 
       match = remove_from_string(str, gender_rx)
       # Extract just the letter from the match (remove brackets if present)
-      @gender = match&.gsub(/[\[\]()]/, "")
+      letter = match&.gsub(/[\[\]()]/, "")
+      @gender = CYRILLIC_GENDERS.fetch(letter, letter)
     end
 
     # Must happen after #extract_gender
     def extract_plurality(str)
-      # Match plurality either:
-      # 1. Inside brackets/parentheses: (pl), [pl]
-      # 2. As standalone word with boundaries: pl
-      plural_rx = /(?:\(|\[)pl(?:\)|\])|\bpl\b/
+      # Match a number marker either inside brackets/parentheses or as a
+      # standalone word with boundaries: pl, sg, мн, јд, 복수
+      keys = Regexp.union(NUMBERS.keys)
+      number_rx = /(?:\(|\[)#{keys}(?:\)|\])|\b#{keys}\b/
 
-      if remove_from_string(str, plural_rx)
-        @plurality = "plural"
+      removed = remove_from_string(str, number_rx)
+      if removed
+        @plurality = NUMBERS[removed.gsub(/[\[\]()]/, "")]
       elsif !gender.nil?
         # TODO: Really needed?
         @plurality = "singular"
