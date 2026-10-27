@@ -309,7 +309,7 @@ RSpec.describe Iev::TermAttrsParser do
         attrs = parse_term_attributes(v)
         next unless attrs.usage_info && attrs.gender
 
-        outside = attrs.src_str.sub(/[<\uFF1C].*?[>\uFF1E]/, "")
+        outside = attrs.src_str.split(/[<\uFF1C].*?[>\uFF1E]/).join(" ")
         accepted = [attrs.gender, letters.key(attrs.gender)].compact
         v unless accepted.any? { |g| outside.match?(/\b#{g}\b/) }
       end
