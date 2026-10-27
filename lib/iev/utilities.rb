@@ -3,6 +3,7 @@
 module Iev
   module Utilities
     IMAGE_PATH_PREFIX = "image::/assets/images/parts"
+    TABLE_TAGS = %w[table thead tbody tfoot tr td th caption].freeze
     IEV_CODE_RE = /\A(IEV)?\s*(\d{2,3}-\d{2,3}-\d{2,3})\z/
 
     # Pattern matching an anchor's inner text that is just an IEV code
@@ -10,15 +11,17 @@ module Iev
     IEV_CODE_TEXT_RE = /\A\s*IEV\s*\d{2,3}-\d{2,3}-\d{2,3}\s*\z/
 
     # SIMG/Figure patterns — custom IEV XML, pre-processed before Nokogiri.
-    # Uses [^>] and [^<] instead of . to avoid polynomial backtracking.
-    SIMG_PATH_REGEX = /<simg [^>]*\/\$file\/([\d\-\w.]+)>/
-    FIGURE_ONE_REGEX = '<p><b>\\s*Figure\\s+(\\d)\\s+[–-]\\s+([^<]+)\\s*<\\/b>(<\\/p>)?'
+    # Uses [^<>] and [^<] instead of . to avoid polynomial backtracking.
+    SIMG_PATH_REGEX = /<simg [^<>]*\/\$file\/([\d\-\w.]+)>/
+    FIGURE_ONE_REGEX = '<p><b>\\s*Figure\\s+(\\d)\\s+[–-]\\s+' \
+                       '([^<]+)\\s*<\\/b>(<\\/p>)?'
     FIGURE_TWO_REGEX = "#{FIGURE_ONE_REGEX}\\s*#{FIGURE_ONE_REGEX}".freeze
 
     def parse_anchor_tag(text, term_domain)
       return nil if text.nil?
       return text unless text.include?("<")
 
+      text = text.gsub(/\r\n?/, "\n")
       text = process_simg_figures(text, term_domain)
       text = fix_unquoted_href(text)
 
@@ -31,10 +34,11 @@ module Iev
 
     def replace_newlines(input)
       input
+        .gsub(/\r\n?/, "\n")
         .gsub('\n', "\n\n")
         .gsub(/<[pbr]+>/, "\n\n")
         .gsub(/<br\s*\/?>/, "\n\n")
-        .gsub(/\s*\n[\n\s]+/, "\n\n")
+        .gsub(/\s+/) { |run| run.match?(/\n\s/) ? "\n\n" : run }
         .strip
     end
 
@@ -81,6 +85,7 @@ module Iev
 
     def element_to_adoc(node, term_domain)
       inner = nodes_to_adoc(node.children, term_domain)
+      return reemit_element(node, inner) if TABLE_TAGS.include?(node.name)
 
       case node.name
       when "a"
@@ -96,16 +101,16 @@ module Iev
         "#{inner}\n"
       when "div", "span"
         inner
+      when "simg"
+        inner.strip
       when "i"
         convert_italic(inner)
       when "sub"
         inner.empty? ? "" : "~#{inner}~"
       when "sup"
         inner.empty? ? "" : "^#{inner}^"
-      when "ol"
-        convert_list(node, ". ", term_domain)
-      when "ul"
-        convert_list(node, "* ", term_domain)
+      when "ol", "ul"
+        "\n\n#{convert_list(node, 1, term_domain)}\n\n"
       when "li"
         inner
       when "font"
@@ -126,8 +131,68 @@ module Iev
       end
     end
 
-    def convert_list(node, prefix, term_domain)
-      node.css("li").map { |li| "#{prefix}#{nodes_to_adoc(li.children, term_domain)}" }.join("\n")
+    # Renders a list as AsciiDoc. Each item is one list entry; a block
+    # (<p>) after the item's first content is attached with a "+" list
+    # continuation so formulas stay part of their item. Nested lists use
+    # a deeper marker.
+    def convert_list(node, depth, term_domain)
+      unless node.element_children.any? { |child| child.name == "li" }
+        return nodes_to_adoc(node.children, term_domain)
+            .gsub(/^([*.]+)[ \t]*\n(?=stem:\[)/, '\\1 ')
+      end
+
+      marker = (node.name == "ol" ? "." : "*") * depth
+      node.element_children.select { |c| c.name == "li" }.map do |item|
+        "#{marker} #{list_item(item, depth, term_domain)}"
+      end.join("\n")
+    end
+
+    def list_item(item, depth, term_domain)
+      out = +""
+      pending_break = false
+      item.children.each do |child|
+        pending_break = append_item_child(out, child, depth, term_domain,
+                                          pending_break)
+      end
+      out.strip
+    end
+
+    def append_item_child(out, child, depth, term_domain, pending_break)
+      if %w[ul ol].include?(child.name)
+        out << "\n#{convert_list(child, depth + 1, term_domain)}\n"
+        false
+      else
+        append_item_part(out, node_to_adoc(child, term_domain), pending_break,
+                         child.name == "p")
+      end
+    end
+
+    # Appends one rendered child to a list item and returns whether the
+    # next content starts a new continuation block.
+    def append_item_part(out, part, pending_break, block)
+      if part.strip.empty?
+        return append_item_whitespace(out, part, pending_break, block)
+      end
+
+      if (block || pending_break) && !out.strip.empty?
+        out.rstrip!
+        out << "\n+\n"
+        part = part.lstrip
+      end
+      out << (block ? part.strip : part)
+      block
+    end
+
+    def append_item_whitespace(out, part, pending_break, block)
+      out << part unless out.empty? || pending_break || block
+      pending_break
+    end
+
+    def reemit_element(node, inner)
+      attrs = node.attribute_nodes.map do |a|
+        %( #{a.name}="#{CGI.escapeHTML(a.value)}")
+      end.join
+      "<#{node.name}#{attrs}>#{inner}</#{node.name}>"
     end
 
     def convert_font(node, inner)

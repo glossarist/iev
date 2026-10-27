@@ -13,7 +13,11 @@ RSpec.describe Iev::SourceParser do
   end
 
   around do |example|
+    relaton_enabled = described_class.relaton_enabled
+    described_class.relaton_enabled = false
     silence_output_streams { example.run }
+  ensure
+    described_class.relaton_enabled = relaton_enabled
   end
 
   example "MOD,ITU", string: "702-01-02 MOD,ITU-R Rec. 431 MOD" do
@@ -74,8 +78,97 @@ RSpec.describe Iev::SourceParser do
     expect(source.origin.locality).to be_a(Glossarist::Locality)
     expect(source.origin.locality.type).to eq("clause")
     expect(source.origin.locality.reference_from).to eq("3.2")
-    expect(source.origin.link).to eq("https://webstore.iec.ch/publication/6790")
-    expect(source.origin.original).to eq('IEC 62302:2007, 3.2, modified – math element "stem:[L]"')
+    expect(source.origin.link).to be_nil
+    expect(source.origin.original)
+      .to eq('IEC 62302:2007, 3.2, modified – math element "stem:[L]"')
+  end
+
+  describe "SOURCE cleanup from iev-data #22" do
+    {
+      "Voir 891-02-05" => ["IEV", nil, "891-02-05"],
+      "voir 131-11-20" => ["IEV", nil, "131-11-20"],
+      "voir 131-11-21" => ["IEV", nil, "131-11-21"],
+      "voir 131-12-70" => ["IEV", nil, "131-12-70"],
+      "voir 131-12-71" => ["IEV", nil, "131-12-71"],
+      "voir 131-13-03" => ["IEV", nil, "131-13-03"],
+      "voir 415-03-15" => ["IEV", nil, "415-03-15"],
+      "voir 415-03-17" => ["IEV", nil, "415-03-17"],
+      "voir 604-01-15" => ["IEV", nil, "604-01-15"],
+      "voir 723-06-20" => ["IEV", nil, "723-06-20"],
+      "voir 723-10-19" => ["IEV", nil, "723-10-19"],
+      "voir 841-21-18" => ["IEV", nil, "841-21-18"],
+      "voir 415‑03‑10" => ["IEV", nil, "415-03-10", "voir 415-03-10"],
+      "Voir la CEI 50(845): Vocabulaire Électrotechnique International " \
+      "de l'Éclairage." => ["IEC", "60050-845", nil],
+      "voir CISPR 11" => ["IEC CISPR", "11", nil, "voir CISPR 11"],
+      "voir la CEI 60050-121" => ["IEC", "60050-121", nil],
+      "voir la CEI 60050-121, 151-12-05" => ["IEC", "60050-121", "151-12-05"],
+      "voir la CEI 60050-131" => ["IEC", "60050-131", nil],
+      "voir la CEI 60050-195" => ["IEC", "60050-195", nil],
+      "voir la partie 121 de l'IEV" => ["IEC", "60050-121", nil],
+      "voir la partie 726 de l'IEV" => ["IEC", "60050-726", nil],
+    }.each do |input, (reference_source, reference_id, clause, original)|
+      it "parses #{input.inspect}", string: input do
+        source = subject.parsed_sources.fetch(0)
+
+        expect(subject.parsed_sources.size).to eq(1)
+        expect(subject.raw_str).to eq(input)
+        expect(source.status).to eq("related")
+        expect(source.origin.ref.source).to eq(reference_source)
+        expect(source.origin.ref.id).to eq(reference_id)
+        expect(source.origin.locality&.reference_from).to eq(clause)
+        expect(source.modification).to be_nil
+        expect(source.origin.link).to be_nil
+        expect(source.origin.original).to eq(original || input)
+      end
+    end
+
+    # These inputs need a representation decision before structured cleanup:
+    # figures have no document target, prose qualifies the cited location, and
+    # compound references include shorthand or symbol locators.
+    [
+      "Voir Tome V du Livre Rouge du CCITT,1960, pages 74 et 75.",
+      "Voir la signification des symboles et les Notes 1, 2, 3 et 4 " \
+      "à 845-04-05",
+      "Voir la signification des symboles à 845-04-05",
+      "voir fig. 1",
+      "voir fig. 3.1",
+      "voir fig. 3.12",
+      "voir fig. 3.15",
+      "voir fig. 3.2",
+      "voir fig. 3.21",
+      "voir fig. 3.25",
+      "voir fig. 3.26",
+      "voir fig. 3.27",
+      "voir fig. 3.30",
+      "voir fig. 3.31",
+      "voir fig. 4",
+      "voir fig. 4.1",
+      "voir fig. 4.2",
+      "voir fig. 4.3",
+      "voir fig. 4.4",
+      "voir fig. 4.5",
+      "voir fig. 4.6",
+      "voir fig. 4.7",
+      "voir fig. 4.8",
+      "voir fig. 4.9",
+      "voir figure 466-6",
+      "voir figure 466-7",
+      "voir figure 466-8",
+      "voir figure 466-9",
+      "voir la CEI 60050-131, CEI 61293, CEI 60417, N°5031",
+      "voir la Note à 845-01-33",
+      "voir le chapitre 725",
+      "voir les CEI 60050-101 et 121",
+      "voir vitesse vectorielle du vent en 415-03-02",
+    ].each do |input|
+      it "preserves unresolved #{input.inspect}", string: input do
+        expect(subject.raw_str).to eq(input)
+        expect(subject.parsed_sources.map { |source| source.origin.original })
+          .to eq([input])
+        expect(subject.parsed_sources.first.status).to eq("related")
+      end
+    end
   end
 
   describe "#split_ref" do
@@ -105,7 +198,7 @@ RSpec.describe Iev::SourceParser do
       "ITU-R RR" => ["ITU-R", "RR"],
     }.each do |input, (expected_source, expected_id)|
       expected_id ||= nil
-      it "splits #{input.inspect} into source=#{expected_source.inspect} id=#{expected_id.inspect}" do
+      it "splits #{input.inspect} into source and id" do
         source, id = parser.send(:split_ref, input)
         expect(source).to eq(expected_source)
         expect(id).to eq(expected_id)
