@@ -101,6 +101,11 @@ RSpec.describe Iev::TermAttrsParser do
       expect(subject.part_of_speech).to eq("adj")
     end
 
+    # Polish "prp adj" (192-10-06) is adjectival; "prp" is not mapped.
+    example "prp adj" do
+      expect(subject.part_of_speech).to eq("adj")
+    end
+
     example "noun" do
       expect(subject.part_of_speech).to eq("noun")
     end

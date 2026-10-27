@@ -48,7 +48,6 @@ module Iev
       "substantif" => "noun",
       "adv" => "adverb",
       "прилог" => "adverb",
-      "prp" => "preposition",
     }.freeze
 
     # Serbian (Cyrillic) gender letters: masculine, feminine, neuter.
