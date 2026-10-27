@@ -11,8 +11,8 @@ module Iev
     IEV_CODE_TEXT_RE = /\A\s*IEV\s*\d{2,3}-\d{2,3}-\d{2,3}\s*\z/
 
     # SIMG/Figure patterns — custom IEV XML, pre-processed before Nokogiri.
-    # Uses [^>] and [^<] instead of . to avoid polynomial backtracking.
-    SIMG_PATH_REGEX = /<simg [^>]*\/\$file\/([\d\-\w.]+)>/
+    # Uses [^<>] and [^<] instead of . to avoid polynomial backtracking.
+    SIMG_PATH_REGEX = /<simg [^<>]*\/\$file\/([\d\-\w.]+)>/
     FIGURE_ONE_REGEX = '<p><b>\\s*Figure\\s+(\\d)\\s+[–-]\\s+' \
                        '([^<]+)\\s*<\\/b>(<\\/p>)?'
     FIGURE_TWO_REGEX = "#{FIGURE_ONE_REGEX}\\s*#{FIGURE_ONE_REGEX}".freeze
@@ -38,7 +38,7 @@ module Iev
         .gsub('\n', "\n\n")
         .gsub(/<[pbr]+>/, "\n\n")
         .gsub(/<br\s*\/?>/, "\n\n")
-        .gsub(/\s*\n[\n\s]+/, "\n\n")
+        .gsub(/\s+/) { |run| run.match?(/\n\s/) ? "\n\n" : run }
         .strip
     end
 
