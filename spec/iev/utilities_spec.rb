@@ -384,4 +384,54 @@ RSpec.describe Iev::Utilities do
         .to eq("Hello\n\nworld")
     end
   end
+
+  # iev-data #121, #123, #127
+  describe "#parse_anchor_tag inline markup" do
+    it "converts <strong> like <b> (#121)" do
+      expect(subject.parse_anchor_tag("a <strong>bold</strong> word", "112"))
+        .to eq("a *bold* word")
+    end
+
+    it "converts <strong> inside table cells (#121)" do
+      text = "<table><tr><td><strong><span>Unit name</span></strong>" \
+             "</td></tr></table>"
+
+      expect(subject.parse_anchor_tag(text, "112"))
+        .to eq("<table><tr><td>*Unit name*</td></tr></table>")
+    end
+
+    it "converts <u> to an underline role, keeping stem content (#123)" do
+      text = "phasors <u>stem:[*D*]</u> and <u>E</u>s"
+
+      expect(subject.parse_anchor_tag(text, "121"))
+        .to eq("phasors [.underline]##stem:[*D*]## and [.underline]##E##s")
+    end
+
+    it "drops an empty <u> (#123)" do
+      expect(subject.parse_anchor_tag("a<u></u>b", "121")).to eq("ab")
+    end
+
+    it "drops image-map <map>/<area> hotspots but keeps the image (#127)" do
+      text = '<simg usemap="#m"/$file/447-02-01-Fig1-en.png>' \
+             '<map name="m"> <area title="x" href="IEV447-02-03" ' \
+             'shape="rect" coords="1,2,3,4" alt="x"> <area title="y" ' \
+             'href="IEV447-02-10" shape="rect" coords="" alt="y"></map>' \
+             "<p><b>Figure 1 – Diagram</b></p></simg>"
+
+      result = subject.parse_anchor_tag(text, "447")
+      expect(result).to start_with(
+        "image::/assets/images/parts/447/447-02-01-Fig1-en.png[",
+      )
+      expect(result).not_to match(/<map|<area|coords/)
+    end
+
+    it "drops a <map> that follows a plain <img> (#127)" do
+      text = '<img src="a.png" usemap="#image-map">' \
+             '<map name="image-map"><area title="t" shape="rect" ' \
+             'coords="1,2,3,4" alt="t"></map><b>Key</b>'
+
+      expect(subject.parse_anchor_tag(text, "485"))
+        .to eq("image::/assets/images/parts/485/a.png[]*Key*")
+    end
+  end
 end

@@ -90,8 +90,13 @@ module Iev
       case node.name
       when "a"
         convert_link(node, inner)
-      when "b"
+      when "b", "strong"
         "*#{inner}*"
+      when "u"
+        inner.strip.empty? ? inner : "[.underline]###{inner}##"
+      when "map", "area"
+        # Image-map hotspots have no AsciiDoc form; the image is kept.
+        ""
       when "br"
         "\n"
       when "img"
