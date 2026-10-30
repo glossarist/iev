@@ -144,7 +144,7 @@ RSpec.describe Iev::Utilities do
           .to eq("concentration en quantitéstem:[c]~B~")
       end
 
-      it "unwraps spans inside table cells and keeps the table markup" do
+      it "unwraps spans inside table cells (#119 converts the table)" do
         text = "<table><tr><td colspan=\"2\">\r\n<span>ohm</span>\r\n</td>" \
                "\r\n" \
                "<td style=\"width: 115px;\"><span>Ω</span></td></tr></table>"
@@ -152,9 +152,7 @@ RSpec.describe Iev::Utilities do
         result = subject.parse_anchor_tag(text, "112")
         expect(result).not_to include("<span")
         expect(result).not_to include("\r")
-        cells = Nokogiri::HTML.fragment(result).css("td")
-        expect(cells.map { |c| c.text.strip }).to eq(["ohm", "Ω"])
-        expect(cells.map { |c| c["colspan"] }).to eq(["2", nil])
+        expect(result.strip).to eq("[cols=\"3*\"]\n|===\n2+|ohm\n|Ω\n|===")
       end
     end
 
@@ -353,6 +351,116 @@ RSpec.describe Iev::Utilities do
     end
   end
 
+  # glossarist/iev-data#119: <table> elements become AsciiDoc tables
+  describe "#parse_anchor_tag with tables" do
+    # First rows of the table in IEV 112-01-01 (the issue's example):
+    # rowspan="2" cells in the first column.
+    let(:issue_table) do
+      cell = lambda do |attrs, html|
+        "<td#{attrs}>\r\n<p>#{html}</p>\r\n</td>\r\n"
+      end
+      [
+        "<table border=\"solid\">\r\n<tbody>\r\n<tr>\r\n",
+        cell.call(" rowspan=\"2\" style=\"width: 99px;\"", "length, <i>l</i>"),
+        cell.call(" style=\"width: 174px;\"", "radius, <i>r</i>"),
+        cell.call(
+          " style=\"width: 370px;\"",
+          "radius of circle A, <i>r</i><sub>A </sub>or <i>r</i>(A)",
+        ),
+        "</tr>\r\n<tr>\r\n",
+        cell.call(" style=\"width: 174px;\"", "wavelength, <i>&lambda;</i>"),
+        cell.call(
+          " style=\"width: 370px;\"",
+          "wavelength of the sodium D radiation, <i>&lambda;</i>" \
+          "<sub>D</sub> or <i>&lambda;</i>(D; Na)",
+        ),
+        "</tr>\r\n</tbody>\r\n</table>",
+      ].join
+    end
+
+    it "converts the issue's rowspan table to an AsciiDoc table" do
+      result = subject.parse_anchor_tag(
+        "Note 1 to entry: see below\n#{issue_table}", "112"
+      )
+
+      expect(result).to eq(
+        "Note 1 to entry: see below\n\n\n" \
+        "[cols=\"3*\"]\n|===\n" \
+        ".2+|length, stem:[l]\n|radius, stem:[r]\n" \
+        "|radius of circle A, stem:[r]~A ~or stem:[r](A)\n\n" \
+        "|wavelength, stem:[λ]\n" \
+        "|wavelength of the sodium D radiation, stem:[λ]~D~ or " \
+        "stem:[λ](D; Na)\n|===\n\n",
+      )
+    end
+
+    it "carries colspan, alignment and bold header cells" do
+      text = "<table><tbody><tr>" \
+             "<td rowspan=\"2\" style=\"text-align: center;\">" \
+             "<p><strong>Factor</strong></p></td>" \
+             "<td colspan=\"2\" style=\"text-align: center;\">" \
+             "<p><strong>Prefix</strong></p></td></tr>" \
+             "<tr><td><p>Name</p></td><td align=\"right\"><p>Symbol</p></td>" \
+             "</tr></tbody></table>"
+
+      expect(subject.parse_anchor_tag(text, "112").strip).to eq(
+        "[cols=\"3*\"]\n|===\n.2+^|*Factor*\n2+^|*Prefix*\n\n" \
+        "|Name\n>|Symbol\n|===",
+      )
+    end
+
+    it "inherits the alignment of the row when a cell has none" do
+      text = "<table><tr style=\"text-align: center;\"><td>a</td>" \
+             "<td align=\"right\">b</td></tr></table>"
+
+      expect(subject.parse_anchor_tag(text, "112").strip).to eq(
+        "[cols=\"2*\"]\n|===\n^|a\n>|b\n|===",
+      )
+    end
+
+    it "uses a header row and caption for <th> and <caption>" do
+      text = "<table><caption>Units</caption><tr><th>Name</th><th>Symbol</th>" \
+             "</tr><tr><td>metre</td><td>m</td></tr></table>"
+
+      expect(subject.parse_anchor_tag(text, "112").strip).to eq(
+        ".Units\n[%header,cols=\"2*\"]\n|===\n|Name\n|Symbol\n\n" \
+        "|metre\n|m\n|===",
+      )
+    end
+
+    it "writes a pipe inside a cell as {vbar}" do
+      text = "<table><tr><td>a | b</td></tr></table>"
+
+      expect(subject.parse_anchor_tag(text, "112"))
+        .to include("|a {vbar} b")
+    end
+
+    it "keeps the HTML for a table whose grid is not rectangular" do
+      text = "<table><tr><td>a</td><td>b</td></tr><tr><td>c</td></tr></table>"
+
+      expect(subject.parse_anchor_tag(text, "112")).to eq(text)
+    end
+
+    it "keeps the HTML for a rowspan that runs past the last row" do
+      text = "<table><tr><td rowspan=\"3\">a</td><td>b</td></tr></table>"
+
+      expect(subject.parse_anchor_tag(text, "112")).to eq(text)
+    end
+
+    it "keeps the HTML for a nested table, outer and inner" do
+      text = "<table><tr><td><table><tr><td>x</td></tr></table></td></tr>" \
+             "</table>"
+
+      expect(subject.parse_anchor_tag(text, "112")).to eq(text)
+    end
+
+    it "keeps the HTML for a list inside a cell" do
+      text = "<table><tr><td><ul><li>x</li></ul></td></tr></table>"
+
+      expect(subject.parse_anchor_tag(text, "112")).to include("<table>")
+    end
+  end
+
   describe "#replace_newlines" do
     it "should replace <br> tag with newlines" do
       expect(subject.replace_newlines("Hello<br>world"))
@@ -392,12 +500,12 @@ RSpec.describe Iev::Utilities do
         .to eq("a *bold* word")
     end
 
-    it "converts <strong> inside table cells (#121)" do
+    it "converts <strong> inside table cells (#121, #119)" do
       text = "<table><tr><td><strong><span>Unit name</span></strong>" \
              "</td></tr></table>"
 
-      expect(subject.parse_anchor_tag(text, "112"))
-        .to eq("<table><tr><td>*Unit name*</td></tr></table>")
+      expect(subject.parse_anchor_tag(text, "112").strip)
+        .to eq("[cols=\"1*\"]\n|===\n|*Unit name*\n|===")
     end
 
     it "converts <u> to an underline role, keeping stem content (#123)" do

@@ -43,6 +43,7 @@ module Iev
   autoload :SubjectAreas, "iev/subject_areas"
   autoload :SubjectAreaConcepts, "iev/subject_area_concepts"
   autoload :SupersessionParser, "iev/supersession_parser"
+  autoload :TableConverter, "iev/table_converter"
   autoload :TermAttrsParser, "iev/term_attrs_parser"
   autoload :TermBuilder, "iev/term_builder"
   autoload :Utilities, "iev/utilities"
