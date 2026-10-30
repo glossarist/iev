@@ -160,7 +160,7 @@ module Iev
 
     def cell_text(node)
       lines = @render.call(node).gsub(/\r\n?/, "\n").strip.split("\n", -1)
-      single_blanks(lines.map(&:rstrip)).join("\n").gsub("|", "\\|")
+      single_blanks(lines.map(&:rstrip)).join("\n").gsub("|", "{vbar}")
     end
 
     # Collapses runs of blank lines to one.

@@ -419,11 +419,11 @@ RSpec.describe Iev::Utilities do
       )
     end
 
-    it "escapes a pipe inside a cell" do
+    it "writes a pipe inside a cell as {vbar}" do
       text = "<table><tr><td>a | b</td></tr></table>"
 
       expect(subject.parse_anchor_tag(text, "112"))
-        .to include("|a \\| b")
+        .to include("|a {vbar} b")
     end
 
     it "keeps the HTML for a table whose grid is not rectangular" do
