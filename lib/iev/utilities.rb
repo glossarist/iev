@@ -77,7 +77,7 @@ module Iev
       when Nokogiri::XML::Comment
         ""
       when Nokogiri::XML::Element
-        element_to_adoc(node, term_domain)
+        table_to_adoc(node, term_domain) || element_to_adoc(node, term_domain)
       else
         ""
       end
@@ -123,6 +123,16 @@ module Iev
       else
         node.to_s
       end
+    end
+
+    # glossarist/iev-data#119: a representable <table> becomes an AsciiDoc
+    # table; anything else keeps its HTML markup (nil here).
+    def table_to_adoc(node, term_domain)
+      return unless node.name == "table"
+
+      TableConverter.new(node) do |cell|
+        nodes_to_adoc(cell.children, term_domain)
+      end.to_adoc
     end
 
     def convert_italic(text)
