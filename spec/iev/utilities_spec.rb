@@ -409,6 +409,15 @@ RSpec.describe Iev::Utilities do
       )
     end
 
+    it "inherits the alignment of the row when a cell has none" do
+      text = "<table><tr style=\"text-align: center;\"><td>a</td>" \
+             "<td align=\"right\">b</td></tr></table>"
+
+      expect(subject.parse_anchor_tag(text, "112").strip).to eq(
+        "[cols=\"2*\"]\n|===\n^|a\n>|b\n|===",
+      )
+    end
+
     it "uses a header row and caption for <th> and <caption>" do
       text = "<table><caption>Units</caption><tr><th>Name</th><th>Symbol</th>" \
              "</tr><tr><td>metre</td><td>m</td></tr></table>"

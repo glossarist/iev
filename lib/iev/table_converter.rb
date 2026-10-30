@@ -152,10 +152,18 @@ module Iev
       "#{span}#{alignment(cell.node)}|"
     end
 
+    # A cell inherits the alignment of its row (<tr style="text-align:
+    # center">) when it has none of its own.
     def alignment(node)
+      name = align_name(node)
+      name = align_name(node.parent) if name.nil? && node.parent.name == "tr"
+      ALIGNMENTS.fetch(name.to_s, "")
+    end
+
+    def align_name(node)
       name = node["align"].to_s.downcase
       name = node["style"].to_s[TEXT_ALIGN_RE, 1] if name.empty?
-      ALIGNMENTS.fetch(name.to_s, "")
+      name unless name.to_s.empty?
     end
 
     def cell_text(node)
