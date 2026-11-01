@@ -5,15 +5,27 @@ require "iev/version"
 # plurimath and unitsml both depend on mml, which has a transitive
 # dependency version mismatch with lutaml-model in some environments.
 # Load them when available; the DataSource/Db APIs work without them.
+# diag(2026-11-01): the silent rescues hid WHY plurimath failed to
+# load on the lutaml-model dependent legs (the suite then died with
+# `uninitialized constant Plurimath::Math` from the partial-constant
+# state). Surface the original error until the mismatch is fixed.
 begin
   require "plurimath"
-rescue LoadError
+rescue LoadError => e
+  warn "iev: plurimath failed to load: #{e.class}: #{e.message}"
+  warn e.backtrace.first(8).join("\n")
+  raise if ENV["IEV_STRICT_REQUIRES"]
+
   nil
 end
 
 begin
   require "unitsml"
-rescue LoadError
+rescue LoadError => e
+  warn "iev: unitsml failed to load: #{e.class}: #{e.message}"
+  warn e.backtrace.first(8).join("\n")
+  raise if ENV["IEV_STRICT_REQUIRES"]
+
   nil
 end
 
