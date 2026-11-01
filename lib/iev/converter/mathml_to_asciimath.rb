@@ -59,6 +59,25 @@ module Iev
           @math_cache ||= {}
         end
 
+        # Plurimath is a soft dependency (lib/iev.rb loads it when the
+        # bundle resolves it; the gemspec declares it but a transitive
+        # mml/lutaml-model version clash can drop it). The conversion
+        # degrades to no-op there, matching the documented contract -
+        # and the guard is checked INSIDE the cached block so an
+        # environment where the gem appears later still picks it up.
+        def mathml_to_asciimath_cached(math_xml)
+          unless defined?(Plurimath::Math)
+            begin
+              require "plurimath"
+            rescue LoadError
+              return ""
+            end
+          end
+          Plurimath::Math.parse(math_xml, :mathml).to_asciimath.strip
+        rescue Plurimath::Math::ParseError
+          ""
+        end
+
         def mathml_to_asciimath(input)
           return input unless input&.match?(/<|&/)
 
@@ -68,11 +87,7 @@ module Iev
 
           to_asciimath.css("math").each do |math_element|
             math_xml = math_element.to_xml
-            asciimath = math_cache[math_xml] ||= begin
-              Plurimath::Math.parse(math_xml, :mathml).to_asciimath.strip
-            rescue Plurimath::Math::ParseError
-              ""
-            end
+            asciimath = math_cache[math_xml] ||= mathml_to_asciimath_cached(math_xml)
 
             if asciimath.empty?
               math_element.remove
