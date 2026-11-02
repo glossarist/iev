@@ -163,4 +163,67 @@ RSpec.describe Iev::TermBuilder do
       expect(designation.designation).to eq("H~2~O")
     end
   end
+
+  # iev-data #8: attribute cells that say "abbreviation" or "acronym"
+  describe "abbreviation designations" do
+    include IevHtmlPartialsHelpers
+
+    def synonym_designation(term, attribute)
+      described_class.new(
+        { IEVREF: "103-01-02", LANGUAGE: "en", TERM: "quantity",
+          SYNONYM1: term, SYNONYM1ATTRIBUTE: attribute, DEFINITION: "x",
+          STATUS: "Standard" },
+      ).build.data.terms.last
+    end
+
+    {
+      "(abbreviation)" => "en",
+      "(abréviation) f" => "fr",
+      "Abkürzung" => "de",
+      "（略語）" => "ja",
+      "(abreviatura)" => "pt",
+    }.each do |attribute, language|
+      it "builds an Abbreviation for #{language} #{attribute.inspect}" do
+        designation = synonym_designation("PDF", attribute)
+
+        expect(designation).to be_a(Glossarist::Designation::Abbreviation)
+        expect(designation.designation).to eq("PDF")
+        expect(designation.acronym).to be_nil
+      end
+    end
+
+    it "marks an explicit acronym as an acronym" do
+      designation = synonym_designation("CWT", "(akronim)")
+
+      expect(designation).to be_a(Glossarist::Designation::Abbreviation)
+      expect(designation.acronym).to be(true)
+    end
+
+    it "keeps grammar next to the abbreviation marker" do
+      designation = synonym_designation("CWT", "(abbreviation) m")
+
+      expect(designation).to be_a(Glossarist::Designation::Abbreviation)
+      expect(designation.grammar_info.first.gender).to eq(["m"])
+    end
+
+    it "builds an abbreviation from TERMATTRIBUTE too" do
+      designation = primary_designation("PDF", "(abbreviation)")
+
+      expect(designation).to be_a(Glossarist::Designation::Abbreviation)
+    end
+
+    it "keeps unmarked designations as plain expressions" do
+      ["(of an amplifier)", "n", "Abklingkoeffizient", nil].each do |attr|
+        designation = synonym_designation("PDF", attr)
+
+        expect(designation.class).to eq(Glossarist::Designation::Expression)
+      end
+    end
+
+    it "does not read a word that merely contains a marker" do
+      designation = synonym_designation("x", "(abbreviationless)")
+
+      expect(designation.class).to eq(Glossarist::Designation::Expression)
+    end
+  end
 end
