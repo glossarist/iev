@@ -303,7 +303,17 @@ module Iev
         grammar_info: grammar_info ? [grammar_info] : nil,
       }.compact
 
-      Glossarist::Designation::Expression.new(**attrs)
+      build_designation(attrs, term_attributes)
+    end
+
+    # An attribute cell marking an abbreviation (iev-data #8) makes the
+    # designation an Abbreviation; only an explicit acronym marker sets a type.
+    def build_designation(attrs, term_attributes)
+      return Glossarist::Designation::Expression.new(**attrs) unless
+        term_attributes.abbreviation?
+
+      attrs[:acronym] = true if term_attributes.acronym?
+      Glossarist::Designation::Abbreviation.new(**attrs)
     end
 
     def build_symbol_designation(raw_term)

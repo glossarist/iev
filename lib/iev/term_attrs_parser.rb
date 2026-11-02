@@ -65,6 +65,21 @@ module Iev
       Präfix prefix préfixe 接尾語 접두사 przedrostek prefixo 词头 префикс
     ].freeze
 
+    # Words the IEV spreadsheet uses in an attribute cell to mark a designation
+    # as an abbreviation (iev-data #8), seen in the iev-data export: en, fr,
+    # de, ja, es, pt, ko. They say only "abbreviation", so no subtype is set.
+    ABBREVIATION_KEYWORDS = %w[
+      abbreviations? abréviations? abbreviazione abreviatura Abkürzung
+      略語 略称 약어
+    ].freeze
+
+    # Words that mark an acronym specifically (pl "akronim", en "acronym").
+    ACRONYM_KEYWORDS = %w[acronym akronim].freeze
+
+    ABBREVIATION_RX =
+      /(?<!\p{L})(?:#{ABBREVIATION_KEYWORDS.join('|')})(?!\p{L})/i
+    ACRONYM_RX = /(?<!\p{L})(?:#{ACRONYM_KEYWORDS.join('|')})(?!\p{L})/i
+
     # Markup that may legitimately appear inside <...> in a term.
     MARKUP_TAG = %r{
       \A/?(?:sub|sup|i|b|em|strong|span|small|a|p|r|br|simg|img|math|
@@ -98,6 +113,15 @@ module Iev
       @raw_str = attr_str.dup.freeze
       @src_str = decode_attrs_string(raw_str).freeze
       parse
+    end
+
+    # True when the cell marks the designation as an abbreviation or acronym.
+    def abbreviation?
+      acronym? || src_str.match?(ABBREVIATION_RX)
+    end
+
+    def acronym?
+      src_str.match?(ACRONYM_RX)
     end
 
     def inspect
